@@ -1,0 +1,1 @@
+python analyze.py plot-down-proj-input-output
