@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export HF_ENABLE_PARALLEL_LOADING=false
+export HF_DEACTIVATE_ASYNC_LOAD=1
+
 MODEL_PATH="$1"
 TASKS="$2"
 OUTPUT_PATH="$3"
