@@ -1,0 +1,32 @@
+model:
+  name: olmo1b
+  hf_path: allenai/OLMo-1B-0724-hf
+  dtype: float16
+
+superweights:
+  - id: sw1
+    layer: 1
+    row: 1764
+    col: 1710
+  - id: sw2
+    layer: 2
+    row: 1764
+    col: 8041
+
+task_groups:
+  math:
+    - mgsm_direct_en
+  reasoning:
+    - hellaswag
+  knowledge:
+    - sciq
+  causal:
+    - lambada_openai
+
+metrics:
+  default: acc,none
+  overrides:
+    mgsm_direct_en: exact_match,flexible-extract
+    hellaswag: acc,none
+    sciq: acc,none
+    lambada_openai: acc,none
