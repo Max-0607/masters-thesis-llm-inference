@@ -1,0 +1,57 @@
+model:
+  name: phi3
+  hf_path: microsoft/Phi-3-mini-4k-instruct
+  dtype: float16
+
+superweights:
+  - id: sw1
+    layer: 2
+    row: 525
+    col: 808
+  - id: sw2
+    layer: 2
+    row: 1693
+    col: 808
+  - id: sw3
+    layer: 2
+    row: 1113
+    col: 808
+  - id: sw4
+    layer: 4
+    row: 525
+    col: 2723
+  - id: sw5
+    layer: 4
+    row: 1113
+    col: 2723
+  - id: sw6
+    layer: 4
+    row: 1693
+    col: 2723
+
+task_groups:
+  mathematical:
+    - mgsm_direct_en
+    - gsm8k
+  reasoning:
+    - hellaswag
+    - arc_challenge
+  commonsense:
+    - piqa
+    - winogrande
+  language:
+    - lambada_openai
+  other:
+    - sciq
+
+metrics:
+  default: acc,none
+  overrides:
+    mgsm_direct_en: exact_match,flexible-extract
+    gsm8k: exact_match,strict-match
+    hellaswag: acc,none
+    arc_challenge: acc_norm,none
+    piqa: acc,none
+    winogrande: acc,none
+    lambada_openai: acc,none
+    sciq: acc,none
