@@ -1,0 +1,28 @@
+model:
+  name: llama7b
+  hf_path: huggyllama/llama-7b
+  dtype: float16
+
+superweights:
+  - id: sw1
+    layer: 2
+    row: 3968
+    col: 7003
+
+task_groups:
+  math:
+    - mgsm_direct_en
+  reasoning:
+    - hellaswag
+  knowledge:
+    - sciq
+  causal:
+    - lambada_openai
+
+metrics:
+  default: acc,none
+  overrides:
+    mgsm_direct_en: exact_match,flexible-extract
+    hellaswag: acc,none
+    sciq: acc,none
+    lambada_openai: acc,none
