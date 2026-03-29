@@ -5,6 +5,11 @@ from pathlib import Path
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+from configs.models import MODEL_CONFIGS
+from configs.superweights import SUPERWEIGHTS
+from src.hooks import get_nested_attr
+from src.quantization import ActivationQuantHook
+
 
 PROMPT_SETS = {
     "reasoning": [
@@ -121,8 +126,18 @@ def analyze_category(model, tok, texts, max_len=64):
         in_chs.append(int(in_peak_ch.cpu()))
         out_chs.append(int(out_peak_ch.cpu()))
 
-    spike_layer = int(max(range(L), key=lambda i: out_vals[i]))
-    candidate_coord = (out_chs[spike_layer], in_chs[spike_layer])
+        # earliest layer with a strong spike
+        global_max_out = max(out_vals)
+        threshold = 0.5 * global_max_out
+        
+        spike_candidates = [i for i, v in enumerate(out_vals) if v >= threshold]
+        global_max_out = max(out_vals)
+        threshold = 0.5 * global_max_out
+        
+        spike_candidates = [i for i, v in enumerate(out_vals) if v >= threshold]
+        spike_layer = spike_candidates[0] if spike_candidates else int(max(range(L), key=lambda i: out_vals[i]))
+        
+        candidate_coord = (out_chs[spike_layer], in_chs[spike_layer])
 
     W = get_down_proj_module(layers[spike_layer]).weight.detach().float()
     candidate_abs_weight = float(W[candidate_coord[0], candidate_coord[1]].abs().cpu())
@@ -141,27 +156,63 @@ def analyze_category(model, tok, texts, max_len=64):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-id", type=str, default="allenai/OLMo-1B-0724-hf")
+    parser.add_argument("--model-key", type=str, default="olmo-1b", choices=["olmo-1b"])
     parser.add_argument("--category", type=str, required=True, choices=list(PROMPT_SETS.keys()))
     parser.add_argument("--max-len", type=int, default=64)
     parser.add_argument("--output-json", type=str, required=True)
+
+    parser.add_argument(
+        "--act-quant-mode",
+        type=str,
+        default="none",
+        choices=["none", "naive", "super"],
+    )
+    parser.add_argument("--act-quant-bits", type=int, default=8)
+
     args = parser.parse_args()
 
-    tok = AutoTokenizer.from_pretrained(args.model_id, trust_remote_code=True)
+    model_cfg = MODEL_CONFIGS[args.model_key]
+    model_id = model_cfg["hf_name"]
+
+    tok = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
-        args.model_id,
+        model_id,
         torch_dtype=torch.float16,
         trust_remote_code=True,
         device_map="auto",
     )
     model.eval()
 
-    result = analyze_category(
-        model,
-        tok,
-        PROMPT_SETS[args.category],
-        max_len=args.max_len,
-    )
+    quant_hook = None
+    if args.act_quant_mode != "none":
+        layers = get_nested_attr(model, model_cfg["layer_path"])
+
+        # Für den ersten Test nur die bekannten SW-Layer von OLMo-1B
+        sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[args.model_key]})
+
+        quant_hook = ActivationQuantHook(
+            layers=layers,
+            module_path=model_cfg["down_proj_path"],
+            layer_indices=sw_layers,
+            n_bits=args.act_quant_bits,
+            mode=args.act_quant_mode,
+        )
+
+    try:
+        result = analyze_category(
+            model,
+            tok,
+            PROMPT_SETS[args.category],
+            max_len=args.max_len,
+        )
+    finally:
+        if quant_hook is not None:
+            quant_hook.remove()
+
+    result["model_key"] = args.model_key
+    result["model_id"] = model_id
+    result["act_quant_mode"] = args.act_quant_mode
+    result["act_quant_bits"] = args.act_quant_bits
 
     output_path = Path(args.output_json)
     output_path.parent.mkdir(parents=True, exist_ok=True)
