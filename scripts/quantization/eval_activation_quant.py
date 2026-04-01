@@ -32,7 +32,8 @@ def load_eval_texts(dataset_name: str, split: str, limit: int) -> List[str]:
         return texts[:limit]
 
     if dataset_name == "c4":
-        ds = load_dataset("allenai/c4", "en", split=split, streaming=False)
+        ds = load_dataset("allenai/c4", "en", split="validation", streaming=True)
+    
         texts = []
         for row in ds:
             text = row.get("text", "")
@@ -40,6 +41,7 @@ def load_eval_texts(dataset_name: str, split: str, limit: int) -> List[str]:
                 texts.append(text)
             if len(texts) >= limit:
                 break
+    
         return texts
 
     raise ValueError(f"Unknown dataset_name: {dataset_name}")
@@ -51,16 +53,32 @@ def build_quant_hook(model, model_key: str, mode: str, bits: int):
 
     model_cfg = MODEL_CONFIGS[model_key]
     layers = get_nested_attr(model, model_cfg["layer_path"])
-    sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[model_key]})
 
-    return ActivationQuantHook(
-        layers=layers,
-        module_path=model_cfg["down_proj_path"],
-        layer_indices=sw_layers,
-        n_bits=bits,
-        mode=mode,
-    )
+    if mode == "naive":
+        all_layers = list(range(len(layers)))
+        return ActivationQuantHook(
+            layers=layers,
+            module_path=model_cfg["down_proj_path"],
+            layer_indices=all_layers,
+            n_bits=bits,
+            mode=mode,
+        )
 
+    if mode == "super":
+        if model_key not in SUPERWEIGHTS:
+            raise ValueError(f"No superweights registered for model_key='{model_key}'")
+
+        sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[model_key]})
+
+        return ActivationQuantHook(
+            layers=layers,
+            module_path=model_cfg["down_proj_path"],
+            layer_indices=sw_layers,
+            n_bits=bits,
+            mode=mode,
+        )
+
+    raise ValueError(f"Unsupported mode: {mode}")
 
 def evaluate_perplexity(
     model,
@@ -123,7 +141,7 @@ def evaluate_perplexity(
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-key", type=str, default="olmo-1b", choices=["olmo-1b"])
+    parser.add_argument("--model-key",type=str,required=True,choices=sorted(MODEL_CONFIGS.keys()),)
     parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=8)
     parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])

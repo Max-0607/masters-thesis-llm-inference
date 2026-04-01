@@ -31,52 +31,55 @@ def build_quant_hook(model, model_key: str, mode: str, bits: int):
 
     model_cfg = MODEL_CONFIGS[model_key]
     layers = get_nested_attr(model, model_cfg["layer_path"])
-    sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[model_key]})
 
-    return ActivationQuantHook(
-        layers=layers,
-        module_path=model_cfg["down_proj_path"],
-        layer_indices=sw_layers,
-        n_bits=bits,
-        mode=mode,
-    )
+    if mode == "naive":
+        all_layers = list(range(len(layers)))
+        return ActivationQuantHook(
+            layers=layers,
+            module_path=model_cfg["down_proj_path"],
+            layer_indices=all_layers,
+            n_bits=bits,
+            mode=mode,
+        )
+
+    if mode == "super":
+        if model_key not in SUPERWEIGHTS:
+            raise ValueError(f"No superweights registered for model_key='{model_key}'")
+
+        sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[model_key]})
+
+        return ActivationQuantHook(
+            layers=layers,
+            module_path=model_cfg["down_proj_path"],
+            layer_indices=sw_layers,
+            n_bits=bits,
+            mode=mode,
+        )
+
+    raise ValueError(f"Unsupported mode: {mode}")
 
 
 def get_language_config(language: str) -> Dict[str, str]:
-    """
-    XCOPA often uses localized text already.
-    We keep the instruction minimal and mostly language-agnostic.
-    """
     prompts = {
         "en": {
             "cause": "What was the cause?",
             "effect": "What happened as a result?",
-            "a": "A",
-            "b": "B",
         },
         "es": {
             "cause": "¿Cuál fue la causa?",
             "effect": "¿Qué ocurrió como resultado?",
-            "a": "A",
-            "b": "B",
         },
         "fr": {
             "cause": "Quelle était la cause ?",
             "effect": "Qu'est-ce qui s'est passé comme résultat ?",
-            "a": "A",
-            "b": "B",
         },
         "ja": {
             "cause": "原因は何ですか？",
             "effect": "その結果、何が起こりましたか？",
-            "a": "A",
-            "b": "B",
         },
         "ko": {
             "cause": "원인은 무엇입니까?",
             "effect": "그 결과 무엇이 일어났습니까?",
-            "a": "A",
-            "b": "B",
         },
     }
     if language not in prompts:
@@ -86,7 +89,7 @@ def get_language_config(language: str) -> Dict[str, str]:
 
 def build_prompt(example: Dict, language: str) -> str:
     lang_cfg = get_language_config(language)
-    question = lang_cfg[example["question"]]  # "cause" or "effect"
+    question = lang_cfg[example["question"]]
 
     premise = example["premise"].strip()
     prompt = f"{premise}\n{question}\nAnswer:"
@@ -101,10 +104,6 @@ def score_continuation(
     device: torch.device,
     max_length: int = 256,
 ) -> float:
-    """
-    Returns the log-probability of the continuation given the prompt.
-    Higher is better.
-    """
     prompt_ids = tokenizer(
         prompt,
         add_special_tokens=False,
@@ -139,14 +138,12 @@ def score_continuation(
             return_dict=True,
         )
 
-    logits = outputs.logits[:, :-1, :]          # predict next token
+    logits = outputs.logits[:, :-1, :]
     target_ids = input_ids[:, 1:]
 
     log_probs = F.log_softmax(logits.float(), dim=-1)
     token_log_probs = log_probs.gather(-1, target_ids.unsqueeze(-1)).squeeze(-1)
 
-    # We only score continuation tokens.
-    # Since target_ids is shifted by one, continuation starts at prompt_len - 1.
     cont_start = max(prompt_len - 1, 0)
     cont_log_probs = token_log_probs[:, cont_start:]
 
@@ -157,16 +154,13 @@ def score_continuation(
 
 
 def normalize_xcopa_example(example: Dict) -> Dict:
-    """
-    Handles possible label formats.
-    Expected label: 0 or 1
-    """
     label = example.get("label", example.get("answer", None))
     if label not in [0, 1]:
         raise ValueError(f"Unexpected XCOPA label: {label}")
+
     return {
         "premise": example["premise"],
-        "question": example["question"],  # cause/effect
+        "question": example["question"],
         "choice1": example["choice1"],
         "choice2": example["choice2"],
         "label": label,
@@ -174,13 +168,30 @@ def normalize_xcopa_example(example: Dict) -> Dict:
 
 
 def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List[Dict]:
-    """
-    Tries common XCOPA dataset names.
-    """
+    examples = []
+
+    if language == "en":
+        ds = load_dataset("super_glue", "copa", split=split)
+
+        for row in ds:
+            ex = {
+                "premise": row["premise"],
+                "question": row["question"],
+                "choice1": row["choice1"],
+                "choice2": row["choice2"],
+                "label": row["label"],
+            }
+            examples.append(ex)
+            if limit is not None and len(examples) >= limit:
+                break
+
+        if not examples:
+            raise RuntimeError("No valid COPA examples found for English.")
+        return examples
+
     candidate_loaders = [
         lambda: load_dataset("xcopa", language, split=split),
         lambda: load_dataset("cambridgeltl/xcopa", language, split=split),
-        lambda: load_dataset("social_i_qa", split=split),  # fallback that should fail shape-checks
     ]
 
     last_error = None
@@ -193,21 +204,18 @@ def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List
             last_error = e
 
     if ds is None:
-        raise RuntimeError(f"Could not load XCOPA dataset for language={language}. Last error: {last_error}")
+        raise RuntimeError(
+            f"Could not load XCOPA dataset for language={language}. Last error: {last_error}"
+        )
 
-    examples = []
     for row in ds:
-        try:
-            ex = normalize_xcopa_example(row)
-            examples.append(ex)
-        except Exception:
-            continue
-
+        ex = normalize_xcopa_example(row)
+        examples.append(ex)
         if limit is not None and len(examples) >= limit:
             break
 
     if not examples:
-        raise RuntimeError("No valid XCOPA examples found after normalization.")
+        raise RuntimeError(f"No valid XCOPA examples found for language={language}.")
 
     return examples
 
@@ -223,7 +231,10 @@ def evaluate_xcopa(
 
     num_correct = 0
     scored_examples = 0
-    per_question = {"cause": {"correct": 0, "total": 0}, "effect": {"correct": 0, "total": 0}}
+    per_question = {
+        "cause": {"correct": 0, "total": 0},
+        "effect": {"correct": 0, "total": 0},
+    }
 
     for ex in examples:
         prompt = build_prompt(ex, language)
@@ -280,7 +291,12 @@ def evaluate_xcopa(
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-key", type=str, default="olmo-1b", choices=["olmo-1b"])
+    parser.add_argument(
+        "--model-key",
+        type=str,
+        required=True,
+        choices=sorted(MODEL_CONFIGS.keys()),
+    )
     parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=8)
     parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
