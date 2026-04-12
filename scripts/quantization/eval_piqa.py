@@ -59,69 +59,9 @@ def build_quant_hook(model, model_key: str, mode: str, bits: int):
     raise ValueError(f"Unsupported mode: {mode}")
 
 
-def get_language_config(language: str) -> Dict[str, str]:
-    prompts = {
-        "en": {
-            "cause": "What was the cause?",
-            "effect": "What happened as a result?",
-        },
-        "et": {
-            "cause": "Mis oli põhjus?",
-            "effect": "Mis juhtus selle tulemusena?",
-        },
-        "ht": {
-            "cause": "Ki sa ki te kòz la?",
-            "effect": "Kisa ki te rive kòm rezilta?",
-        },
-        "id": {
-            "cause": "Apa penyebabnya?",
-            "effect": "Apa yang terjadi sebagai hasilnya?",
-        },
-        "it": {
-            "cause": "Qual è stata la causa?",
-            "effect": "Che cosa è successo come risultato?",
-        },
-        "qu": {
-            "cause": "Imataq karqan?",
-            "effect": "Imataq chaymanta pasaran?",
-        },
-        "sw": {
-            "cause": "Sababu ilikuwa nini?",
-            "effect": "Nini kilitokea kama matokeo?",
-        },
-        "ta": {
-            "cause": "காரணம் என்ன?",
-            "effect": "இதன் விளைவாக என்ன நடந்தது?",
-        },
-        "th": {
-            "cause": "สาเหตุคืออะไร?",
-            "effect": "เกิดอะไรขึ้นเป็นผลลัพธ์?",
-        },
-        "tr": {
-            "cause": "Sebep neydi?",
-            "effect": "Sonuç olarak ne oldu?",
-        },
-        "vi": {
-            "cause": "Nguyên nhân là gì?",
-            "effect": "Kết quả là gì?",
-        },
-        "zh": {
-            "cause": "原因是什么？",
-            "effect": "结果发生了什么？",
-        },
-    }
-    if language not in prompts:
-        raise ValueError(f"Unsupported language: {language}")
-    return prompts[language]
-
-
-def build_prompt(example: Dict, language: str) -> str:
-    lang_cfg = get_language_config(language)
-    question = lang_cfg[example["question"]]
-
-    premise = example["premise"].strip()
-    prompt = f"{premise}\n{question}\nAnswer:"
-    return prompt
+def build_prompt(example: Dict) -> str:
+    goal = example["goal"].strip()
+    return f"Question: {goal}\nAnswer:"
 
 
 def score_continuation(
@@ -181,63 +121,11 @@ def score_continuation(
     return float(cont_log_probs.sum().item())
 
 
-def normalize_xcopa_example(example: Dict) -> Dict:
-    label = example.get("label", example.get("answer", None))
-    if label not in [0, 1]:
-        raise ValueError(f"Unexpected XCOPA label: {label}")
-
-    return {
-        "premise": example["premise"],
-        "question": example["question"],
-        "choice1": example["choice1"],
-        "choice2": example["choice2"],
-        "label": label,
-    }
-
-
-def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List[Dict]:
-    examples = []
-
-    # English uses COPA from SuperGLUE.
-    if language == "en":
-        copa_split_map = {
-            "validation": "validation",
-            "val": "validation",
-            "train": "train",
-            "test": "validation",  # fallback, because COPA labels are not always exposed for test
-        }
-        ds_split = copa_split_map.get(split, split)
-
-        ds = load_dataset("super_glue", "copa", split=ds_split)
-
-        for row in ds:
-            ex = {
-                "premise": row["premise"],
-                "question": row["question"],
-                "choice1": row["choice1"],
-                "choice2": row["choice2"],
-                "label": row["label"],
-            }
-            examples.append(ex)
-            if limit is not None and len(examples) >= limit:
-                break
-
-        if not examples:
-            raise RuntimeError("No valid COPA examples found for English.")
-        return examples
-
-    # Non-English uses XCOPA.
-    xcopa_split_map = {
-        "validation": "validation",
-        "val": "validation",
-        "train": "validation",   # safer fallback for evaluation
-        "test": "validation",    # safer fallback for evaluation
-    }
-    ds_split = xcopa_split_map.get(split, split)
-
+def load_piqa_examples(split: str, limit: Optional[int]) -> List[Dict]:
     candidate_loaders = [
-        lambda: load_dataset("xcopa", language, split=ds_split),
-        lambda: load_dataset("cambridgeltl/xcopa", language, split=ds_split),
+        lambda: load_dataset("ybisk/piqa", split=split),
+        lambda: load_dataset("lighteval/piqa", split=split),
+        lambda: load_dataset("regisss/piqa", split=split),
     ]
 
     last_error = None
@@ -250,46 +138,76 @@ def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List
             last_error = e
 
     if ds is None:
-        raise RuntimeError(
-            f"Could not load XCOPA dataset for language={language}. Last error: {last_error}"
+        raise RuntimeError(f"Could not load PIQA dataset. Last error: {last_error}")
+
+    examples = []
+    for i, row in enumerate(ds):
+        label = row.get("label", None)
+        if label not in [0, 1]:
+            continue
+
+        examples.append(
+            {
+                "id": i,
+                "goal": row["goal"],
+                "sol1": row["sol1"],
+                "sol2": row["sol2"],
+                "label": int(label),
+            }
         )
 
-    for row in ds:
-        ex = normalize_xcopa_example(row)
-        examples.append(ex)
         if limit is not None and len(examples) >= limit:
             break
 
     if not examples:
-        raise RuntimeError(f"No valid XCOPA examples found for language={language}.")
+        raise RuntimeError("No valid PIQA examples found.")
+
+    return examples
+
+    examples = []
+    for i, row in enumerate(ds):
+        label = row.get("label", None)
+        if label not in [0, 1]:
+            continue
+
+        examples.append(
+            {
+                "id": i,
+                "goal": row["goal"],
+                "sol1": row["sol1"],
+                "sol2": row["sol2"],
+                "label": int(label),
+            }
+        )
+
+        if limit is not None and len(examples) >= limit:
+            break
+
+    if not examples:
+        raise RuntimeError("No valid PIQA examples found.")
 
     return examples
 
 
-def evaluate_xcopa(
+def evaluate_piqa(
     model,
     tokenizer,
     examples: List[Dict],
-    language: str,
     max_length: int,
 ) -> Dict:
     device = next(model.parameters()).device
 
     num_correct = 0
     scored_examples = 0
-    per_question = {
-        "cause": {"correct": 0, "total": 0},
-        "effect": {"correct": 0, "total": 0},
-    }
 
     for ex in examples:
-        prompt = build_prompt(ex, language)
+        prompt = build_prompt(ex)
 
         score1 = score_continuation(
             model=model,
             tokenizer=tokenizer,
             prompt=prompt,
-            continuation=ex["choice1"],
+            continuation=ex["sol1"],
             device=device,
             max_length=max_length,
         )
@@ -297,7 +215,7 @@ def evaluate_xcopa(
             model=model,
             tokenizer=tokenizer,
             prompt=prompt,
-            continuation=ex["choice2"],
+            continuation=ex["sol2"],
             device=device,
             max_length=max_length,
         )
@@ -309,30 +227,14 @@ def evaluate_xcopa(
         num_correct += correct
         scored_examples += 1
 
-        q = ex["question"]
-        if q in per_question:
-            per_question[q]["correct"] += correct
-            per_question[q]["total"] += 1
-
     if scored_examples == 0:
-        raise RuntimeError("No XCOPA examples were scored.")
+        raise RuntimeError("No PIQA examples were scored.")
 
-    result = {
+    return {
         "num_examples": scored_examples,
         "accuracy": num_correct / scored_examples,
         "num_correct": num_correct,
-        "per_question": {},
     }
-
-    for q, stats in per_question.items():
-        total = stats["total"]
-        result["per_question"][q] = {
-            "total": total,
-            "correct": stats["correct"],
-            "accuracy": (stats["correct"] / total) if total > 0 else None,
-        }
-
-    return result
 
 
 def main():
@@ -343,26 +245,10 @@ def main():
         required=True,
         choices=sorted(MODEL_CONFIGS.keys()),
     )
-    parser.add_argument(
-        "--mode",
-        type=str,
-        default="fp16",
-        choices=["fp16", "naive", "super"],
-    )
+    parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=8)
-    parser.add_argument(
-        "--dtype",
-        type=str,
-        default="float16",
-        choices=["float16", "bfloat16", "float32"],
-    )
+    parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
 
-    parser.add_argument(
-        "--language",
-        type=str,
-        default="en",
-        choices=["en", "et", "ht", "id", "it", "qu", "sw", "ta", "th", "tr", "vi", "zh"],
-    )
     parser.add_argument("--split", type=str, default="validation")
     parser.add_argument("--limit", type=int, default=200)
     parser.add_argument("--max-length", type=int, default=256)
@@ -390,9 +276,8 @@ def main():
     )
     model.eval()
 
-    print(f"Loading XCOPA language={args.language} split={args.split} limit={args.limit}")
-    examples = load_xcopa_examples(
-        language=args.language,
+    print(f"Loading PIQA split={args.split} limit={args.limit}")
+    examples = load_piqa_examples(
         split=args.split,
         limit=args.limit,
     )
@@ -405,11 +290,10 @@ def main():
     )
 
     try:
-        metrics = evaluate_xcopa(
+        metrics = evaluate_piqa(
             model=model,
             tokenizer=tokenizer,
             examples=examples,
-            language=args.language,
             max_length=args.max_length,
         )
     finally:
@@ -422,8 +306,7 @@ def main():
         "mode": args.mode,
         "bits": args.bits,
         "dtype": args.dtype,
-        "benchmark": "xcopa",
-        "language": args.language,
+        "benchmark": "piqa",
         "split": args.split,
         "limit": args.limit,
         "max_length": args.max_length,
