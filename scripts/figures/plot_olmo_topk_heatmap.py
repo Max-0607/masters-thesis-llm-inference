@@ -1,9 +1,10 @@
 import json
 import os
+
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 import numpy as np
 
 BASE_DIR = "outputs/eval/olmo_task_compare"
@@ -16,14 +17,14 @@ TASKS = [
     "sciq",
 ]
 
-TOPK_LABELS = [
-    "top1",
-    "top2",
-    "top3",
-    "top4",
-    "top5",
-    "top10",
-]
+TASK_LABELS = {
+    "hellaswag": "Commonsense\nReasoning",
+    "lambada_openai": "Language\nModeling",
+    "mgsm_direct_en": "Mathematical\nReasoning",
+    "sciq": "Scientific\nKnowledge",
+}
+
+TOPK_LABELS = ["top1", "top2", "top3", "top4", "top5", "top10"]
 
 TASK_METRIC = {
     "hellaswag": "acc_norm,none",
@@ -33,180 +34,194 @@ TASK_METRIC = {
 }
 
 
-def load_metric(path: str, task: str, metric: str) -> float:
-    with open(path, "r", encoding="utf-8") as f:
+# -----------------------
+# Data Loading
+# -----------------------
+
+def load_metric(path, task, metric):
+    with open(path, "r") as f:
         data = json.load(f)
     return data["results"][task][metric]
 
 
 def build_drop_matrix():
     matrix = []
+
     for task in TASKS:
         metric = TASK_METRIC[task]
-        baseline_path = os.path.join(BASE_DIR, f"baseline_{task}.json")
-        baseline_score = load_metric(baseline_path, task, metric)
+        baseline = load_metric(
+            os.path.join(BASE_DIR, f"baseline_{task}.json"),
+            task,
+            metric,
+        )
+
         row = []
         for label in TOPK_LABELS:
-            ablated_path = os.path.join(BASE_DIR, f"{label}_{task}.json")
-            ablated_score = load_metric(ablated_path, task, metric)
-            drop = baseline_score - ablated_score
-            row.append(drop)
+            score = load_metric(
+                os.path.join(BASE_DIR, f"{label}_{task}.json"),
+                task,
+                metric,
+            )
+            row.append(baseline - score)
+
         matrix.append(row)
-    return np.array(matrix, dtype=float)
+
+    return np.array(matrix)
 
 
-def row_normalize(matrix: np.ndarray) -> np.ndarray:
-    """
-    Normalize each row independently to [0, 1] so that within each task
-    the color reflects where the biggest *change* happens across k values.
-    Rows where all values are identical get mapped to 1.0 (full impact at top2).
-    """
+# -----------------------
+# Processing
+# -----------------------
+
+def row_normalize(matrix):
     norm = np.zeros_like(matrix)
+
     for i, row in enumerate(matrix):
-        row_min = row.min()
-        row_max = row.max()
-        if row_max - row_min < 1e-9:
-            # Flat row: everything is equally impacted -> all max
-            norm[i] = np.ones_like(row)
+        rmin, rmax = row.min(), row.max()
+        if abs(rmax - rmin) < 1e-9:
+            norm[i] = 1.0
         else:
-            norm[i] = (row - row_min) / (row_max - row_min)
+            norm[i] = (row - rmin) / (rmax - rmin)
+
     return norm
 
 
-def build_delta_matrix(matrix: np.ndarray) -> np.ndarray:
+def sort_by_impact(matrix, labels):
     """
-    Compute the incremental change between consecutive k values.
-    Shape: (n_tasks, n_topk - 1)
-    delta[i, j] = matrix[i, j+1] - matrix[i, j]
-    Positive = drop got larger (bad), negative = drop got smaller (recovered).
+    Sort tasks by overall impact (max drop)
     """
+    impact = matrix.max(axis=1)
+    order = np.argsort(-impact)
+
+    return matrix[order], [labels[i] for i in order], order
+
+
+def build_delta_matrix(matrix):
     return np.diff(matrix, axis=1)
 
 
-def save_csv(matrix: np.ndarray, csv_path: str) -> None:
-    with open(csv_path, "w", encoding="utf-8") as f:
-        f.write("task," + ",".join(TOPK_LABELS) + "\n")
-        for task, row in zip(TASKS, matrix):
-            values = ",".join(f"{x:.6f}" for x in row)
-            f.write(f"{task},{values}\n")
+# -----------------------
+# Plotting
+# -----------------------
 
+def plot_main_heatmap(matrix, save_path):
+    norm_matrix = row_normalize(matrix)
 
-def plot_heatmap_rownorm(matrix: np.ndarray, norm_matrix: np.ndarray, save_path: str) -> None:
-    """
-    Main heatmap with row-wise normalization for color, but raw drop values as annotations.
-    A thin vertical marker highlights where the largest single-step jump occurs per row.
-    """
-    fig, ax = plt.subplots(figsize=(10, 5))
+    # SORTING (important improvement!)
+    sorted_matrix, sorted_labels, order = sort_by_impact(
+        matrix,
+        [TASK_LABELS[t] for t in TASKS],
+    )
+    norm_matrix = norm_matrix[order]
 
-    cmap = plt.get_cmap("YlOrRd")  # white=no change, dark red=full impact
-    im = ax.imshow(norm_matrix, aspect="auto", cmap=cmap, vmin=0, vmax=1)
+    fig, ax = plt.subplots(figsize=(10.5, 5.2))
+
+    im = ax.imshow(norm_matrix, cmap="YlOrRd", vmin=0, vmax=1, aspect="auto")
 
     ax.set_xticks(range(len(TOPK_LABELS)))
-    ax.set_xticklabels(TOPK_LABELS, fontsize=11)
-    ax.set_yticks(range(len(TASKS)))
-    ax.set_yticklabels(TASKS, fontsize=11)
-    ax.set_xlabel("Ablation setting (k zeroed)", fontsize=12)
-    ax.set_ylabel("Task", fontsize=12)
-    ax.set_title("OLMo-1B: Performance Drop – row-normalized per task\n(color shows relative severity within each task)", fontsize=12)
+    ax.set_xticklabels(TOPK_LABELS, fontsize=12)
 
-    # Annotate with raw drop values
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]):
-            raw = matrix[i, j]
+    ax.set_yticks(range(len(sorted_labels)))
+    ax.set_yticklabels(sorted_labels, fontsize=12)
+
+    ax.set_xlabel("Ablation setting (k zeroed)", fontsize=13)
+    ax.set_ylabel("Task category", fontsize=13)
+    ax.set_title(
+        "OLMo-1B: Performance Drop under Top-k Superweight Ablation\n"
+        "(color shows relative severity within each task)",
+        fontsize=13,
+    )
+
+    # Values
+    for i in range(sorted_matrix.shape[0]):
+        for j in range(sorted_matrix.shape[1]):
+            val = sorted_matrix[i, j]
             brightness = norm_matrix[i, j]
-            txt_color = "white" if brightness > 0.55 else "black"
-            ax.text(j, i, f"{raw:.3f}", ha="center", va="center",
-                    fontsize=10, color=txt_color, fontweight="bold")
+            color = "white" if brightness > 0.55 else "black"
 
-    # Mark the column where the biggest incremental jump happens per row (star)
-    delta = build_delta_matrix(matrix)
-    for i, row_delta in enumerate(delta):
-        if row_delta.max() > 1e-6:          # only if there is any change at all
-            jump_col = int(np.argmax(row_delta)) + 1  # +1 because diff shifts index
-            ax.annotate("★", xy=(jump_col, i), xytext=(jump_col, i - 0.38),
-                        ha="center", va="center", fontsize=13, color="navy",
-                        fontweight="bold")
+            ax.text(j, i, f"{val:.3f}", ha="center", va="center",
+                    fontsize=11, color=color, fontweight="bold")
+
+    # Mark largest jump
+    delta = build_delta_matrix(sorted_matrix)
+    for i, row in enumerate(delta):
+        if row.max() > 1e-6:
+            j = int(np.argmax(row)) + 1
+            ax.text(j, i - 0.35, "★", ha="center",
+                    fontsize=14, color="navy", fontweight="bold")
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label("Normalized drop within task (0 = min, 1 = max)", fontsize=10)
-    cbar.set_ticks([0, 0.5, 1])
-    cbar.set_ticklabels(["min impact", "mid", "max impact"])
-
-    # Legend for star
-    ax.plot([], [], marker="*", color="navy", linestyle="None",
-            markersize=10, label="Largest single-step jump")
-    ax.legend(loc="lower right", fontsize=9, framealpha=0.8)
+    cbar.set_label("Normalized drop within task", fontsize=11)
 
     plt.tight_layout()
-    plt.savefig(save_path, dpi=200)
+    plt.savefig(save_path, dpi=240)
     plt.close()
-    print(f"  Saved: {save_path}")
+    print(f"Saved: {save_path}")
 
 
-def plot_delta_heatmap(matrix: np.ndarray, save_path: str) -> None:
-    """
-    Secondary plot: shows the incremental change Δ between consecutive k values.
-    Diverging colormap: red = big additional drop, blue = slight recovery.
-    """
+def plot_delta_heatmap(matrix, save_path):
     delta = build_delta_matrix(matrix)
-    delta_labels = [f"{TOPK_LABELS[j]}→{TOPK_LABELS[j+1]}" for j in range(len(TOPK_LABELS) - 1)]
 
-    abs_max = np.abs(delta).max()
-    if abs_max < 1e-9:
-        abs_max = 1.0  # avoid degenerate colormap
+    fig, ax = plt.subplots(figsize=(10.5, 4.2))
 
-    fig, ax = plt.subplots(figsize=(10, 4))
-    cmap = plt.get_cmap("RdBu_r")   # red = more drop, blue = less
-    norm = mcolors.TwoSlopeNorm(vmin=-abs_max, vcenter=0, vmax=abs_max)
-    im = ax.imshow(delta, aspect="auto", cmap=cmap, norm=norm)
+    vmax = np.abs(delta).max()
+    if vmax < 1e-9:
+        vmax = 1.0
 
-    ax.set_xticks(range(len(delta_labels)))
-    ax.set_xticklabels(delta_labels, fontsize=10, rotation=20, ha="right")
-    ax.set_yticks(range(len(TASKS)))
-    ax.set_yticklabels(TASKS, fontsize=11)
-    ax.set_xlabel("Step between ablation settings", fontsize=12)
-    ax.set_ylabel("Task", fontsize=12)
-    ax.set_title("OLMo-1B: Incremental Performance Drop Δ between consecutive k values\n"
-                 "(red = drop increases, blue = drop decreases / recovery)", fontsize=12)
+    im = ax.imshow(
+        delta,
+        cmap="RdBu_r",
+        norm=mcolors.TwoSlopeNorm(vmin=-vmax, vcenter=0, vmax=vmax),
+        aspect="auto",
+    )
+
+    labels = [TASK_LABELS[t] for t in TASKS]
+
+    ax.set_yticks(range(len(labels)))
+    ax.set_yticklabels(labels, fontsize=12)
+
+    ax.set_xticks(range(delta.shape[1]))
+    ax.set_xticklabels(
+        [f"{TOPK_LABELS[i]}→{TOPK_LABELS[i+1]}" for i in range(len(TOPK_LABELS)-1)],
+        rotation=20,
+        ha="right",
+    )
+
+    ax.set_title("Incremental performance change between k steps", fontsize=13)
 
     for i in range(delta.shape[0]):
         for j in range(delta.shape[1]):
             val = delta[i, j]
-            # Choose text color based on cell brightness
-            normed = (val + abs_max) / (2 * abs_max)
-            txt_color = "white" if (normed < 0.25 or normed > 0.75) else "black"
-            ax.text(j, i, f"{val:+.3f}", ha="center", va="center",
-                    fontsize=10, color=txt_color, fontweight="bold")
+            color = "white" if abs(val) > 0.5 * vmax else "black"
+            ax.text(j, i, f"{val:+.3f}", ha="center",
+                    va="center", fontsize=10, color=color)
 
-    cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label("Δ drop (positive = bigger drop)", fontsize=10)
-
+    plt.colorbar(im, ax=ax)
     plt.tight_layout()
-    plt.savefig(save_path, dpi=200)
+    plt.savefig(save_path, dpi=240)
     plt.close()
-    print(f"  Saved: {save_path}")
+    print(f"Saved: {save_path}")
 
+
+# -----------------------
+# MAIN
+# -----------------------
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
     matrix = build_drop_matrix()
-    norm_matrix = row_normalize(matrix)
 
-    # Plot 1: Row-normalized heatmap (main)
-    plot_heatmap_rownorm(
-        matrix, norm_matrix,
-        save_path=os.path.join(OUT_DIR, "olmo_topk_task_heatmap_rownorm.png"),
+    plot_main_heatmap(
+        matrix,
+        os.path.join(OUT_DIR, "olmo_topk_heatmap.png"),
     )
 
-    # Plot 2: Incremental delta heatmap (secondary)
     plot_delta_heatmap(
         matrix,
-        save_path=os.path.join(OUT_DIR, "olmo_topk_task_heatmap_delta.png"),
+        os.path.join(OUT_DIR, "olmo_topk_heatmap_delta.png"),
     )
 
-    # CSV of raw drops
-    save_csv(matrix, os.path.join(OUT_DIR, "olmo_topk_task_heatmap.csv"))
     print("Done.")
 
 

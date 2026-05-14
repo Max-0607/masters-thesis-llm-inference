@@ -41,12 +41,26 @@ def pretty_token(token: str) -> str:
 def build_categories():
     return OrderedDict(
         {
-            "punctuation": [".", ",", ";", ":", "!", "?"],
-            "articles/determiners": [" the", " a", " an", " this", " that", " these", " those"],
-            "conjunctions": [" and", " or", " but", " so", " yet"],
-            "prepositions": [" of", " in", " to", " for", " with", " on", " at", " by", " from"],
-            "pronouns/function": [" I", " you", " he", " she", " they", " we", " it", " is", " not"],
-            "content words": [" summer", " winter", " hot", " cold", " warm", " weather", " season", " temperature", " day", " night"],
+            "punctuation": [".", ",", ";", ":", "!", "?", "-", ")", "(", "\""],
+            "articles/determiners": [
+                " the", " a", " an", " this", " that", " these", " those",
+                " some", " any", " every"
+            ],
+            "conjunctions": [
+                " and", " or", " but", " so", " yet", " because", " although",
+                " while", " since", " if"
+            ],
+            "prepositions": [
+                " of", " in", " to", " for", " with", " on", " at", " by", " from", " into"
+            ],
+            "pronouns/function": [
+                " I", " you", " he", " she", " they", " we", " it",
+                " is", " was", " not"
+            ],
+            "content words": [
+                " summer", " winter", " hot", " cold", " warm",
+                " weather", " climate", " temperature", " day", " night"
+            ],
         }
     )
 
@@ -84,6 +98,9 @@ def collect_data(original, no_sw, min_tokens_per_category, tokens_per_category):
                 vals.append(log_delta)
                 kept.append((token, log_delta))
 
+        # DEBUG
+        print(category, "n =", len(vals), "tokens =", [t for t, _ in kept])
+
         if len(vals) >= min_tokens_per_category:
             mean_val = float(np.mean(vals))
             std_val = float(np.std(vals)) if len(vals) > 1 else 0.0
@@ -99,7 +116,7 @@ def collect_data(original, no_sw, min_tokens_per_category, tokens_per_category):
             )
 
             # Top N niedrigste Shifts
-            kept_sorted_low = sorted(kept, key=lambda x: x[1])[:tokens_per_category]
+            kept_sorted_low = sorted(kept, key=lambda x: x[1])[:5]
             grouped_low_rows.append(
                 {
                     "category": category,
@@ -187,44 +204,53 @@ def plot_category_level(category_rows, output_path, title):
 
 
 def plot_low_tokens(grouped_low_rows, output_path, title):
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(11, 7.2))
     ax.axvline(0, color="black", linewidth=1)
     ax.grid(axis="x", linestyle="--", alpha=0.35)
 
-    y_positions = []
     current_y = 0
     category_centers = []
     all_x = []
 
+    max_tokens_to_show = 5
+
     for group in grouped_low_rows:
         start_y = current_y
-        tokens = group["tokens"]
+        tokens = group["tokens"][:max_tokens_to_show]
         color = group["color"]
 
         for token_row in tokens:
             x = token_row["log_delta"]
             y = current_y
 
-            ax.hlines(y=y, xmin=0, xmax=x, color=color, alpha=0.45, linewidth=2.2)
-            ax.scatter(x, y, s=75, color=color, zorder=3)
+            ax.hlines(y=y, xmin=0, xmax=x, color=color, alpha=0.45, linewidth=2.0)
+            ax.scatter(x, y, s=55, color=color, zorder=3)
+
+            label = f"{token_row['pretty']} ({x:.2f})"
 
             if x >= 0:
-                text_x = x + 0.05
+                text_x = min(x + 0.05, 3.45)
                 ha = "left"
             else:
-                text_x = x - 0.05
+                text_x = max(x - 0.05, -4.75)
                 ha = "right"
 
             ax.text(
                 text_x,
                 y,
-                f"{token_row['pretty']} ({x:.2f})",
+                label,
                 va="center",
                 ha=ha,
-                fontsize=10,
+                fontsize=9,
+                clip_on=True,
+                bbox=dict(
+                    boxstyle="round,pad=0.12",
+                    facecolor="white",
+                    edgecolor="none",
+                    alpha=0.75,
+                ),
             )
 
-            y_positions.append(y)
             all_x.append(x)
             current_y += 1
 
@@ -236,22 +262,20 @@ def plot_low_tokens(grouped_low_rows, output_path, title):
         current_y += 1
 
     ax.set_yticks([])
-    ax.set_xlabel("Token log10(No-SW / Original)", fontsize=13)
-    ax.set_title(title, fontsize=17)
+    ax.set_xlabel("Token log10(No-SW / Original)", fontsize=12)
+    ax.set_title(title, fontsize=15)
 
-    left_x = min(-1.2, min(all_x) - 0.6) if all_x else -1.2
-    right_x = max(3.0, max(all_x) + 0.6) if all_x else 3.0
-    ax.set_xlim(left_x, right_x)
+    ax.set_xlim(-5.1, 3.8)
     ax.invert_yaxis()
 
     for cat, cy in category_centers:
         ax.text(
-            left_x + 0.05,
+            -4.95,
             cy,
             cat,
             va="center",
             ha="left",
-            fontsize=12,
+            fontsize=11,
             fontweight="bold",
         )
 

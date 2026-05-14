@@ -1,0 +1,4542 @@
+{
+  "benchmark": "piqa",
+  "model_key": "olmo-1b",
+  "model_id": "allenai/OLMo-1B-0724-hf",
+  "mode": "super",
+  "bits": 4,
+  "sw_scale": 1.0,
+  "restore_neighborhood": "scalar",
+  "quant_granularity": "block2d",
+  "block_rows": 128,
+  "block_cols": 128,
+  "clip_z": 3.0,
+  "normalize_by_length": false,
+  "num_protected_values": 2,
+  "protected_values": [
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 1710,
+      "row": 1764,
+      "col": 1710,
+      "is_center": true
+    },
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 8041,
+      "row": 1764,
+      "col": 8041,
+      "is_center": true
+    }
+  ],
+  "dtype": "float16",
+  "split": "validation",
+  "limit": 500,
+  "max_length": 256,
+  "num_examples": 500,
+  "accuracy": 0.532,
+  "num_correct": 266,
+  "predictions": [
+    {
+      "id": 0,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -369.3381652832031,
+      "score_sol2": -368.125,
+      "margin": -1.213165283203125
+    },
+    {
+      "id": 1,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -56.811363220214844,
+      "score_sol2": -85.66007232666016,
+      "margin": 28.848709106445312
+    },
+    {
+      "id": 2,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -93.112548828125,
+      "score_sol2": -115.28472900390625,
+      "margin": 22.17218017578125
+    },
+    {
+      "id": 3,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -89.50740051269531,
+      "score_sol2": -90.14244842529297,
+      "margin": 0.6350479125976562
+    },
+    {
+      "id": 4,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -86.2268295288086,
+      "score_sol2": -92.34471130371094,
+      "margin": 6.117881774902344
+    },
+    {
+      "id": 5,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -76.8991470336914,
+      "score_sol2": -82.35641479492188,
+      "margin": 5.457267761230469
+    },
+    {
+      "id": 6,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -493.85284423828125,
+      "score_sol2": -480.1099853515625,
+      "margin": -13.74285888671875
+    },
+    {
+      "id": 7,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -163.84625244140625,
+      "score_sol2": -146.13352966308594,
+      "margin": -17.712722778320312
+    },
+    {
+      "id": 8,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -226.69149780273438,
+      "score_sol2": -228.06094360351562,
+      "margin": 1.36944580078125
+    },
+    {
+      "id": 9,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -73.23916625976562,
+      "score_sol2": -73.17875671386719,
+      "margin": -0.0604095458984375
+    },
+    {
+      "id": 10,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -59.06017303466797,
+      "score_sol2": -86.47108459472656,
+      "margin": 27.410911560058594
+    },
+    {
+      "id": 11,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -60.69892883300781,
+      "score_sol2": -245.1841278076172,
+      "margin": 184.48519897460938
+    },
+    {
+      "id": 12,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -128.59654235839844,
+      "score_sol2": -100.86760711669922,
+      "margin": -27.72893524169922
+    },
+    {
+      "id": 13,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -82.72114562988281,
+      "score_sol2": -82.21723937988281,
+      "margin": -0.50390625
+    },
+    {
+      "id": 14,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -87.9185562133789,
+      "score_sol2": -130.46176147460938,
+      "margin": 42.54320526123047
+    },
+    {
+      "id": 15,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -100.92568969726562,
+      "score_sol2": -86.66593933105469,
+      "margin": -14.259750366210938
+    },
+    {
+      "id": 16,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -96.69082641601562,
+      "score_sol2": -85.634765625,
+      "margin": -11.056060791015625
+    },
+    {
+      "id": 17,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -237.42999267578125,
+      "score_sol2": -226.67176818847656,
+      "margin": -10.758224487304688
+    },
+    {
+      "id": 18,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -70.54338073730469,
+      "score_sol2": -63.56800842285156,
+      "margin": -6.975372314453125
+    },
+    {
+      "id": 19,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -289.8045959472656,
+      "score_sol2": -168.03396606445312,
+      "margin": -121.7706298828125
+    },
+    {
+      "id": 20,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -368.755126953125,
+      "score_sol2": -359.9292297363281,
+      "margin": -8.825897216796875
+    },
+    {
+      "id": 21,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -221.34091186523438,
+      "score_sol2": -230.078857421875,
+      "margin": 8.737945556640625
+    },
+    {
+      "id": 22,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -563.4740600585938,
+      "score_sol2": -275.8250732421875,
+      "margin": -287.64898681640625
+    },
+    {
+      "id": 23,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -298.93487548828125,
+      "score_sol2": -284.91729736328125,
+      "margin": -14.017578125
+    },
+    {
+      "id": 24,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -89.05128479003906,
+      "score_sol2": -80.85114288330078,
+      "margin": -8.200141906738281
+    },
+    {
+      "id": 25,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -106.25965881347656,
+      "score_sol2": -126.36328125,
+      "margin": 20.103622436523438
+    },
+    {
+      "id": 26,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -78.58548736572266,
+      "score_sol2": -76.75703430175781,
+      "margin": -1.8284530639648438
+    },
+    {
+      "id": 27,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -33.414100646972656,
+      "score_sol2": -31.521034240722656,
+      "margin": -1.89306640625
+    },
+    {
+      "id": 28,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -83.52961730957031,
+      "score_sol2": -89.49330139160156,
+      "margin": 5.96368408203125
+    },
+    {
+      "id": 29,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -1084.26611328125,
+      "score_sol2": -1067.8182373046875,
+      "margin": -16.4478759765625
+    },
+    {
+      "id": 30,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -242.20635986328125,
+      "score_sol2": -242.8848876953125,
+      "margin": 0.67852783203125
+    },
+    {
+      "id": 31,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -91.7280502319336,
+      "score_sol2": -114.91114807128906,
+      "margin": 23.18309783935547
+    },
+    {
+      "id": 32,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -92.39096069335938,
+      "score_sol2": -92.9560317993164,
+      "margin": 0.5650711059570312
+    },
+    {
+      "id": 33,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -157.3878173828125,
+      "score_sol2": -163.34237670898438,
+      "margin": 5.954559326171875
+    },
+    {
+      "id": 34,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -244.5503692626953,
+      "score_sol2": -278.1871337890625,
+      "margin": 33.63676452636719
+    },
+    {
+      "id": 35,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -286.03924560546875,
+      "score_sol2": -291.1290588378906,
+      "margin": 5.089813232421875
+    },
+    {
+      "id": 36,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -213.95645141601562,
+      "score_sol2": -239.31008911132812,
+      "margin": 25.3536376953125
+    },
+    {
+      "id": 37,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -68.76420593261719,
+      "score_sol2": -80.06758880615234,
+      "margin": 11.303382873535156
+    },
+    {
+      "id": 38,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -670.8515014648438,
+      "score_sol2": -674.1864013671875,
+      "margin": 3.33489990234375
+    },
+    {
+      "id": 39,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -225.00347900390625,
+      "score_sol2": -212.23672485351562,
+      "margin": -12.766754150390625
+    },
+    {
+      "id": 40,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -254.7904510498047,
+      "score_sol2": -250.32757568359375,
+      "margin": -4.4628753662109375
+    },
+    {
+      "id": 41,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -196.4431915283203,
+      "score_sol2": -147.15237426757812,
+      "margin": -49.29081726074219
+    },
+    {
+      "id": 42,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -52.8436393737793,
+      "score_sol2": -50.7660026550293,
+      "margin": -2.07763671875
+    },
+    {
+      "id": 43,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -31.582901000976562,
+      "score_sol2": -31.295547485351562,
+      "margin": -0.287353515625
+    },
+    {
+      "id": 44,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -124.13502502441406,
+      "score_sol2": -127.40945434570312,
+      "margin": 3.2744293212890625
+    },
+    {
+      "id": 45,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -107.66248321533203,
+      "score_sol2": -89.77413940429688,
+      "margin": -17.888343811035156
+    },
+    {
+      "id": 46,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -33.843021392822266,
+      "score_sol2": -30.769412994384766,
+      "margin": -3.0736083984375
+    },
+    {
+      "id": 47,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -149.3428955078125,
+      "score_sol2": -157.83961486816406,
+      "margin": 8.496719360351562
+    },
+    {
+      "id": 48,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -134.322265625,
+      "score_sol2": -135.71640014648438,
+      "margin": 1.394134521484375
+    },
+    {
+      "id": 49,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -70.75846862792969,
+      "score_sol2": -74.50502014160156,
+      "margin": 3.746551513671875
+    },
+    {
+      "id": 50,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -330.2652587890625,
+      "score_sol2": -335.73785400390625,
+      "margin": 5.47259521484375
+    },
+    {
+      "id": 51,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -386.5360107421875,
+      "score_sol2": -349.30908203125,
+      "margin": -37.2269287109375
+    },
+    {
+      "id": 52,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -64.9638900756836,
+      "score_sol2": -60.10113525390625,
+      "margin": -4.862754821777344
+    },
+    {
+      "id": 53,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -101.8056640625,
+      "score_sol2": -112.92739868164062,
+      "margin": 11.121734619140625
+    },
+    {
+      "id": 54,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -109.69361877441406,
+      "score_sol2": -130.47280883789062,
+      "margin": 20.779190063476562
+    },
+    {
+      "id": 55,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -190.6146240234375,
+      "score_sol2": -192.31646728515625,
+      "margin": 1.70184326171875
+    },
+    {
+      "id": 56,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -99.888916015625,
+      "score_sol2": -77.34454345703125,
+      "margin": -22.54437255859375
+    },
+    {
+      "id": 57,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -46.15193176269531,
+      "score_sol2": -171.40158081054688,
+      "margin": 125.24964904785156
+    },
+    {
+      "id": 58,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -86.24369812011719,
+      "score_sol2": -84.83589935302734,
+      "margin": -1.4077987670898438
+    },
+    {
+      "id": 59,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -348.685791015625,
+      "score_sol2": -354.02032470703125,
+      "margin": 5.33453369140625
+    },
+    {
+      "id": 60,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -151.7549591064453,
+      "score_sol2": -156.95462036132812,
+      "margin": 5.1996612548828125
+    },
+    {
+      "id": 61,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -210.62625122070312,
+      "score_sol2": -215.49639892578125,
+      "margin": 4.870147705078125
+    },
+    {
+      "id": 62,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -561.62646484375,
+      "score_sol2": -564.0396728515625,
+      "margin": 2.4132080078125
+    },
+    {
+      "id": 63,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -64.30079650878906,
+      "score_sol2": -65.58964538574219,
+      "margin": 1.288848876953125
+    },
+    {
+      "id": 64,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -101.53494262695312,
+      "score_sol2": -100.21330261230469,
+      "margin": -1.3216400146484375
+    },
+    {
+      "id": 65,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -389.85321044921875,
+      "score_sol2": -441.1445007324219,
+      "margin": 51.291290283203125
+    },
+    {
+      "id": 66,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -144.87747192382812,
+      "score_sol2": -147.3617401123047,
+      "margin": 2.4842681884765625
+    },
+    {
+      "id": 67,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -70.56808471679688,
+      "score_sol2": -50.36787796020508,
+      "margin": -20.200206756591797
+    },
+    {
+      "id": 68,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -185.48646545410156,
+      "score_sol2": -204.490478515625,
+      "margin": 19.004013061523438
+    },
+    {
+      "id": 69,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -78.8539047241211,
+      "score_sol2": -75.96994018554688,
+      "margin": -2.8839645385742188
+    },
+    {
+      "id": 70,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -113.5316390991211,
+      "score_sol2": -113.47305297851562,
+      "margin": -0.05858612060546875
+    },
+    {
+      "id": 71,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -67.68498229980469,
+      "score_sol2": -78.07511901855469,
+      "margin": 10.39013671875
+    },
+    {
+      "id": 72,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -110.5774917602539,
+      "score_sol2": -114.27273559570312,
+      "margin": 3.6952438354492188
+    },
+    {
+      "id": 73,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -373.7071533203125,
+      "score_sol2": -389.3863525390625,
+      "margin": 15.67919921875
+    },
+    {
+      "id": 74,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -238.20298767089844,
+      "score_sol2": -242.12814331054688,
+      "margin": 3.9251556396484375
+    },
+    {
+      "id": 75,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -558.875,
+      "score_sol2": -495.97735595703125,
+      "margin": -62.89764404296875
+    },
+    {
+      "id": 76,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -77.7027587890625,
+      "score_sol2": -76.11868286132812,
+      "margin": -1.584075927734375
+    },
+    {
+      "id": 77,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -113.3475341796875,
+      "score_sol2": -116.19995880126953,
+      "margin": 2.8524246215820312
+    },
+    {
+      "id": 78,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -630.6824340820312,
+      "score_sol2": -612.1705932617188,
+      "margin": -18.5118408203125
+    },
+    {
+      "id": 79,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -53.45048141479492,
+      "score_sol2": -138.54678344726562,
+      "margin": 85.0963020324707
+    },
+    {
+      "id": 80,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -176.62734985351562,
+      "score_sol2": -169.07078552246094,
+      "margin": -7.5565643310546875
+    },
+    {
+      "id": 81,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -371.4912109375,
+      "score_sol2": -344.13824462890625,
+      "margin": -27.35296630859375
+    },
+    {
+      "id": 82,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -273.5318908691406,
+      "score_sol2": -269.97607421875,
+      "margin": -3.555816650390625
+    },
+    {
+      "id": 83,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -242.43397521972656,
+      "score_sol2": -226.83270263671875,
+      "margin": -15.601272583007812
+    },
+    {
+      "id": 84,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -112.09797668457031,
+      "score_sol2": -127.82376861572266,
+      "margin": 15.725791931152344
+    },
+    {
+      "id": 85,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -682.3783569335938,
+      "score_sol2": -669.0040893554688,
+      "margin": -13.374267578125
+    },
+    {
+      "id": 86,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -237.49282836914062,
+      "score_sol2": -233.68505859375,
+      "margin": -3.807769775390625
+    },
+    {
+      "id": 87,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -426.1832275390625,
+      "score_sol2": -373.896728515625,
+      "margin": -52.2864990234375
+    },
+    {
+      "id": 88,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -65.60467529296875,
+      "score_sol2": -64.84910583496094,
+      "margin": -0.7555694580078125
+    },
+    {
+      "id": 89,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -80.90155792236328,
+      "score_sol2": -80.58096313476562,
+      "margin": -0.32059478759765625
+    },
+    {
+      "id": 90,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -203.69789123535156,
+      "score_sol2": -258.17254638671875,
+      "margin": 54.47465515136719
+    },
+    {
+      "id": 91,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -111.06643676757812,
+      "score_sol2": -94.26950073242188,
+      "margin": -16.79693603515625
+    },
+    {
+      "id": 92,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -191.28567504882812,
+      "score_sol2": -192.9539794921875,
+      "margin": 1.668304443359375
+    },
+    {
+      "id": 93,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -152.3961944580078,
+      "score_sol2": -171.83920288085938,
+      "margin": 19.443008422851562
+    },
+    {
+      "id": 94,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -48.502777099609375,
+      "score_sol2": -55.663185119628906,
+      "margin": 7.160408020019531
+    },
+    {
+      "id": 95,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -284.7699279785156,
+      "score_sol2": -288.9163818359375,
+      "margin": 4.146453857421875
+    },
+    {
+      "id": 96,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -534.7633056640625,
+      "score_sol2": -530.1491088867188,
+      "margin": -4.61419677734375
+    },
+    {
+      "id": 97,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -116.55751037597656,
+      "score_sol2": -121.61846160888672,
+      "margin": 5.060951232910156
+    },
+    {
+      "id": 98,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -209.40467834472656,
+      "score_sol2": -209.2615509033203,
+      "margin": -0.14312744140625
+    },
+    {
+      "id": 99,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -279.8621520996094,
+      "score_sol2": -291.0006103515625,
+      "margin": 11.138458251953125
+    },
+    {
+      "id": 100,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -127.79228973388672,
+      "score_sol2": -54.01565170288086,
+      "margin": -73.77663803100586
+    },
+    {
+      "id": 101,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -136.73403930664062,
+      "score_sol2": -162.91725158691406,
+      "margin": 26.183212280273438
+    },
+    {
+      "id": 102,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -39.82902908325195,
+      "score_sol2": -44.324798583984375,
+      "margin": 4.495769500732422
+    },
+    {
+      "id": 103,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -124.78628540039062,
+      "score_sol2": -124.26969909667969,
+      "margin": -0.5165863037109375
+    },
+    {
+      "id": 104,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -48.5055046081543,
+      "score_sol2": -196.4388885498047,
+      "margin": 147.9333839416504
+    },
+    {
+      "id": 105,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -425.2301025390625,
+      "score_sol2": -387.8811340332031,
+      "margin": -37.348968505859375
+    },
+    {
+      "id": 106,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -272.6499938964844,
+      "score_sol2": -306.19427490234375,
+      "margin": 33.544281005859375
+    },
+    {
+      "id": 107,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -302.83154296875,
+      "score_sol2": -89.09754943847656,
+      "margin": -213.73399353027344
+    },
+    {
+      "id": 108,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -102.95757293701172,
+      "score_sol2": -103.71991729736328,
+      "margin": 0.7623443603515625
+    },
+    {
+      "id": 109,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -150.99981689453125,
+      "score_sol2": -146.40045166015625,
+      "margin": -4.599365234375
+    },
+    {
+      "id": 110,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -604.110595703125,
+      "score_sol2": -609.4903564453125,
+      "margin": 5.3797607421875
+    },
+    {
+      "id": 111,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -75.74455261230469,
+      "score_sol2": -79.5330810546875,
+      "margin": 3.7885284423828125
+    },
+    {
+      "id": 112,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -197.89068603515625,
+      "score_sol2": -83.83821105957031,
+      "margin": -114.05247497558594
+    },
+    {
+      "id": 113,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -119.8616714477539,
+      "score_sol2": -141.12033081054688,
+      "margin": 21.25865936279297
+    },
+    {
+      "id": 114,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -82.62760162353516,
+      "score_sol2": -69.51407623291016,
+      "margin": -13.113525390625
+    },
+    {
+      "id": 115,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -125.69971466064453,
+      "score_sol2": -130.54176330566406,
+      "margin": 4.842048645019531
+    },
+    {
+      "id": 116,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -313.4710388183594,
+      "score_sol2": -318.02850341796875,
+      "margin": 4.557464599609375
+    },
+    {
+      "id": 117,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -66.43357849121094,
+      "score_sol2": -61.974334716796875,
+      "margin": -4.4592437744140625
+    },
+    {
+      "id": 118,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -56.080379486083984,
+      "score_sol2": -45.171241760253906,
+      "margin": -10.909137725830078
+    },
+    {
+      "id": 119,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -175.03997802734375,
+      "score_sol2": -171.98245239257812,
+      "margin": -3.057525634765625
+    },
+    {
+      "id": 120,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -114.66862487792969,
+      "score_sol2": -139.8659210205078,
+      "margin": 25.197296142578125
+    },
+    {
+      "id": 121,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -69.86636352539062,
+      "score_sol2": -69.52533721923828,
+      "margin": -0.34102630615234375
+    },
+    {
+      "id": 122,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -64.13841247558594,
+      "score_sol2": -61.8062744140625,
+      "margin": -2.3321380615234375
+    },
+    {
+      "id": 123,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -126.49248504638672,
+      "score_sol2": -122.34317016601562,
+      "margin": -4.149314880371094
+    },
+    {
+      "id": 124,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -79.19496154785156,
+      "score_sol2": -74.85413360595703,
+      "margin": -4.340827941894531
+    },
+    {
+      "id": 125,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -116.11528015136719,
+      "score_sol2": -116.11177062988281,
+      "margin": -0.003509521484375
+    },
+    {
+      "id": 126,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -715.2621459960938,
+      "score_sol2": -713.3796997070312,
+      "margin": -1.8824462890625
+    },
+    {
+      "id": 127,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -30.394479751586914,
+      "score_sol2": -37.07733154296875,
+      "margin": 6.682851791381836
+    },
+    {
+      "id": 128,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -72.31013488769531,
+      "score_sol2": -83.91641998291016,
+      "margin": 11.606285095214844
+    },
+    {
+      "id": 129,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -83.61676025390625,
+      "score_sol2": -79.50973510742188,
+      "margin": -4.107025146484375
+    },
+    {
+      "id": 130,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -166.8282470703125,
+      "score_sol2": -143.50543212890625,
+      "margin": -23.32281494140625
+    },
+    {
+      "id": 131,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -102.28482055664062,
+      "score_sol2": -102.33992004394531,
+      "margin": 0.0550994873046875
+    },
+    {
+      "id": 132,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -97.88414001464844,
+      "score_sol2": -79.25874328613281,
+      "margin": -18.625396728515625
+    },
+    {
+      "id": 133,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -133.03492736816406,
+      "score_sol2": -115.9437255859375,
+      "margin": -17.091201782226562
+    },
+    {
+      "id": 134,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -117.48304748535156,
+      "score_sol2": -112.02836608886719,
+      "margin": -5.454681396484375
+    },
+    {
+      "id": 135,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -360.8149108886719,
+      "score_sol2": -370.29351806640625,
+      "margin": 9.478607177734375
+    },
+    {
+      "id": 136,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -241.24063110351562,
+      "score_sol2": -237.52133178710938,
+      "margin": -3.71929931640625
+    },
+    {
+      "id": 137,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -464.8995056152344,
+      "score_sol2": -472.090087890625,
+      "margin": 7.190582275390625
+    },
+    {
+      "id": 138,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -160.656494140625,
+      "score_sol2": -160.6768798828125,
+      "margin": 0.0203857421875
+    },
+    {
+      "id": 139,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -760.1417236328125,
+      "score_sol2": -739.98486328125,
+      "margin": -20.1568603515625
+    },
+    {
+      "id": 140,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -104.00855255126953,
+      "score_sol2": -101.7177505493164,
+      "margin": -2.290802001953125
+    },
+    {
+      "id": 141,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -34.973655700683594,
+      "score_sol2": -32.72654724121094,
+      "margin": -2.2471084594726562
+    },
+    {
+      "id": 142,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -1208.4072265625,
+      "score_sol2": -1262.0355224609375,
+      "margin": 53.6282958984375
+    },
+    {
+      "id": 143,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -71.95924377441406,
+      "score_sol2": -61.500701904296875,
+      "margin": -10.458541870117188
+    },
+    {
+      "id": 144,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -36.07903289794922,
+      "score_sol2": -37.03606414794922,
+      "margin": 0.95703125
+    },
+    {
+      "id": 145,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -75.7562255859375,
+      "score_sol2": -120.37293243408203,
+      "margin": 44.61670684814453
+    },
+    {
+      "id": 146,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -143.72848510742188,
+      "score_sol2": -140.06272888183594,
+      "margin": -3.6657562255859375
+    },
+    {
+      "id": 147,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -202.66119384765625,
+      "score_sol2": -193.46702575683594,
+      "margin": -9.194168090820312
+    },
+    {
+      "id": 148,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -395.29266357421875,
+      "score_sol2": -388.299072265625,
+      "margin": -6.99359130859375
+    },
+    {
+      "id": 149,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -64.81500244140625,
+      "score_sol2": -58.90416717529297,
+      "margin": -5.910835266113281
+    },
+    {
+      "id": 150,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -171.94631958007812,
+      "score_sol2": -158.4025115966797,
+      "margin": -13.543807983398438
+    },
+    {
+      "id": 151,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -72.21124267578125,
+      "score_sol2": -71.97149658203125,
+      "margin": -0.23974609375
+    },
+    {
+      "id": 152,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -346.88104248046875,
+      "score_sol2": -348.2459411621094,
+      "margin": 1.364898681640625
+    },
+    {
+      "id": 153,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -248.85247802734375,
+      "score_sol2": -248.89227294921875,
+      "margin": 0.039794921875
+    },
+    {
+      "id": 154,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -186.76246643066406,
+      "score_sol2": -48.5137939453125,
+      "margin": -138.24867248535156
+    },
+    {
+      "id": 155,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -229.47262573242188,
+      "score_sol2": -239.90110778808594,
+      "margin": 10.428482055664062
+    },
+    {
+      "id": 156,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -72.25253295898438,
+      "score_sol2": -68.54541778564453,
+      "margin": -3.7071151733398438
+    },
+    {
+      "id": 157,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -109.98760986328125,
+      "score_sol2": -102.53311157226562,
+      "margin": -7.454498291015625
+    },
+    {
+      "id": 158,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -220.75892639160156,
+      "score_sol2": -221.5931854248047,
+      "margin": 0.834259033203125
+    },
+    {
+      "id": 159,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -258.751220703125,
+      "score_sol2": -258.405029296875,
+      "margin": -0.34619140625
+    },
+    {
+      "id": 160,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -167.3941650390625,
+      "score_sol2": -171.6629638671875,
+      "margin": 4.268798828125
+    },
+    {
+      "id": 161,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -76.41310119628906,
+      "score_sol2": -93.33552551269531,
+      "margin": 16.92242431640625
+    },
+    {
+      "id": 162,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -675.0450439453125,
+      "score_sol2": -681.105712890625,
+      "margin": 6.0606689453125
+    },
+    {
+      "id": 163,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -46.233558654785156,
+      "score_sol2": -60.56871032714844,
+      "margin": 14.335151672363281
+    },
+    {
+      "id": 164,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -88.28379821777344,
+      "score_sol2": -100.19044494628906,
+      "margin": 11.906646728515625
+    },
+    {
+      "id": 165,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -243.573974609375,
+      "score_sol2": -227.51138305664062,
+      "margin": -16.062591552734375
+    },
+    {
+      "id": 166,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -44.551673889160156,
+      "score_sol2": -36.06950759887695,
+      "margin": -8.482166290283203
+    },
+    {
+      "id": 167,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -347.8103942871094,
+      "score_sol2": -334.56109619140625,
+      "margin": -13.249298095703125
+    },
+    {
+      "id": 168,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -703.837158203125,
+      "score_sol2": -674.435546875,
+      "margin": -29.401611328125
+    },
+    {
+      "id": 169,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -96.21937561035156,
+      "score_sol2": -93.09970092773438,
+      "margin": -3.1196746826171875
+    },
+    {
+      "id": 170,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -91.39323425292969,
+      "score_sol2": -92.62779235839844,
+      "margin": 1.23455810546875
+    },
+    {
+      "id": 171,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -85.08910369873047,
+      "score_sol2": -85.70852661132812,
+      "margin": 0.6194229125976562
+    },
+    {
+      "id": 172,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -754.807373046875,
+      "score_sol2": -668.75244140625,
+      "margin": -86.054931640625
+    },
+    {
+      "id": 173,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -58.726200103759766,
+      "score_sol2": -48.37745666503906,
+      "margin": -10.348743438720703
+    },
+    {
+      "id": 174,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -66.43367004394531,
+      "score_sol2": -75.17058563232422,
+      "margin": 8.736915588378906
+    },
+    {
+      "id": 175,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -868.86474609375,
+      "score_sol2": -877.0175170898438,
+      "margin": 8.15277099609375
+    },
+    {
+      "id": 176,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -76.56637573242188,
+      "score_sol2": -87.09977722167969,
+      "margin": 10.533401489257812
+    },
+    {
+      "id": 177,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -224.69671630859375,
+      "score_sol2": -222.0269775390625,
+      "margin": -2.66973876953125
+    },
+    {
+      "id": 178,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -234.68246459960938,
+      "score_sol2": -204.11709594726562,
+      "margin": -30.56536865234375
+    },
+    {
+      "id": 179,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -84.87675476074219,
+      "score_sol2": -89.26471710205078,
+      "margin": 4.387962341308594
+    },
+    {
+      "id": 180,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -172.38360595703125,
+      "score_sol2": -159.7441864013672,
+      "margin": -12.639419555664062
+    },
+    {
+      "id": 181,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -61.06769561767578,
+      "score_sol2": -57.02347183227539,
+      "margin": -4.044223785400391
+    },
+    {
+      "id": 182,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -93.8578109741211,
+      "score_sol2": -95.62521362304688,
+      "margin": 1.7674026489257812
+    },
+    {
+      "id": 183,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -100.64967346191406,
+      "score_sol2": -100.47002410888672,
+      "margin": -0.17964935302734375
+    },
+    {
+      "id": 184,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -57.835880279541016,
+      "score_sol2": -59.54908752441406,
+      "margin": 1.7132072448730469
+    },
+    {
+      "id": 185,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -382.101806640625,
+      "score_sol2": -380.60107421875,
+      "margin": -1.500732421875
+    },
+    {
+      "id": 186,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -66.33390808105469,
+      "score_sol2": -74.12925720214844,
+      "margin": 7.79534912109375
+    },
+    {
+      "id": 187,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -39.90047836303711,
+      "score_sol2": -35.07931900024414,
+      "margin": -4.821159362792969
+    },
+    {
+      "id": 188,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -138.57986450195312,
+      "score_sol2": -147.45431518554688,
+      "margin": 8.87445068359375
+    },
+    {
+      "id": 189,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -99.58599853515625,
+      "score_sol2": -67.68598937988281,
+      "margin": -31.900009155273438
+    },
+    {
+      "id": 190,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -392.13824462890625,
+      "score_sol2": -182.42974853515625,
+      "margin": -209.70849609375
+    },
+    {
+      "id": 191,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -140.3828125,
+      "score_sol2": -135.15769958496094,
+      "margin": -5.2251129150390625
+    },
+    {
+      "id": 192,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -234.53404235839844,
+      "score_sol2": -242.73178100585938,
+      "margin": 8.197738647460938
+    },
+    {
+      "id": 193,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -137.99612426757812,
+      "score_sol2": -131.28073120117188,
+      "margin": -6.71539306640625
+    },
+    {
+      "id": 194,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -95.23846435546875,
+      "score_sol2": -74.49686431884766,
+      "margin": -20.741600036621094
+    },
+    {
+      "id": 195,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -494.5816650390625,
+      "score_sol2": -491.17706298828125,
+      "margin": -3.40460205078125
+    },
+    {
+      "id": 196,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -39.40369415283203,
+      "score_sol2": -27.354488372802734,
+      "margin": -12.049205780029297
+    },
+    {
+      "id": 197,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -57.51923751831055,
+      "score_sol2": -57.69753646850586,
+      "margin": 0.1782989501953125
+    },
+    {
+      "id": 198,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -91.47724151611328,
+      "score_sol2": -88.63317108154297,
+      "margin": -2.8440704345703125
+    },
+    {
+      "id": 199,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -70.11727905273438,
+      "score_sol2": -76.34170532226562,
+      "margin": 6.22442626953125
+    },
+    {
+      "id": 200,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -155.89141845703125,
+      "score_sol2": -141.04559326171875,
+      "margin": -14.8458251953125
+    },
+    {
+      "id": 201,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -497.77215576171875,
+      "score_sol2": -525.703369140625,
+      "margin": 27.93121337890625
+    },
+    {
+      "id": 202,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -68.79936218261719,
+      "score_sol2": -71.41751098632812,
+      "margin": 2.6181488037109375
+    },
+    {
+      "id": 203,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -60.06529998779297,
+      "score_sol2": -83.23644256591797,
+      "margin": 23.171142578125
+    },
+    {
+      "id": 204,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -265.0284118652344,
+      "score_sol2": -264.24395751953125,
+      "margin": -0.784454345703125
+    },
+    {
+      "id": 205,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -147.03250122070312,
+      "score_sol2": -126.26077270507812,
+      "margin": -20.771728515625
+    },
+    {
+      "id": 206,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -63.169898986816406,
+      "score_sol2": -52.29084396362305,
+      "margin": -10.87905502319336
+    },
+    {
+      "id": 207,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -75.16527557373047,
+      "score_sol2": -76.89176940917969,
+      "margin": 1.7264938354492188
+    },
+    {
+      "id": 208,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -408.6055908203125,
+      "score_sol2": -416.6273193359375,
+      "margin": 8.021728515625
+    },
+    {
+      "id": 209,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -562.9541015625,
+      "score_sol2": -492.462646484375,
+      "margin": -70.491455078125
+    },
+    {
+      "id": 210,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -267.5436706542969,
+      "score_sol2": -273.82464599609375,
+      "margin": 6.280975341796875
+    },
+    {
+      "id": 211,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -57.760231018066406,
+      "score_sol2": -170.7695770263672,
+      "margin": 113.00934600830078
+    },
+    {
+      "id": 212,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -155.57553100585938,
+      "score_sol2": -158.73635864257812,
+      "margin": 3.16082763671875
+    },
+    {
+      "id": 213,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -121.84856414794922,
+      "score_sol2": -157.76953125,
+      "margin": 35.92096710205078
+    },
+    {
+      "id": 214,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -230.03416442871094,
+      "score_sol2": -229.40792846679688,
+      "margin": -0.6262359619140625
+    },
+    {
+      "id": 215,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -202.53146362304688,
+      "score_sol2": -198.24728393554688,
+      "margin": -4.2841796875
+    },
+    {
+      "id": 216,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -184.487548828125,
+      "score_sol2": -188.01637268066406,
+      "margin": 3.5288238525390625
+    },
+    {
+      "id": 217,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -38.61437225341797,
+      "score_sol2": -47.395782470703125,
+      "margin": 8.781410217285156
+    },
+    {
+      "id": 218,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -99.0311279296875,
+      "score_sol2": -85.31599426269531,
+      "margin": -13.715133666992188
+    },
+    {
+      "id": 219,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -301.38818359375,
+      "score_sol2": -300.0764465332031,
+      "margin": -1.311737060546875
+    },
+    {
+      "id": 220,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -1080.023681640625,
+      "score_sol2": -1079.26806640625,
+      "margin": -0.755615234375
+    },
+    {
+      "id": 221,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -46.85393524169922,
+      "score_sol2": -38.94291305541992,
+      "margin": -7.911022186279297
+    },
+    {
+      "id": 222,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -61.75123977661133,
+      "score_sol2": -64.39814758300781,
+      "margin": 2.6469078063964844
+    },
+    {
+      "id": 223,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -397.4432678222656,
+      "score_sol2": -618.5580444335938,
+      "margin": 221.11477661132812
+    },
+    {
+      "id": 224,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -42.27638244628906,
+      "score_sol2": -60.409088134765625,
+      "margin": 18.132705688476562
+    },
+    {
+      "id": 225,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -211.88375854492188,
+      "score_sol2": -188.91824340820312,
+      "margin": -22.96551513671875
+    },
+    {
+      "id": 226,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -111.14041900634766,
+      "score_sol2": -118.89585876464844,
+      "margin": 7.755439758300781
+    },
+    {
+      "id": 227,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -117.17247009277344,
+      "score_sol2": -109.8974609375,
+      "margin": -7.2750091552734375
+    },
+    {
+      "id": 228,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -61.33256530761719,
+      "score_sol2": -62.1276969909668,
+      "margin": 0.7951316833496094
+    },
+    {
+      "id": 229,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -158.40640258789062,
+      "score_sol2": -130.53289794921875,
+      "margin": -27.873504638671875
+    },
+    {
+      "id": 230,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -50.0072021484375,
+      "score_sol2": -55.73273468017578,
+      "margin": 5.725532531738281
+    },
+    {
+      "id": 231,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -284.22723388671875,
+      "score_sol2": -290.75335693359375,
+      "margin": 6.526123046875
+    },
+    {
+      "id": 232,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -87.11318969726562,
+      "score_sol2": -87.06214904785156,
+      "margin": -0.0510406494140625
+    },
+    {
+      "id": 233,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -124.7375259399414,
+      "score_sol2": -116.13264465332031,
+      "margin": -8.604881286621094
+    },
+    {
+      "id": 234,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -1293.1702880859375,
+      "score_sol2": -1185.04931640625,
+      "margin": -108.1209716796875
+    },
+    {
+      "id": 235,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -35.55107116699219,
+      "score_sol2": -34.39158248901367,
+      "margin": -1.1594886779785156
+    },
+    {
+      "id": 236,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -133.25941467285156,
+      "score_sol2": -133.45294189453125,
+      "margin": 0.1935272216796875
+    },
+    {
+      "id": 237,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -339.85577392578125,
+      "score_sol2": -310.8673095703125,
+      "margin": -28.98846435546875
+    },
+    {
+      "id": 238,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -185.08900451660156,
+      "score_sol2": -184.93185424804688,
+      "margin": -0.1571502685546875
+    },
+    {
+      "id": 239,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -214.45681762695312,
+      "score_sol2": -227.2900390625,
+      "margin": 12.833221435546875
+    },
+    {
+      "id": 240,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -244.3924560546875,
+      "score_sol2": -202.69552612304688,
+      "margin": -41.696929931640625
+    },
+    {
+      "id": 241,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -38.17975616455078,
+      "score_sol2": -48.179718017578125,
+      "margin": 9.999961853027344
+    },
+    {
+      "id": 242,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -129.3787841796875,
+      "score_sol2": -118.0637435913086,
+      "margin": -11.315040588378906
+    },
+    {
+      "id": 243,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -42.79505920410156,
+      "score_sol2": -44.27301025390625,
+      "margin": 1.4779510498046875
+    },
+    {
+      "id": 244,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -259.09124755859375,
+      "score_sol2": -89.51792907714844,
+      "margin": -169.5733184814453
+    },
+    {
+      "id": 245,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -175.219482421875,
+      "score_sol2": -174.7813720703125,
+      "margin": -0.4381103515625
+    },
+    {
+      "id": 246,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -561.6901245117188,
+      "score_sol2": -546.1980590820312,
+      "margin": -15.4920654296875
+    },
+    {
+      "id": 247,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -165.44683837890625,
+      "score_sol2": -173.62718200683594,
+      "margin": 8.180343627929688
+    },
+    {
+      "id": 248,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -50.98461151123047,
+      "score_sol2": -168.11489868164062,
+      "margin": 117.13028717041016
+    },
+    {
+      "id": 249,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -166.8363037109375,
+      "score_sol2": -173.181640625,
+      "margin": 6.3453369140625
+    },
+    {
+      "id": 250,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -70.57347869873047,
+      "score_sol2": -56.801849365234375,
+      "margin": -13.771629333496094
+    },
+    {
+      "id": 251,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -276.4992980957031,
+      "score_sol2": -222.64645385742188,
+      "margin": -53.85284423828125
+    },
+    {
+      "id": 252,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -103.2518310546875,
+      "score_sol2": -115.23241424560547,
+      "margin": 11.980583190917969
+    },
+    {
+      "id": 253,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -409.84124755859375,
+      "score_sol2": -389.8341369628906,
+      "margin": -20.007110595703125
+    },
+    {
+      "id": 254,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -138.86988830566406,
+      "score_sol2": -140.17831420898438,
+      "margin": 1.3084259033203125
+    },
+    {
+      "id": 255,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -158.35609436035156,
+      "score_sol2": -100.76080322265625,
+      "margin": -57.59529113769531
+    },
+    {
+      "id": 256,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -30.19192886352539,
+      "score_sol2": -50.200950622558594,
+      "margin": 20.009021759033203
+    },
+    {
+      "id": 257,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -107.06854248046875,
+      "score_sol2": -107.81047821044922,
+      "margin": 0.7419357299804688
+    },
+    {
+      "id": 258,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -42.78118133544922,
+      "score_sol2": -34.94808578491211,
+      "margin": -7.833095550537109
+    },
+    {
+      "id": 259,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -435.69549560546875,
+      "score_sol2": -494.1025390625,
+      "margin": 58.40704345703125
+    },
+    {
+      "id": 260,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -123.27227783203125,
+      "score_sol2": -125.50234985351562,
+      "margin": 2.230072021484375
+    },
+    {
+      "id": 261,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -28.916309356689453,
+      "score_sol2": -29.24688720703125,
+      "margin": 0.3305778503417969
+    },
+    {
+      "id": 262,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -507.16949462890625,
+      "score_sol2": -504.3034973144531,
+      "margin": -2.865997314453125
+    },
+    {
+      "id": 263,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -53.25482940673828,
+      "score_sol2": -60.056949615478516,
+      "margin": 6.802120208740234
+    },
+    {
+      "id": 264,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -72.88406372070312,
+      "score_sol2": -424.21636962890625,
+      "margin": 351.3323059082031
+    },
+    {
+      "id": 265,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -265.5791320800781,
+      "score_sol2": -261.78656005859375,
+      "margin": -3.792572021484375
+    },
+    {
+      "id": 266,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -146.46127319335938,
+      "score_sol2": -151.77346801757812,
+      "margin": 5.31219482421875
+    },
+    {
+      "id": 267,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -298.84423828125,
+      "score_sol2": -281.28741455078125,
+      "margin": -17.55682373046875
+    },
+    {
+      "id": 268,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -154.24734497070312,
+      "score_sol2": -157.54464721679688,
+      "margin": 3.29730224609375
+    },
+    {
+      "id": 269,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -60.79345703125,
+      "score_sol2": -66.38876342773438,
+      "margin": 5.595306396484375
+    },
+    {
+      "id": 270,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -87.27130889892578,
+      "score_sol2": -116.25674438476562,
+      "margin": 28.985435485839844
+    },
+    {
+      "id": 271,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -149.58914184570312,
+      "score_sol2": -147.38275146484375,
+      "margin": -2.206390380859375
+    },
+    {
+      "id": 272,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -100.64195251464844,
+      "score_sol2": -82.05490112304688,
+      "margin": -18.587051391601562
+    },
+    {
+      "id": 273,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -986.13623046875,
+      "score_sol2": -989.4658203125,
+      "margin": 3.32958984375
+    },
+    {
+      "id": 274,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -560.3414306640625,
+      "score_sol2": -566.164794921875,
+      "margin": 5.8233642578125
+    },
+    {
+      "id": 275,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -515.599853515625,
+      "score_sol2": -500.5204162597656,
+      "margin": -15.079437255859375
+    },
+    {
+      "id": 276,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -256.43817138671875,
+      "score_sol2": -250.84298706054688,
+      "margin": -5.595184326171875
+    },
+    {
+      "id": 277,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -69.37185668945312,
+      "score_sol2": -97.98994445800781,
+      "margin": 28.618087768554688
+    },
+    {
+      "id": 278,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -140.2068634033203,
+      "score_sol2": -186.12844848632812,
+      "margin": 45.92158508300781
+    },
+    {
+      "id": 279,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -63.533729553222656,
+      "score_sol2": -67.88594055175781,
+      "margin": 4.352210998535156
+    },
+    {
+      "id": 280,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -54.192222595214844,
+      "score_sol2": -48.04949951171875,
+      "margin": -6.142723083496094
+    },
+    {
+      "id": 281,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -252.71554565429688,
+      "score_sol2": -251.60499572753906,
+      "margin": -1.1105499267578125
+    },
+    {
+      "id": 282,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -1239.90234375,
+      "score_sol2": -1179.4200439453125,
+      "margin": -60.4822998046875
+    },
+    {
+      "id": 283,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -574.5283203125,
+      "score_sol2": -569.5029296875,
+      "margin": -5.025390625
+    },
+    {
+      "id": 284,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -91.60917663574219,
+      "score_sol2": -87.3539047241211,
+      "margin": -4.255271911621094
+    },
+    {
+      "id": 285,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -54.215232849121094,
+      "score_sol2": -58.528263092041016,
+      "margin": 4.313030242919922
+    },
+    {
+      "id": 286,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -75.85896301269531,
+      "score_sol2": -60.59546661376953,
+      "margin": -15.263496398925781
+    },
+    {
+      "id": 287,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -78.7303237915039,
+      "score_sol2": -36.66558074951172,
+      "margin": -42.06474304199219
+    },
+    {
+      "id": 288,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -53.537532806396484,
+      "score_sol2": -52.00342559814453,
+      "margin": -1.5341072082519531
+    },
+    {
+      "id": 289,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -171.56578063964844,
+      "score_sol2": -151.18130493164062,
+      "margin": -20.384475708007812
+    },
+    {
+      "id": 290,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -318.41583251953125,
+      "score_sol2": -292.474853515625,
+      "margin": -25.94097900390625
+    },
+    {
+      "id": 291,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -37.152374267578125,
+      "score_sol2": -51.60405731201172,
+      "margin": 14.451683044433594
+    },
+    {
+      "id": 292,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -97.38131713867188,
+      "score_sol2": -114.30076599121094,
+      "margin": 16.919448852539062
+    },
+    {
+      "id": 293,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -129.28802490234375,
+      "score_sol2": -149.7744140625,
+      "margin": 20.48638916015625
+    },
+    {
+      "id": 294,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -93.81896209716797,
+      "score_sol2": -84.30404663085938,
+      "margin": -9.514915466308594
+    },
+    {
+      "id": 295,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -138.76275634765625,
+      "score_sol2": -141.60690307617188,
+      "margin": 2.844146728515625
+    },
+    {
+      "id": 296,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -37.13512420654297,
+      "score_sol2": -41.78010559082031,
+      "margin": 4.644981384277344
+    },
+    {
+      "id": 297,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -57.41706466674805,
+      "score_sol2": -62.727508544921875,
+      "margin": 5.310443878173828
+    },
+    {
+      "id": 298,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -96.42547607421875,
+      "score_sol2": -122.613037109375,
+      "margin": 26.18756103515625
+    },
+    {
+      "id": 299,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -185.85719299316406,
+      "score_sol2": -180.80703735351562,
+      "margin": -5.0501556396484375
+    },
+    {
+      "id": 300,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -88.33688354492188,
+      "score_sol2": -118.8912353515625,
+      "margin": 30.554351806640625
+    },
+    {
+      "id": 301,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -40.958213806152344,
+      "score_sol2": -38.39256286621094,
+      "margin": -2.5656509399414062
+    },
+    {
+      "id": 302,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -79.72486114501953,
+      "score_sol2": -83.81837463378906,
+      "margin": 4.093513488769531
+    },
+    {
+      "id": 303,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -50.03863525390625,
+      "score_sol2": -76.0880126953125,
+      "margin": 26.04937744140625
+    },
+    {
+      "id": 304,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -50.412315368652344,
+      "score_sol2": -53.5203971862793,
+      "margin": 3.108081817626953
+    },
+    {
+      "id": 305,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -230.17063903808594,
+      "score_sol2": -242.12942504882812,
+      "margin": 11.958786010742188
+    },
+    {
+      "id": 306,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -216.9125518798828,
+      "score_sol2": -199.66981506347656,
+      "margin": -17.24273681640625
+    },
+    {
+      "id": 307,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -863.3486328125,
+      "score_sol2": -849.5592041015625,
+      "margin": -13.7894287109375
+    },
+    {
+      "id": 308,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -61.787357330322266,
+      "score_sol2": -56.92832946777344,
+      "margin": -4.859027862548828
+    },
+    {
+      "id": 309,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -267.9707946777344,
+      "score_sol2": -247.47535705566406,
+      "margin": -20.495437622070312
+    },
+    {
+      "id": 310,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -245.96029663085938,
+      "score_sol2": -238.1920166015625,
+      "margin": -7.768280029296875
+    },
+    {
+      "id": 311,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -68.75971984863281,
+      "score_sol2": -75.73607635498047,
+      "margin": 6.976356506347656
+    },
+    {
+      "id": 312,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -78.83628845214844,
+      "score_sol2": -77.99755859375,
+      "margin": -0.8387298583984375
+    },
+    {
+      "id": 313,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -156.51980590820312,
+      "score_sol2": -165.50640869140625,
+      "margin": 8.986602783203125
+    },
+    {
+      "id": 314,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -3485.4208984375,
+      "score_sol2": -3532.807861328125,
+      "margin": 47.386962890625
+    },
+    {
+      "id": 315,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -74.3441162109375,
+      "score_sol2": -80.52804565429688,
+      "margin": 6.183929443359375
+    },
+    {
+      "id": 316,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -242.6630401611328,
+      "score_sol2": -254.7220458984375,
+      "margin": 12.059005737304688
+    },
+    {
+      "id": 317,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -67.31100463867188,
+      "score_sol2": -76.66670227050781,
+      "margin": 9.355697631835938
+    },
+    {
+      "id": 318,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -582.0875244140625,
+      "score_sol2": -580.6223754882812,
+      "margin": -1.46514892578125
+    },
+    {
+      "id": 319,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -60.04148864746094,
+      "score_sol2": -73.29853820800781,
+      "margin": 13.257049560546875
+    },
+    {
+      "id": 320,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -110.41717529296875,
+      "score_sol2": -108.56979370117188,
+      "margin": -1.847381591796875
+    },
+    {
+      "id": 321,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -283.56951904296875,
+      "score_sol2": -248.75253295898438,
+      "margin": -34.816986083984375
+    },
+    {
+      "id": 322,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -61.508907318115234,
+      "score_sol2": -57.24958419799805,
+      "margin": -4.2593231201171875
+    },
+    {
+      "id": 323,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -96.12734985351562,
+      "score_sol2": -101.47358703613281,
+      "margin": 5.3462371826171875
+    },
+    {
+      "id": 324,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -44.177772521972656,
+      "score_sol2": -49.180511474609375,
+      "margin": 5.002738952636719
+    },
+    {
+      "id": 325,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -264.80810546875,
+      "score_sol2": -258.019287109375,
+      "margin": -6.788818359375
+    },
+    {
+      "id": 326,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -313.12237548828125,
+      "score_sol2": -321.70867919921875,
+      "margin": 8.5863037109375
+    },
+    {
+      "id": 327,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -169.5383758544922,
+      "score_sol2": -173.25965881347656,
+      "margin": 3.721282958984375
+    },
+    {
+      "id": 328,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -63.93394088745117,
+      "score_sol2": -70.28549194335938,
+      "margin": 6.351551055908203
+    },
+    {
+      "id": 329,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -93.65111541748047,
+      "score_sol2": -68.91572570800781,
+      "margin": -24.735389709472656
+    },
+    {
+      "id": 330,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -151.82643127441406,
+      "score_sol2": -152.88661193847656,
+      "margin": 1.0601806640625
+    },
+    {
+      "id": 331,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -212.8428955078125,
+      "score_sol2": -172.32949829101562,
+      "margin": -40.513397216796875
+    },
+    {
+      "id": 332,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -252.086669921875,
+      "score_sol2": -291.497314453125,
+      "margin": 39.41064453125
+    },
+    {
+      "id": 333,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -274.2250671386719,
+      "score_sol2": -269.2227783203125,
+      "margin": -5.002288818359375
+    },
+    {
+      "id": 334,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -120.78692626953125,
+      "score_sol2": -78.62039184570312,
+      "margin": -42.166534423828125
+    },
+    {
+      "id": 335,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -57.99452590942383,
+      "score_sol2": -50.21640396118164,
+      "margin": -7.7781219482421875
+    },
+    {
+      "id": 336,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -46.77644729614258,
+      "score_sol2": -48.56493377685547,
+      "margin": 1.7884864807128906
+    },
+    {
+      "id": 337,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -378.3518371582031,
+      "score_sol2": -368.2423095703125,
+      "margin": -10.109527587890625
+    },
+    {
+      "id": 338,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -129.4263153076172,
+      "score_sol2": -117.87327575683594,
+      "margin": -11.55303955078125
+    },
+    {
+      "id": 339,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -38.75474548339844,
+      "score_sol2": -37.733116149902344,
+      "margin": -1.0216293334960938
+    },
+    {
+      "id": 340,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -49.998573303222656,
+      "score_sol2": -49.33546447753906,
+      "margin": -0.6631088256835938
+    },
+    {
+      "id": 341,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -1163.239501953125,
+      "score_sol2": -1062.631103515625,
+      "margin": -100.6083984375
+    },
+    {
+      "id": 342,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -51.8410530090332,
+      "score_sol2": -55.627296447753906,
+      "margin": 3.786243438720703
+    },
+    {
+      "id": 343,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -48.2859001159668,
+      "score_sol2": -51.67323303222656,
+      "margin": 3.3873329162597656
+    },
+    {
+      "id": 344,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -135.15011596679688,
+      "score_sol2": -138.0277099609375,
+      "margin": 2.877593994140625
+    },
+    {
+      "id": 345,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -167.7678985595703,
+      "score_sol2": -181.68963623046875,
+      "margin": 13.921737670898438
+    },
+    {
+      "id": 346,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -261.3528747558594,
+      "score_sol2": -162.66461181640625,
+      "margin": -98.68826293945312
+    },
+    {
+      "id": 347,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -471.7740478515625,
+      "score_sol2": -475.67694091796875,
+      "margin": 3.90289306640625
+    },
+    {
+      "id": 348,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -151.03408813476562,
+      "score_sol2": -156.88739013671875,
+      "margin": 5.853302001953125
+    },
+    {
+      "id": 349,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -147.7286834716797,
+      "score_sol2": -151.51229858398438,
+      "margin": 3.7836151123046875
+    },
+    {
+      "id": 350,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -188.26744079589844,
+      "score_sol2": -181.0882110595703,
+      "margin": -7.179229736328125
+    },
+    {
+      "id": 351,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -179.24114990234375,
+      "score_sol2": -138.3624267578125,
+      "margin": -40.87872314453125
+    },
+    {
+      "id": 352,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -140.1680908203125,
+      "score_sol2": -146.31927490234375,
+      "margin": 6.15118408203125
+    },
+    {
+      "id": 353,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -177.174560546875,
+      "score_sol2": -180.21359252929688,
+      "margin": 3.039031982421875
+    },
+    {
+      "id": 354,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -471.5311279296875,
+      "score_sol2": -528.4508056640625,
+      "margin": 56.919677734375
+    },
+    {
+      "id": 355,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -50.48490524291992,
+      "score_sol2": -64.63114166259766,
+      "margin": 14.146236419677734
+    },
+    {
+      "id": 356,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -185.6903076171875,
+      "score_sol2": -194.4676513671875,
+      "margin": 8.77734375
+    },
+    {
+      "id": 357,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -130.1988525390625,
+      "score_sol2": -132.6199188232422,
+      "margin": 2.4210662841796875
+    },
+    {
+      "id": 358,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -201.48251342773438,
+      "score_sol2": -208.7242431640625,
+      "margin": 7.241729736328125
+    },
+    {
+      "id": 359,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -44.65364456176758,
+      "score_sol2": -55.29541015625,
+      "margin": 10.641765594482422
+    },
+    {
+      "id": 360,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -170.41116333007812,
+      "score_sol2": -180.98031616210938,
+      "margin": 10.56915283203125
+    },
+    {
+      "id": 361,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -104.06197357177734,
+      "score_sol2": -123.97543334960938,
+      "margin": 19.91345977783203
+    },
+    {
+      "id": 362,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -163.8206329345703,
+      "score_sol2": -226.05014038085938,
+      "margin": 62.22950744628906
+    },
+    {
+      "id": 363,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -141.97755432128906,
+      "score_sol2": -132.59848022460938,
+      "margin": -9.379074096679688
+    },
+    {
+      "id": 364,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -98.80535125732422,
+      "score_sol2": -140.17486572265625,
+      "margin": 41.36951446533203
+    },
+    {
+      "id": 365,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -73.26045989990234,
+      "score_sol2": -77.38638305664062,
+      "margin": 4.125923156738281
+    },
+    {
+      "id": 366,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -58.57501983642578,
+      "score_sol2": -68.07977294921875,
+      "margin": 9.504753112792969
+    },
+    {
+      "id": 367,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -280.2329406738281,
+      "score_sol2": -273.54400634765625,
+      "margin": -6.688934326171875
+    },
+    {
+      "id": 368,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -133.282470703125,
+      "score_sol2": -126.08662414550781,
+      "margin": -7.1958465576171875
+    },
+    {
+      "id": 369,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -80.04954528808594,
+      "score_sol2": -43.33495330810547,
+      "margin": -36.71459197998047
+    },
+    {
+      "id": 370,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -28.195899963378906,
+      "score_sol2": -30.738235473632812,
+      "margin": 2.5423355102539062
+    },
+    {
+      "id": 371,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -196.1499481201172,
+      "score_sol2": -190.52610778808594,
+      "margin": -5.62384033203125
+    },
+    {
+      "id": 372,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -67.90095520019531,
+      "score_sol2": -73.32283020019531,
+      "margin": 5.421875
+    },
+    {
+      "id": 373,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -700.4034423828125,
+      "score_sol2": -691.2576293945312,
+      "margin": -9.14581298828125
+    },
+    {
+      "id": 374,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -309.63458251953125,
+      "score_sol2": -310.5418701171875,
+      "margin": 0.90728759765625
+    },
+    {
+      "id": 375,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -430.61175537109375,
+      "score_sol2": -457.5867004394531,
+      "margin": 26.974945068359375
+    },
+    {
+      "id": 376,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -78.69477844238281,
+      "score_sol2": -90.28996276855469,
+      "margin": 11.595184326171875
+    },
+    {
+      "id": 377,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -56.799598693847656,
+      "score_sol2": -57.43544006347656,
+      "margin": 0.6358413696289062
+    },
+    {
+      "id": 378,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -44.093849182128906,
+      "score_sol2": -39.904781341552734,
+      "margin": -4.189067840576172
+    },
+    {
+      "id": 379,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -25.190637588500977,
+      "score_sol2": -26.812707901000977,
+      "margin": 1.6220703125
+    },
+    {
+      "id": 380,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -124.46646118164062,
+      "score_sol2": -197.85540771484375,
+      "margin": 73.38894653320312
+    },
+    {
+      "id": 381,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -282.38262939453125,
+      "score_sol2": -281.8213806152344,
+      "margin": -0.561248779296875
+    },
+    {
+      "id": 382,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -176.7301483154297,
+      "score_sol2": -177.36521911621094,
+      "margin": 0.63507080078125
+    },
+    {
+      "id": 383,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -72.2325668334961,
+      "score_sol2": -69.40706634521484,
+      "margin": -2.82550048828125
+    },
+    {
+      "id": 384,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -86.16291046142578,
+      "score_sol2": -87.19157409667969,
+      "margin": 1.0286636352539062
+    },
+    {
+      "id": 385,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -276.22528076171875,
+      "score_sol2": -277.09539794921875,
+      "margin": 0.8701171875
+    },
+    {
+      "id": 386,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -465.93743896484375,
+      "score_sol2": -443.66680908203125,
+      "margin": -22.2706298828125
+    },
+    {
+      "id": 387,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -48.772621154785156,
+      "score_sol2": -51.6500129699707,
+      "margin": 2.877391815185547
+    },
+    {
+      "id": 388,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -69.05287170410156,
+      "score_sol2": -73.44990539550781,
+      "margin": 4.39703369140625
+    },
+    {
+      "id": 389,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -64.1176986694336,
+      "score_sol2": -64.38613891601562,
+      "margin": 0.26844024658203125
+    },
+    {
+      "id": 390,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -267.0987854003906,
+      "score_sol2": -221.01861572265625,
+      "margin": -46.080169677734375
+    },
+    {
+      "id": 391,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -122.0378189086914,
+      "score_sol2": -125.6457290649414,
+      "margin": 3.60791015625
+    },
+    {
+      "id": 392,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -33.57122802734375,
+      "score_sol2": -23.034202575683594,
+      "margin": -10.537025451660156
+    },
+    {
+      "id": 393,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -535.5323486328125,
+      "score_sol2": -526.3692626953125,
+      "margin": -9.1630859375
+    },
+    {
+      "id": 394,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -356.048583984375,
+      "score_sol2": -221.78536987304688,
+      "margin": -134.26321411132812
+    },
+    {
+      "id": 395,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -65.91956329345703,
+      "score_sol2": -53.08033752441406,
+      "margin": -12.839225769042969
+    },
+    {
+      "id": 396,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -222.64309692382812,
+      "score_sol2": -264.7696533203125,
+      "margin": 42.126556396484375
+    },
+    {
+      "id": 397,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -200.14962768554688,
+      "score_sol2": -209.9212646484375,
+      "margin": 9.771636962890625
+    },
+    {
+      "id": 398,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -40.13311767578125,
+      "score_sol2": -49.47919464111328,
+      "margin": 9.346076965332031
+    },
+    {
+      "id": 399,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -233.93130493164062,
+      "score_sol2": -290.6958923339844,
+      "margin": 56.76458740234375
+    },
+    {
+      "id": 400,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -71.8908920288086,
+      "score_sol2": -68.660400390625,
+      "margin": -3.2304916381835938
+    },
+    {
+      "id": 401,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -209.94290161132812,
+      "score_sol2": -207.17498779296875,
+      "margin": -2.767913818359375
+    },
+    {
+      "id": 402,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -144.2957763671875,
+      "score_sol2": -157.08546447753906,
+      "margin": 12.789688110351562
+    },
+    {
+      "id": 403,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -212.06582641601562,
+      "score_sol2": -170.93699645996094,
+      "margin": -41.12882995605469
+    },
+    {
+      "id": 404,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -114.10022735595703,
+      "score_sol2": -108.37989044189453,
+      "margin": -5.7203369140625
+    },
+    {
+      "id": 405,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -247.53622436523438,
+      "score_sol2": -262.00457763671875,
+      "margin": 14.468353271484375
+    },
+    {
+      "id": 406,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -86.07068634033203,
+      "score_sol2": -89.34178161621094,
+      "margin": 3.2710952758789062
+    },
+    {
+      "id": 407,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -30.81951904296875,
+      "score_sol2": -32.87258529663086,
+      "margin": 2.0530662536621094
+    },
+    {
+      "id": 408,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -33.417457580566406,
+      "score_sol2": -27.67601776123047,
+      "margin": -5.7414398193359375
+    },
+    {
+      "id": 409,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -141.18960571289062,
+      "score_sol2": -121.40730285644531,
+      "margin": -19.782302856445312
+    },
+    {
+      "id": 410,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -46.552040100097656,
+      "score_sol2": -44.67674255371094,
+      "margin": -1.8752975463867188
+    },
+    {
+      "id": 411,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -149.46832275390625,
+      "score_sol2": -147.7440185546875,
+      "margin": -1.72430419921875
+    },
+    {
+      "id": 412,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -287.63702392578125,
+      "score_sol2": -257.95574951171875,
+      "margin": -29.6812744140625
+    },
+    {
+      "id": 413,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -165.6419677734375,
+      "score_sol2": -171.865478515625,
+      "margin": 6.2235107421875
+    },
+    {
+      "id": 414,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -670.1767578125,
+      "score_sol2": -711.2642211914062,
+      "margin": 41.08746337890625
+    },
+    {
+      "id": 415,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -12.086108207702637,
+      "score_sol2": -23.289119720458984,
+      "margin": 11.203011512756348
+    },
+    {
+      "id": 416,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -402.6377258300781,
+      "score_sol2": -413.7490539550781,
+      "margin": 11.111328125
+    },
+    {
+      "id": 417,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -98.19779205322266,
+      "score_sol2": -95.8089828491211,
+      "margin": -2.3888092041015625
+    },
+    {
+      "id": 418,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -185.58877563476562,
+      "score_sol2": -187.95758056640625,
+      "margin": 2.368804931640625
+    },
+    {
+      "id": 419,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -136.04884338378906,
+      "score_sol2": -134.75904846191406,
+      "margin": -1.289794921875
+    },
+    {
+      "id": 420,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -494.2724609375,
+      "score_sol2": -508.0540771484375,
+      "margin": 13.7816162109375
+    },
+    {
+      "id": 421,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -31.877717971801758,
+      "score_sol2": -34.913360595703125,
+      "margin": 3.035642623901367
+    },
+    {
+      "id": 422,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -80.2889633178711,
+      "score_sol2": -75.79081726074219,
+      "margin": -4.498146057128906
+    },
+    {
+      "id": 423,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -41.90706253051758,
+      "score_sol2": -44.629150390625,
+      "margin": 2.722087860107422
+    },
+    {
+      "id": 424,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -136.28448486328125,
+      "score_sol2": -99.61555480957031,
+      "margin": -36.66893005371094
+    },
+    {
+      "id": 425,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -50.111175537109375,
+      "score_sol2": -48.297019958496094,
+      "margin": -1.8141555786132812
+    },
+    {
+      "id": 426,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -40.706336975097656,
+      "score_sol2": -37.55232238769531,
+      "margin": -3.1540145874023438
+    },
+    {
+      "id": 427,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -56.83104705810547,
+      "score_sol2": -50.066436767578125,
+      "margin": -6.764610290527344
+    },
+    {
+      "id": 428,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -59.50877380371094,
+      "score_sol2": -57.09336853027344,
+      "margin": -2.4154052734375
+    },
+    {
+      "id": 429,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -93.684326171875,
+      "score_sol2": -104.8622055053711,
+      "margin": 11.177879333496094
+    },
+    {
+      "id": 430,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -290.48638916015625,
+      "score_sol2": -277.52374267578125,
+      "margin": -12.962646484375
+    },
+    {
+      "id": 431,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -662.356689453125,
+      "score_sol2": -743.3345947265625,
+      "margin": 80.9779052734375
+    },
+    {
+      "id": 432,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -93.65650939941406,
+      "score_sol2": -94.53170776367188,
+      "margin": 0.8751983642578125
+    },
+    {
+      "id": 433,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -45.14769744873047,
+      "score_sol2": -48.699928283691406,
+      "margin": 3.5522308349609375
+    },
+    {
+      "id": 434,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -561.42431640625,
+      "score_sol2": -526.4828491210938,
+      "margin": -34.94146728515625
+    },
+    {
+      "id": 435,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -122.74349975585938,
+      "score_sol2": -119.60088348388672,
+      "margin": -3.1426162719726562
+    },
+    {
+      "id": 436,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -227.020263671875,
+      "score_sol2": -180.21365356445312,
+      "margin": -46.806610107421875
+    },
+    {
+      "id": 437,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -1735.787109375,
+      "score_sol2": -1661.31787109375,
+      "margin": -74.46923828125
+    },
+    {
+      "id": 438,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -227.88636779785156,
+      "score_sol2": -249.03472900390625,
+      "margin": 21.148361206054688
+    },
+    {
+      "id": 439,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -44.72135925292969,
+      "score_sol2": -45.18651580810547,
+      "margin": 0.46515655517578125
+    },
+    {
+      "id": 440,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -445.9515075683594,
+      "score_sol2": -457.4551696777344,
+      "margin": 11.503662109375
+    },
+    {
+      "id": 441,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -70.83285522460938,
+      "score_sol2": -73.59456634521484,
+      "margin": 2.7617111206054688
+    },
+    {
+      "id": 442,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -549.5440063476562,
+      "score_sol2": -574.05078125,
+      "margin": 24.50677490234375
+    },
+    {
+      "id": 443,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -112.75718688964844,
+      "score_sol2": -112.7654037475586,
+      "margin": 0.00821685791015625
+    },
+    {
+      "id": 444,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -117.38894653320312,
+      "score_sol2": -309.0766296386719,
+      "margin": 191.68768310546875
+    },
+    {
+      "id": 445,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -87.51350402832031,
+      "score_sol2": -93.22624206542969,
+      "margin": 5.712738037109375
+    },
+    {
+      "id": 446,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -104.52011108398438,
+      "score_sol2": -88.08949279785156,
+      "margin": -16.430618286132812
+    },
+    {
+      "id": 447,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -64.28392028808594,
+      "score_sol2": -91.02139282226562,
+      "margin": 26.737472534179688
+    },
+    {
+      "id": 448,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -235.09254455566406,
+      "score_sol2": -228.0978546142578,
+      "margin": -6.99468994140625
+    },
+    {
+      "id": 449,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -203.329833984375,
+      "score_sol2": -206.62757873535156,
+      "margin": 3.2977447509765625
+    },
+    {
+      "id": 450,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -84.784912109375,
+      "score_sol2": -82.9697036743164,
+      "margin": -1.8152084350585938
+    },
+    {
+      "id": 451,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -68.51234436035156,
+      "score_sol2": -69.11468505859375,
+      "margin": 0.6023406982421875
+    },
+    {
+      "id": 452,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -77.54444885253906,
+      "score_sol2": -79.56709289550781,
+      "margin": 2.02264404296875
+    },
+    {
+      "id": 453,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -231.30694580078125,
+      "score_sol2": -230.45603942871094,
+      "margin": -0.8509063720703125
+    },
+    {
+      "id": 454,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -67.25390625,
+      "score_sol2": -65.63410949707031,
+      "margin": -1.6197967529296875
+    },
+    {
+      "id": 455,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -574.336669921875,
+      "score_sol2": -574.2943115234375,
+      "margin": -0.0423583984375
+    },
+    {
+      "id": 456,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -147.59532165527344,
+      "score_sol2": -145.9890899658203,
+      "margin": -1.606231689453125
+    },
+    {
+      "id": 457,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -254.85171508789062,
+      "score_sol2": -250.44259643554688,
+      "margin": -4.40911865234375
+    },
+    {
+      "id": 458,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -179.51280212402344,
+      "score_sol2": -187.14488220214844,
+      "margin": 7.632080078125
+    },
+    {
+      "id": 459,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -146.22799682617188,
+      "score_sol2": -145.04574584960938,
+      "margin": -1.1822509765625
+    },
+    {
+      "id": 460,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -133.15708923339844,
+      "score_sol2": -126.31307220458984,
+      "margin": -6.844017028808594
+    },
+    {
+      "id": 461,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -24.48101043701172,
+      "score_sol2": -47.61003112792969,
+      "margin": 23.12902069091797
+    },
+    {
+      "id": 462,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -123.59751892089844,
+      "score_sol2": -149.50003051757812,
+      "margin": 25.902511596679688
+    },
+    {
+      "id": 463,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -59.81756591796875,
+      "score_sol2": -60.2800407409668,
+      "margin": 0.4624748229980469
+    },
+    {
+      "id": 464,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -65.84842681884766,
+      "score_sol2": -60.78132629394531,
+      "margin": -5.067100524902344
+    },
+    {
+      "id": 465,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -64.0161361694336,
+      "score_sol2": -57.7053108215332,
+      "margin": -6.310825347900391
+    },
+    {
+      "id": 466,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -101.6498794555664,
+      "score_sol2": -95.99139404296875,
+      "margin": -5.658485412597656
+    },
+    {
+      "id": 467,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -89.76004791259766,
+      "score_sol2": -91.87897491455078,
+      "margin": 2.118927001953125
+    },
+    {
+      "id": 468,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -294.74920654296875,
+      "score_sol2": -231.05409240722656,
+      "margin": -63.69511413574219
+    },
+    {
+      "id": 469,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -98.5999526977539,
+      "score_sol2": -78.15199279785156,
+      "margin": -20.447959899902344
+    },
+    {
+      "id": 470,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -346.934326171875,
+      "score_sol2": -339.43292236328125,
+      "margin": -7.50140380859375
+    },
+    {
+      "id": 471,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -71.3368148803711,
+      "score_sol2": -89.55386352539062,
+      "margin": 18.21704864501953
+    },
+    {
+      "id": 472,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -215.79486083984375,
+      "score_sol2": -186.2062225341797,
+      "margin": -29.588638305664062
+    },
+    {
+      "id": 473,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -28.52582359313965,
+      "score_sol2": -36.868812561035156,
+      "margin": 8.342988967895508
+    },
+    {
+      "id": 474,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -192.35061645507812,
+      "score_sol2": -175.87705993652344,
+      "margin": -16.473556518554688
+    },
+    {
+      "id": 475,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -109.20633697509766,
+      "score_sol2": -101.60627746582031,
+      "margin": -7.600059509277344
+    },
+    {
+      "id": 476,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -1996.5980224609375,
+      "score_sol2": -1951.70849609375,
+      "margin": -44.8895263671875
+    },
+    {
+      "id": 477,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -309.2908630371094,
+      "score_sol2": -276.0165100097656,
+      "margin": -33.27435302734375
+    },
+    {
+      "id": 478,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -88.31578063964844,
+      "score_sol2": -85.70259857177734,
+      "margin": -2.6131820678710938
+    },
+    {
+      "id": 479,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -32.216060638427734,
+      "score_sol2": -33.409515380859375,
+      "margin": 1.1934547424316406
+    },
+    {
+      "id": 480,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -128.82772827148438,
+      "score_sol2": -131.99786376953125,
+      "margin": 3.170135498046875
+    },
+    {
+      "id": 481,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -237.14639282226562,
+      "score_sol2": -234.562744140625,
+      "margin": -2.583648681640625
+    },
+    {
+      "id": 482,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -90.43993377685547,
+      "score_sol2": -75.11302947998047,
+      "margin": -15.326904296875
+    },
+    {
+      "id": 483,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -152.83055114746094,
+      "score_sol2": -160.27069091796875,
+      "margin": 7.4401397705078125
+    },
+    {
+      "id": 484,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -162.59234619140625,
+      "score_sol2": -180.67807006835938,
+      "margin": 18.085723876953125
+    },
+    {
+      "id": 485,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -116.48102569580078,
+      "score_sol2": -99.030029296875,
+      "margin": -17.45099639892578
+    },
+    {
+      "id": 486,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -48.92987060546875,
+      "score_sol2": -38.15026092529297,
+      "margin": -10.779609680175781
+    },
+    {
+      "id": 487,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -111.59492492675781,
+      "score_sol2": -112.58686828613281,
+      "margin": 0.991943359375
+    },
+    {
+      "id": 488,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -62.01933288574219,
+      "score_sol2": -67.56369018554688,
+      "margin": 5.5443572998046875
+    },
+    {
+      "id": 489,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -58.26740646362305,
+      "score_sol2": -60.46310806274414,
+      "margin": 2.1957015991210938
+    },
+    {
+      "id": 490,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -80.25285339355469,
+      "score_sol2": -150.23231506347656,
+      "margin": 69.97946166992188
+    },
+    {
+      "id": 491,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -242.96868896484375,
+      "score_sol2": -254.144775390625,
+      "margin": 11.17608642578125
+    },
+    {
+      "id": 492,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -188.9266815185547,
+      "score_sol2": -205.181396484375,
+      "margin": 16.254714965820312
+    },
+    {
+      "id": 493,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -56.57146453857422,
+      "score_sol2": -60.50440216064453,
+      "margin": 3.9329376220703125
+    },
+    {
+      "id": 494,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -215.43014526367188,
+      "score_sol2": -188.64501953125,
+      "margin": -26.785125732421875
+    },
+    {
+      "id": 495,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -50.416259765625,
+      "score_sol2": -49.44783020019531,
+      "margin": -0.9684295654296875
+    },
+    {
+      "id": 496,
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_sol1": -125.76445770263672,
+      "score_sol2": -123.7415542602539,
+      "margin": -2.0229034423828125
+    },
+    {
+      "id": 497,
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_sol1": -110.42001342773438,
+      "score_sol2": -109.65647888183594,
+      "margin": -0.7635345458984375
+    },
+    {
+      "id": 498,
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_sol1": -81.07659912109375,
+      "score_sol2": -83.27874755859375,
+      "margin": 2.2021484375
+    },
+    {
+      "id": 499,
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_sol1": -218.63546752929688,
+      "score_sol2": -264.53985595703125,
+      "margin": 45.904388427734375
+    }
+  ]
+}
