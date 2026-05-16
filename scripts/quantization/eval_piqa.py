@@ -1,9 +1,11 @@
 import argparse
 import json
+import math
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -22,6 +24,16 @@ def resolve_torch_dtype(name: str):
     if name == "float32":
         return torch.float32
     raise ValueError(f"Unsupported dtype: {name}")
+
+
+def make_json_safe(obj):
+    if isinstance(obj, float):
+        return obj if math.isfinite(obj) else None
+    if isinstance(obj, dict):
+        return {k: make_json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [make_json_safe(v) for v in obj]
+    return obj
 
 
 def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str = "scalar"):
@@ -43,6 +55,50 @@ def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str
         add(row + 1, col)
 
     return sorted(indices)
+
+
+@torch.no_grad()
+def uniform_quantize_activation_tensor(x: torch.Tensor, n_bits: int) -> torch.Tensor:
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    if not torch.is_floating_point(x):
+        return x
+
+    orig_dtype = x.dtype
+    x_float = x.float()
+
+    qmin = -(2 ** (n_bits - 1))
+    qmax = (2 ** (n_bits - 1)) - 1
+
+    max_abs = x_float.abs().amax(dim=-1, keepdim=True)
+    scale = max_abs / qmax
+    scale = torch.where(scale == 0, torch.ones_like(scale), scale)
+
+    q = torch.clamp(torch.round(x_float / scale), qmin, qmax)
+    return (q * scale).to(orig_dtype)
+
+
+def add_activation_quant_hooks(model, n_bits: int):
+    handles = []
+
+    def pre_hook(module, inputs):
+        if not inputs:
+            return inputs
+
+        x = inputs[0]
+
+        if not torch.is_tensor(x):
+            return inputs
+
+        x_q = uniform_quantize_activation_tensor(x, n_bits)
+        return (x_q,) + tuple(inputs[1:])
+
+    for module in model.modules():
+        if isinstance(module, nn.Linear):
+            handles.append(module.register_forward_pre_hook(pre_hook))
+
+    return handles
 
 
 @torch.no_grad()
@@ -83,9 +139,8 @@ def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int) -> torch.Tensor
 
     scale = max_abs / qmax
     q = torch.clamp(torch.round(w_float / scale), qmin, qmax)
-    dq = q * scale
 
-    return dq.to(orig_dtype)
+    return (q * scale).to(orig_dtype)
 
 
 @torch.no_grad()
@@ -118,7 +173,6 @@ def uniform_quantize_weight_tensor_blockwise_2d(
 
         for c0 in range(0, n_cols, block_cols):
             c1 = min(c0 + block_cols, n_cols)
-
             block = w_float[r0:r1, c0:c1]
             max_abs = block.abs().amax()
 
@@ -170,6 +224,7 @@ def apply_weight_quantization(
     for name, param in model.named_parameters():
         if "weight" not in name:
             continue
+
         if param.ndim < 2:
             continue
 
@@ -295,6 +350,7 @@ def prepare_model(
     model_key: str,
     mode: str,
     bits: int,
+    activation_bits: Optional[int] = None,
     sw_scale: float = 1.0,
     restore_neighborhood: str = "scalar",
     quant_granularity: str = "tensor",
@@ -302,8 +358,10 @@ def prepare_model(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ):
+    activation_handles = []
+
     if mode == "fp16":
-        return model, []
+        return model, [], activation_handles
 
     if mode == "naive":
         model = apply_weight_quantization(
@@ -314,10 +372,14 @@ def prepare_model(
             block_cols=block_cols,
             clip_z=None,
         )
-        return model, []
+
+        if activation_bits is not None and activation_bits > 0:
+            activation_handles = add_activation_quant_hooks(model, activation_bits)
+
+        return model, [], activation_handles
 
     if mode == "super":
-        return apply_superweight_quantization(
+        model, protected_values = apply_superweight_quantization(
             model=model,
             model_key=model_key,
             n_bits=bits,
@@ -328,6 +390,11 @@ def prepare_model(
             block_cols=block_cols,
             clip_z=clip_z,
         )
+
+        if activation_bits is not None and activation_bits > 0:
+            activation_handles = add_activation_quant_hooks(model, activation_bits)
+
+        return model, protected_values, activation_handles
 
     raise ValueError(f"Unsupported mode: {mode}")
 
@@ -494,7 +561,7 @@ def evaluate_piqa(
         )
 
         pred = 0 if score1 >= score2 else 1
-        gold = ex["label"]
+        gold = int(ex["label"])
         correct = int(pred == gold)
 
         num_correct += correct
@@ -530,9 +597,11 @@ def build_arg_parser():
     parser.add_argument("--model-key", type=str, required=True, choices=sorted(MODEL_CONFIGS.keys()))
     parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=8)
-    parser.add_argument("--sw-scale", type=float, default=1.0)
+    parser.add_argument("--activation-bits", type=int, default=None)
 
+    parser.add_argument("--sw-scale", type=float, default=1.0)
     parser.add_argument("--restore-neighborhood", type=str, default="scalar", choices=["scalar", "row", "column", "cross"])
+
     parser.add_argument("--quant-granularity", type=str, default="tensor", choices=["tensor", "block2d"])
     parser.add_argument("--block-rows", type=int, default=128)
     parser.add_argument("--block-cols", type=int, default=128)
@@ -540,7 +609,7 @@ def build_arg_parser():
 
     parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
     parser.add_argument("--split", type=str, default="validation")
-    parser.add_argument("--limit", type=int, default=200)
+    parser.add_argument("--limit", type=int, default=500)
     parser.add_argument("--max-length", type=int, default=256)
     parser.add_argument("--normalize-by-length", action="store_true")
     parser.add_argument("--output-json", type=str, required=True)
@@ -555,13 +624,13 @@ def main():
     model_id = model_cfg["hf_name"]
     torch_dtype = resolve_torch_dtype(args.dtype)
 
-    print(f"Loading tokenizer: {model_id}")
+    print(f"Loading tokenizer: {model_id}", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    print(f"Loading model: {model_id} ({args.dtype})")
+    print(f"Loading model: {model_id} ({args.dtype})", flush=True)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch_dtype,
@@ -572,16 +641,20 @@ def main():
 
     print(
         f"Preparing model with mode={args.mode}, bits={args.bits}, "
-        f"sw_scale={args.sw_scale}, restore_neighborhood={args.restore_neighborhood}, "
-        f"quant_granularity={args.quant_granularity}, block_rows={args.block_rows}, "
-        f"block_cols={args.block_cols}, clip_z={args.clip_z}"
+        f"activation_bits={args.activation_bits}, sw_scale={args.sw_scale}, "
+        f"restore_neighborhood={args.restore_neighborhood}, "
+        f"quant_granularity={args.quant_granularity}, "
+        f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
+        f"clip_z={args.clip_z}",
+        flush=True,
     )
 
-    model, protected_values = prepare_model(
+    model, protected_values, activation_handles = prepare_model(
         model=model,
         model_key=args.model_key,
         mode=args.mode,
         bits=args.bits,
+        activation_bits=args.activation_bits,
         sw_scale=args.sw_scale,
         restore_neighborhood=args.restore_neighborhood,
         quant_granularity=args.quant_granularity,
@@ -590,11 +663,13 @@ def main():
         clip_z=args.clip_z,
     )
 
-    print(f"Protected/restored values: {len(protected_values)}")
+    print(f"Protected/restored values: {len(protected_values)}", flush=True)
+    print(f"Activation quant hooks: {len(activation_handles)}", flush=True)
 
-    print(f"Loading PIQA split={args.split} limit={args.limit}")
+    print(f"Loading PIQA split={args.split}, limit={args.limit}", flush=True)
     examples = load_piqa_examples(split=args.split, limit=args.limit)
 
+    print(f"Evaluating {len(examples)} examples...", flush=True)
     metrics = evaluate_piqa(
         model=model,
         tokenizer=tokenizer,
@@ -621,6 +696,7 @@ def main():
         "model_id": model_id,
         "mode": args.mode,
         "bits": args.bits,
+        "activation_bits": args.activation_bits,
         "sw_scale": args.sw_scale,
         "restore_neighborhood": args.restore_neighborhood,
         "quant_granularity": args.quant_granularity,
@@ -630,6 +706,7 @@ def main():
         "normalize_by_length": args.normalize_by_length,
         "num_protected_values": len(protected_values),
         "protected_values": protected_summary,
+        "num_activation_hooks": len(activation_handles),
         "dtype": args.dtype,
         "split": args.split,
         "limit": args.limit,
@@ -637,13 +714,16 @@ def main():
         **metrics,
     }
 
+    result = make_json_safe(result)
+
     output_path = Path(args.output_json)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
 
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps(result, indent=2, ensure_ascii=False), flush=True)
+    print(f"Saved result to: {output_path}", flush=True)
 
 
 if __name__ == "__main__":

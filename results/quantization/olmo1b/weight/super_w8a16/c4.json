@@ -1,0 +1,41 @@
+{
+  "model_key": "olmo-1b",
+  "model_id": "allenai/OLMo-1B-0724-hf",
+  "mode": "super",
+  "bits": 8,
+  "sw_scale": 1.0,
+  "restore_neighborhood": "scalar",
+  "quant_granularity": "tensor",
+  "block_rows": 128,
+  "block_cols": 128,
+  "num_protected_values": 2,
+  "protected_values": [
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 1710,
+      "row": 1764,
+      "col": 1710,
+      "is_center": true
+    },
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 8041,
+      "row": 1764,
+      "col": 8041,
+      "is_center": true
+    }
+  ],
+  "dtype": "float16",
+  "dataset": "c4",
+  "split": "validation",
+  "limit": 128,
+  "max_length": 512,
+  "num_examples": 128,
+  "num_tokens": 50078,
+  "avg_nll": 2.781735492631495,
+  "perplexity": 16.147019678877772,
+  "num_blocks": 98,
+  "sequence_length": 512
+}

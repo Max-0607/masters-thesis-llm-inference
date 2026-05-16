@@ -1,9 +1,11 @@
 import argparse
 import json
+import math
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -11,7 +13,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.models import MODEL_CONFIGS
 from configs.superweights import SUPERWEIGHTS
 from src.hooks import get_nested_attr
-from src.quantization import ActivationQuantHook
 
 
 def resolve_torch_dtype(name: str):
@@ -25,36 +26,374 @@ def resolve_torch_dtype(name: str):
     raise ValueError(f"Unsupported dtype: {name}")
 
 
-def build_quant_hook(model, model_key: str, mode: str, bits: int):
-    if mode == "fp16":
-        return None
+def make_json_safe(obj):
+    if isinstance(obj, float):
+        return obj if math.isfinite(obj) else None
+    if isinstance(obj, dict):
+        return {k: make_json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [make_json_safe(v) for v in obj]
+    return obj
+
+
+def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str = "scalar"):
+    n_rows, n_cols = shape
+    indices = set()
+
+    def add(r, c):
+        if 0 <= r < n_rows and 0 <= c < n_cols:
+            indices.add((r, c))
+
+    add(row, col)
+
+    if neighborhood in ["row", "cross"]:
+        add(row, col - 1)
+        add(row, col + 1)
+
+    if neighborhood in ["column", "cross"]:
+        add(row - 1, col)
+        add(row + 1, col)
+
+    return sorted(indices)
+
+
+@torch.no_grad()
+def uniform_quantize_activation_tensor(x: torch.Tensor, n_bits: int) -> torch.Tensor:
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    if not torch.is_floating_point(x):
+        return x
+
+    orig_dtype = x.dtype
+    x_float = x.float()
+
+    qmin = -(2 ** (n_bits - 1))
+    qmax = (2 ** (n_bits - 1)) - 1
+
+    max_abs = x_float.abs().amax(dim=-1, keepdim=True)
+    scale = max_abs / qmax
+    scale = torch.where(scale == 0, torch.ones_like(scale), scale)
+
+    q = torch.clamp(torch.round(x_float / scale), qmin, qmax)
+    return (q * scale).to(orig_dtype)
+
+
+def add_activation_quant_hooks(model, n_bits: int):
+    handles = []
+
+    def pre_hook(module, inputs):
+        if not inputs:
+            return inputs
+
+        x = inputs[0]
+        if not torch.is_tensor(x):
+            return inputs
+
+        x_q = uniform_quantize_activation_tensor(x, n_bits)
+        return (x_q,) + tuple(inputs[1:])
+
+    for module in model.modules():
+        if isinstance(module, nn.Linear):
+            handles.append(module.register_forward_pre_hook(pre_hook))
+
+    return handles
+
+
+@torch.no_grad()
+def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]) -> torch.Tensor:
+    if clip_z is None or clip_z <= 0:
+        return w
+
+    orig_dtype = w.dtype
+    w_float = w.float()
+
+    mean = w_float.mean()
+    std = w_float.std(unbiased=False)
+
+    if std.item() == 0:
+        return w
+
+    lower = mean - clip_z * std
+    upper = mean + clip_z * std
+
+    return torch.clamp(w_float, lower, upper).to(orig_dtype)
+
+
+@torch.no_grad()
+def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int) -> torch.Tensor:
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    orig_dtype = w.dtype
+    w_float = w.float()
+
+    qmin = -(2 ** (n_bits - 1))
+    qmax = (2 ** (n_bits - 1)) - 1
+
+    max_abs = w_float.abs().amax()
+
+    if max_abs.item() == 0:
+        return w_float.to(orig_dtype)
+
+    scale = max_abs / qmax
+    q = torch.clamp(torch.round(w_float / scale), qmin, qmax)
+    return (q * scale).to(orig_dtype)
+
+
+@torch.no_grad()
+def uniform_quantize_weight_tensor_blockwise_2d(
+    w: torch.Tensor,
+    n_bits: int,
+    block_rows: int = 128,
+    block_cols: int = 128,
+) -> torch.Tensor:
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    if block_rows <= 0 or block_cols <= 0:
+        raise ValueError("block_rows and block_cols must be positive")
+
+    if w.ndim != 2:
+        return uniform_quantize_weight_tensor(w, n_bits)
+
+    orig_dtype = w.dtype
+    w_float = w.float()
+    out = torch.empty_like(w_float)
+
+    qmin = -(2 ** (n_bits - 1))
+    qmax = (2 ** (n_bits - 1)) - 1
+
+    n_rows, n_cols = w_float.shape
+
+    for r0 in range(0, n_rows, block_rows):
+        r1 = min(r0 + block_rows, n_rows)
+
+        for c0 in range(0, n_cols, block_cols):
+            c1 = min(c0 + block_cols, n_cols)
+
+            block = w_float[r0:r1, c0:c1]
+            max_abs = block.abs().amax()
+
+            if max_abs.item() == 0:
+                out[r0:r1, c0:c1] = block
+                continue
+
+            scale = max_abs / qmax
+            q = torch.clamp(torch.round(block / scale), qmin, qmax)
+            out[r0:r1, c0:c1] = q * scale
+
+    return out.to(orig_dtype)
+
+
+@torch.no_grad()
+def quantize_parameter(
+    param: torch.Tensor,
+    n_bits: int,
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+) -> torch.Tensor:
+    w = clip_weight_tensor_zscore(param, clip_z)
+
+    if quant_granularity == "tensor":
+        return uniform_quantize_weight_tensor(w, n_bits)
+
+    if quant_granularity == "block2d":
+        return uniform_quantize_weight_tensor_blockwise_2d(
+            w,
+            n_bits=n_bits,
+            block_rows=block_rows,
+            block_cols=block_cols,
+        )
+
+    raise ValueError(f"Unsupported quant_granularity: {quant_granularity}")
+
+
+@torch.no_grad()
+def apply_weight_quantization(
+    model,
+    n_bits: int,
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
+    for name, param in model.named_parameters():
+        if "weight" not in name:
+            continue
+
+        if param.ndim < 2:
+            continue
+
+        q_weight = quantize_parameter(
+            param.data,
+            n_bits=n_bits,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=clip_z,
+        )
+
+        param.data.copy_(q_weight)
+
+    return model
+
+
+@torch.no_grad()
+def collect_protected_superweights(
+    model,
+    model_key: str,
+    sw_scale: float = 1.0,
+    restore_neighborhood: str = "scalar",
+):
+    if model_key not in SUPERWEIGHTS:
+        raise ValueError(f"No superweights registered for model_key='{model_key}'")
 
     model_cfg = MODEL_CONFIGS[model_key]
     layers = get_nested_attr(model, model_cfg["layer_path"])
+    down_proj_path = model_cfg["down_proj_path"]
+
+    protected_values = []
+
+    for entry in SUPERWEIGHTS[model_key]:
+        layer_idx = int(entry["layer"])
+        row_idx = int(entry["row"])
+        col_idx = int(entry["col"])
+
+        module = get_nested_attr(layers[layer_idx], down_proj_path)
+        weight = module.weight.data
+
+        restore_indices = get_superweight_restore_indices(
+            row=row_idx,
+            col=col_idx,
+            shape=weight.shape,
+            neighborhood=restore_neighborhood,
+        )
+
+        for rr, cc in restore_indices:
+            is_center = rr == row_idx and cc == col_idx
+            value = weight[rr, cc].detach().clone()
+
+            if is_center:
+                value = value * sw_scale
+
+            protected_values.append(
+                {
+                    "layer": layer_idx,
+                    "center_row": row_idx,
+                    "center_col": col_idx,
+                    "row": int(rr),
+                    "col": int(cc),
+                    "value": value,
+                    "is_center": bool(is_center),
+                }
+            )
+
+    return protected_values
+
+
+@torch.no_grad()
+def restore_protected_superweights(model, model_key: str, protected_values):
+    model_cfg = MODEL_CONFIGS[model_key]
+    layers = get_nested_attr(model, model_cfg["layer_path"])
+    down_proj_path = model_cfg["down_proj_path"]
+
+    for item in protected_values:
+        module = get_nested_attr(layers[item["layer"]], down_proj_path)
+        module.weight.data[item["row"], item["col"]] = item["value"]
+
+    return model
+
+
+@torch.no_grad()
+def apply_superweight_quantization(
+    model,
+    model_key: str,
+    n_bits: int,
+    sw_scale: float = 1.0,
+    restore_neighborhood: str = "scalar",
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
+    protected_values = collect_protected_superweights(
+        model=model,
+        model_key=model_key,
+        sw_scale=sw_scale,
+        restore_neighborhood=restore_neighborhood,
+    )
+
+    apply_weight_quantization(
+        model=model,
+        n_bits=n_bits,
+        quant_granularity=quant_granularity,
+        block_rows=block_rows,
+        block_cols=block_cols,
+        clip_z=clip_z,
+    )
+
+    restore_protected_superweights(
+        model=model,
+        model_key=model_key,
+        protected_values=protected_values,
+    )
+
+    return model, protected_values
+
+
+def prepare_model(
+    model,
+    model_key: str,
+    mode: str,
+    bits: int,
+    activation_bits: Optional[int] = None,
+    sw_scale: float = 1.0,
+    restore_neighborhood: str = "scalar",
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
+    activation_handles = []
+
+    if mode == "fp16":
+        return model, [], activation_handles
 
     if mode == "naive":
-        all_layers = list(range(len(layers)))
-        return ActivationQuantHook(
-            layers=layers,
-            module_path=model_cfg["down_proj_path"],
-            layer_indices=all_layers,
+        model = apply_weight_quantization(
+            model=model,
             n_bits=bits,
-            mode=mode,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=None,
         )
+
+        if activation_bits is not None and activation_bits > 0:
+            activation_handles = add_activation_quant_hooks(model, activation_bits)
+
+        return model, [], activation_handles
 
     if mode == "super":
-        if model_key not in SUPERWEIGHTS:
-            raise ValueError(f"No superweights registered for model_key='{model_key}'")
-
-        sw_layers = sorted({entry["layer"] for entry in SUPERWEIGHTS[model_key]})
-
-        return ActivationQuantHook(
-            layers=layers,
-            module_path=model_cfg["down_proj_path"],
-            layer_indices=sw_layers,
+        model, protected_values = apply_superweight_quantization(
+            model=model,
+            model_key=model_key,
             n_bits=bits,
-            mode=mode,
+            sw_scale=sw_scale,
+            restore_neighborhood=restore_neighborhood,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=clip_z,
         )
+
+        if activation_bits is not None and activation_bits > 0:
+            activation_handles = add_activation_quant_hooks(model, activation_bits)
+
+        return model, protected_values, activation_handles
 
     raise ValueError(f"Unsupported mode: {mode}")
 
@@ -110,20 +449,22 @@ def get_language_config(language: str) -> Dict[str, str]:
             "effect": "结果发生了什么？",
         },
     }
+
     if language not in prompts:
         raise ValueError(f"Unsupported language: {language}")
+
     return prompts[language]
 
 
 def build_prompt(example: Dict, language: str) -> str:
     lang_cfg = get_language_config(language)
     question = lang_cfg[example["question"]]
-
     premise = example["premise"].strip()
-    prompt = f"{premise}\n{question}\nAnswer:"
-    return prompt
+
+    return f"{premise}\n{question}\nAnswer:"
 
 
+@torch.no_grad()
 def score_continuation(
     model,
     tokenizer,
@@ -131,7 +472,12 @@ def score_continuation(
     continuation: str,
     device: torch.device,
     max_length: int = 256,
+    normalize_by_length: bool = False,
 ) -> float:
+    prompt = prompt.strip()
+    continuation = continuation.strip()
+    full_text = prompt + " " + continuation
+
     prompt_ids = tokenizer(
         prompt,
         add_special_tokens=False,
@@ -140,7 +486,6 @@ def score_continuation(
         max_length=max_length,
     )["input_ids"]
 
-    full_text = prompt + " " + continuation.strip()
     full_ids = tokenizer(
         full_text,
         add_special_tokens=False,
@@ -158,16 +503,15 @@ def score_continuation(
     input_ids = full_ids.to(device)
     attention_mask = torch.ones_like(input_ids, device=device)
 
-    with torch.no_grad():
-        outputs = model(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            use_cache=False,
-            return_dict=True,
-        )
+    outputs = model(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        use_cache=False,
+        return_dict=True,
+    )
 
-    logits = outputs.logits[:, :-1, :]
-    target_ids = input_ids[:, 1:]
+    logits = outputs.logits[:, :-1, :].contiguous()
+    target_ids = input_ids[:, 1:].contiguous()
 
     log_probs = F.log_softmax(logits.float(), dim=-1)
     token_log_probs = log_probs.gather(-1, target_ids.unsqueeze(-1)).squeeze(-1)
@@ -178,11 +522,17 @@ def score_continuation(
     if cont_log_probs.numel() == 0:
         return float("-inf")
 
-    return float(cont_log_probs.sum().item())
+    score = cont_log_probs.sum().item()
+
+    if normalize_by_length:
+        score = score / cont_log_probs.numel()
+
+    return float(score)
 
 
 def normalize_xcopa_example(example: Dict) -> Dict:
     label = example.get("label", example.get("answer", None))
+
     if label not in [0, 1]:
         raise ValueError(f"Unexpected XCOPA label: {label}")
 
@@ -191,49 +541,49 @@ def normalize_xcopa_example(example: Dict) -> Dict:
         "question": example["question"],
         "choice1": example["choice1"],
         "choice2": example["choice2"],
-        "label": label,
+        "label": int(label),
     }
 
 
 def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List[Dict]:
     examples = []
 
-    # English uses COPA from SuperGLUE.
     if language == "en":
-        copa_split_map = {
+        split_map = {
             "validation": "validation",
             "val": "validation",
             "train": "train",
-            "test": "validation",  # fallback, because COPA labels are not always exposed for test
+            "test": "validation",
         }
-        ds_split = copa_split_map.get(split, split)
-
+        ds_split = split_map.get(split, split)
         ds = load_dataset("super_glue", "copa", split=ds_split)
 
         for row in ds:
-            ex = {
-                "premise": row["premise"],
-                "question": row["question"],
-                "choice1": row["choice1"],
-                "choice2": row["choice2"],
-                "label": row["label"],
-            }
-            examples.append(ex)
+            examples.append(
+                {
+                    "premise": row["premise"],
+                    "question": row["question"],
+                    "choice1": row["choice1"],
+                    "choice2": row["choice2"],
+                    "label": int(row["label"]),
+                }
+            )
+
             if limit is not None and len(examples) >= limit:
                 break
 
         if not examples:
             raise RuntimeError("No valid COPA examples found for English.")
+
         return examples
 
-    # Non-English uses XCOPA.
-    xcopa_split_map = {
+    split_map = {
         "validation": "validation",
         "val": "validation",
-        "train": "validation",   # safer fallback for evaluation
-        "test": "validation",    # safer fallback for evaluation
+        "train": "validation",
+        "test": "validation",
     }
-    ds_split = xcopa_split_map.get(split, split)
+    ds_split = split_map.get(split, split)
 
     candidate_loaders = [
         lambda: load_dataset("xcopa", language, split=ds_split),
@@ -242,6 +592,7 @@ def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List
 
     last_error = None
     ds = None
+
     for loader in candidate_loaders:
         try:
             ds = loader()
@@ -257,6 +608,7 @@ def load_xcopa_examples(language: str, split: str, limit: Optional[int]) -> List
     for row in ds:
         ex = normalize_xcopa_example(row)
         examples.append(ex)
+
         if limit is not None and len(examples) >= limit:
             break
 
@@ -272,17 +624,21 @@ def evaluate_xcopa(
     examples: List[Dict],
     language: str,
     max_length: int,
+    normalize_by_length: bool = False,
 ) -> Dict:
     device = next(model.parameters()).device
 
     num_correct = 0
-    scored_examples = 0
+    predictions = []
+
     per_question = {
         "cause": {"correct": 0, "total": 0},
         "effect": {"correct": 0, "total": 0},
     }
 
-    for ex in examples:
+    model.eval()
+
+    for i, ex in enumerate(examples):
         prompt = build_prompt(ex, language)
 
         score1 = score_continuation(
@@ -292,7 +648,9 @@ def evaluate_xcopa(
             continuation=ex["choice1"],
             device=device,
             max_length=max_length,
+            normalize_by_length=normalize_by_length,
         )
+
         score2 = score_continuation(
             model=model,
             tokenizer=tokenizer,
@@ -300,62 +658,74 @@ def evaluate_xcopa(
             continuation=ex["choice2"],
             device=device,
             max_length=max_length,
+            normalize_by_length=normalize_by_length,
         )
 
         pred = 0 if score1 >= score2 else 1
-        gold = ex["label"]
+        gold = int(ex["label"])
         correct = int(pred == gold)
 
         num_correct += correct
-        scored_examples += 1
 
         q = ex["question"]
         if q in per_question:
             per_question[q]["correct"] += correct
             per_question[q]["total"] += 1
 
-    if scored_examples == 0:
+        predictions.append(
+            {
+                "id": i,
+                "question_type": q,
+                "prediction": pred,
+                "gold": gold,
+                "correct": bool(correct),
+                "score_choice1": float(score1),
+                "score_choice2": float(score2),
+                "margin": float(score1 - score2),
+            }
+        )
+
+    total = len(examples)
+
+    if total == 0:
         raise RuntimeError("No XCOPA examples were scored.")
 
-    result = {
-        "num_examples": scored_examples,
-        "accuracy": num_correct / scored_examples,
-        "num_correct": num_correct,
-        "per_question": {},
-    }
+    per_question_result = {}
 
     for q, stats in per_question.items():
-        total = stats["total"]
-        result["per_question"][q] = {
-            "total": total,
+        q_total = stats["total"]
+        per_question_result[q] = {
+            "total": q_total,
             "correct": stats["correct"],
-            "accuracy": (stats["correct"] / total) if total > 0 else None,
+            "accuracy": (stats["correct"] / q_total) if q_total > 0 else None,
         }
 
-    return result
+    return {
+        "num_examples": total,
+        "accuracy": num_correct / total,
+        "num_correct": num_correct,
+        "per_question": per_question_result,
+        "predictions": predictions,
+    }
 
 
-def main():
+def build_arg_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--model-key",
-        type=str,
-        required=True,
-        choices=sorted(MODEL_CONFIGS.keys()),
-    )
-    parser.add_argument(
-        "--mode",
-        type=str,
-        default="fp16",
-        choices=["fp16", "naive", "super"],
-    )
+
+    parser.add_argument("--model-key", type=str, required=True, choices=sorted(MODEL_CONFIGS.keys()))
+    parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=8)
-    parser.add_argument(
-        "--dtype",
-        type=str,
-        default="float16",
-        choices=["float16", "bfloat16", "float32"],
-    )
+    parser.add_argument("--activation-bits", type=int, default=None)
+
+    parser.add_argument("--sw-scale", type=float, default=1.0)
+    parser.add_argument("--restore-neighborhood", type=str, default="scalar", choices=["scalar", "row", "column", "cross"])
+
+    parser.add_argument("--quant-granularity", type=str, default="tensor", choices=["tensor", "block2d"])
+    parser.add_argument("--block-rows", type=int, default=128)
+    parser.add_argument("--block-cols", type=int, default=128)
+    parser.add_argument("--clip-z", type=float, default=None)
+
+    parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
 
     parser.add_argument(
         "--language",
@@ -363,25 +733,30 @@ def main():
         default="en",
         choices=["en", "et", "ht", "id", "it", "qu", "sw", "ta", "th", "tr", "vi", "zh"],
     )
-    parser.add_argument("--split", type=str, default="validation")
-    parser.add_argument("--limit", type=int, default=200)
-    parser.add_argument("--max-length", type=int, default=256)
 
+    parser.add_argument("--split", type=str, default="validation")
+    parser.add_argument("--limit", type=int, default=500)
+    parser.add_argument("--max-length", type=int, default=256)
+    parser.add_argument("--normalize-by-length", action="store_true")
     parser.add_argument("--output-json", type=str, required=True)
 
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_arg_parser().parse_args()
 
     model_cfg = MODEL_CONFIGS[args.model_key]
     model_id = model_cfg["hf_name"]
     torch_dtype = resolve_torch_dtype(args.dtype)
 
-    print(f"Loading tokenizer: {model_id}")
+    print(f"Loading tokenizer: {model_id}", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    print(f"Loading model: {model_id} ({args.dtype})")
+    print(f"Loading model: {model_id} ({args.dtype})", flush=True)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch_dtype,
@@ -390,39 +765,85 @@ def main():
     )
     model.eval()
 
-    print(f"Loading XCOPA language={args.language} split={args.split} limit={args.limit}")
+    print(
+        f"Preparing model with mode={args.mode}, bits={args.bits}, "
+        f"activation_bits={args.activation_bits}, sw_scale={args.sw_scale}, "
+        f"restore_neighborhood={args.restore_neighborhood}, "
+        f"quant_granularity={args.quant_granularity}, "
+        f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
+        f"clip_z={args.clip_z}",
+        flush=True,
+    )
+
+    model, protected_values, activation_handles = prepare_model(
+        model=model,
+        model_key=args.model_key,
+        mode=args.mode,
+        bits=args.bits,
+        activation_bits=args.activation_bits,
+        sw_scale=args.sw_scale,
+        restore_neighborhood=args.restore_neighborhood,
+        quant_granularity=args.quant_granularity,
+        block_rows=args.block_rows,
+        block_cols=args.block_cols,
+        clip_z=args.clip_z,
+    )
+
+    print(f"Protected/restored values: {len(protected_values)}", flush=True)
+    print(f"Activation quant hooks: {len(activation_handles)}", flush=True)
+
+    print(
+        f"Loading XCOPA language={args.language}, split={args.split}, limit={args.limit}",
+        flush=True,
+    )
+
     examples = load_xcopa_examples(
         language=args.language,
         split=args.split,
         limit=args.limit,
     )
 
-    quant_hook = build_quant_hook(
+    print(f"Evaluating {len(examples)} examples...", flush=True)
+
+    metrics = evaluate_xcopa(
         model=model,
-        model_key=args.model_key,
-        mode=args.mode,
-        bits=args.bits,
+        tokenizer=tokenizer,
+        examples=examples,
+        language=args.language,
+        max_length=args.max_length,
+        normalize_by_length=args.normalize_by_length,
     )
 
-    try:
-        metrics = evaluate_xcopa(
-            model=model,
-            tokenizer=tokenizer,
-            examples=examples,
-            language=args.language,
-            max_length=args.max_length,
-        )
-    finally:
-        if quant_hook is not None:
-            quant_hook.remove()
+    protected_summary = [
+        {
+            "layer": int(x["layer"]),
+            "center_row": int(x["center_row"]),
+            "center_col": int(x["center_col"]),
+            "row": int(x["row"]),
+            "col": int(x["col"]),
+            "is_center": bool(x["is_center"]),
+        }
+        for x in protected_values
+    ]
 
     result = {
+        "benchmark": "xcopa",
         "model_key": args.model_key,
         "model_id": model_id,
         "mode": args.mode,
         "bits": args.bits,
+        "activation_bits": args.activation_bits,
+        "sw_scale": args.sw_scale,
+        "restore_neighborhood": args.restore_neighborhood,
+        "quant_granularity": args.quant_granularity,
+        "block_rows": args.block_rows,
+        "block_cols": args.block_cols,
+        "clip_z": args.clip_z,
+        "normalize_by_length": args.normalize_by_length,
+        "num_protected_values": len(protected_values),
+        "protected_values": protected_summary,
+        "num_activation_hooks": len(activation_handles),
         "dtype": args.dtype,
-        "benchmark": "xcopa",
         "language": args.language,
         "split": args.split,
         "limit": args.limit,
@@ -430,13 +851,16 @@ def main():
         **metrics,
     }
 
+    result = make_json_safe(result)
+
     output_path = Path(args.output_json)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
 
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps(result, indent=2, ensure_ascii=False), flush=True)
+    print(f"Saved result to: {output_path}", flush=True)
 
 
 if __name__ == "__main__":

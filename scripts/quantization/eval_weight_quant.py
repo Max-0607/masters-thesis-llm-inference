@@ -2,7 +2,7 @@ import argparse
 import json
 import math
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import torch
 from datasets import load_dataset
@@ -66,12 +66,35 @@ def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str
 
 
 @torch.no_grad()
-def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int) -> torch.Tensor:
+def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]) -> torch.Tensor:
+    if clip_z is None or clip_z <= 0:
+        return w
+
+    mean = w.mean()
+    std = w.std(unbiased=False)
+
+    if std.item() == 0:
+        return w
+
+    lower = mean - clip_z * std
+    upper = mean + clip_z * std
+    return torch.clamp(w, lower, upper)
+
+
+@torch.no_grad()
+def uniform_quantize_weight_tensor(
+    w: torch.Tensor,
+    n_bits: int,
+    clip_z: Optional[float] = None,
+) -> torch.Tensor:
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
     orig_dtype = w.dtype
     w_float = w.float()
+
+    if clip_z is not None:
+        w_float = clip_weight_tensor_zscore(w_float, clip_z)
 
     qmin = -(2 ** (n_bits - 1))
     qmax = (2 ** (n_bits - 1)) - 1
@@ -94,6 +117,7 @@ def uniform_quantize_weight_tensor_blockwise_2d(
     n_bits: int,
     block_rows: int = 128,
     block_cols: int = 128,
+    clip_z: Optional[float] = None,
 ) -> torch.Tensor:
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
@@ -102,7 +126,7 @@ def uniform_quantize_weight_tensor_blockwise_2d(
         raise ValueError("block_rows and block_cols must be positive")
 
     if w.ndim != 2:
-        return uniform_quantize_weight_tensor(w, n_bits)
+        return uniform_quantize_weight_tensor(w, n_bits, clip_z=clip_z)
 
     orig_dtype = w.dtype
     w_float = w.float()
@@ -120,6 +144,10 @@ def uniform_quantize_weight_tensor_blockwise_2d(
             c1 = min(c0 + block_cols, n_cols)
 
             block = w_float[r0:r1, c0:c1]
+
+            if clip_z is not None:
+                block = clip_weight_tensor_zscore(block, clip_z)
+
             max_abs = block.abs().amax()
 
             if max_abs.item() == 0:
@@ -140,9 +168,14 @@ def quantize_parameter(
     quant_granularity: str = "tensor",
     block_rows: int = 128,
     block_cols: int = 128,
+    clip_z: Optional[float] = None,
 ) -> torch.Tensor:
     if quant_granularity == "tensor":
-        return uniform_quantize_weight_tensor(param, n_bits)
+        return uniform_quantize_weight_tensor(
+            param,
+            n_bits=n_bits,
+            clip_z=clip_z,
+        )
 
     if quant_granularity == "block2d":
         return uniform_quantize_weight_tensor_blockwise_2d(
@@ -150,6 +183,7 @@ def quantize_parameter(
             n_bits=n_bits,
             block_rows=block_rows,
             block_cols=block_cols,
+            clip_z=clip_z,
         )
 
     raise ValueError(f"Unsupported quant_granularity: {quant_granularity}")
@@ -162,6 +196,7 @@ def apply_naive_weight_quantization(
     quant_granularity: str = "tensor",
     block_rows: int = 128,
     block_cols: int = 128,
+    clip_z: Optional[float] = None,
 ):
     for name, param in model.named_parameters():
         if "weight" not in name:
@@ -175,6 +210,7 @@ def apply_naive_weight_quantization(
             quant_granularity=quant_granularity,
             block_rows=block_rows,
             block_cols=block_cols,
+            clip_z=clip_z,
         )
         param.data.copy_(q_weight)
 
@@ -216,6 +252,7 @@ def collect_protected_superweights(
         for rr, cc in restore_indices:
             is_center = rr == row_idx and cc == col_idx
             value = weight[rr, cc].detach().clone()
+
             if is_center:
                 value = value * sw_scale
 
@@ -244,7 +281,9 @@ def restore_protected_superweights(model, model_key: str, protected_values):
 
     for item in protected_values:
         module = get_nested_attr(layers[item["layer"]], down_proj_path)
-        module.weight.data[item["row"], item["col"]] = item["value"]
+        module.weight.data[item["row"], item["col"]] = item["value"].to(
+            module.weight.data.device
+        )
 
     return model
 
@@ -259,6 +298,7 @@ def apply_superweight_quantization(
     quant_granularity: str = "tensor",
     block_rows: int = 128,
     block_cols: int = 128,
+    clip_z: float = 3.0,
 ):
     protected_values = collect_protected_superweights(
         model=model,
@@ -267,14 +307,17 @@ def apply_superweight_quantization(
         restore_neighborhood=restore_neighborhood,
     )
 
+    # CLIP_z -> Q -> Q^{-1}
     apply_naive_weight_quantization(
         model,
         n_bits=n_bits,
         quant_granularity=quant_granularity,
         block_rows=block_rows,
         block_cols=block_cols,
+        clip_z=clip_z,
     )
 
+    # RESTORE
     restore_protected_superweights(
         model=model,
         model_key=model_key,
@@ -294,6 +337,7 @@ def prepare_model(
     quant_granularity: str = "tensor",
     block_rows: int = 128,
     block_cols: int = 128,
+    clip_z: float = 3.0,
 ):
     if mode == "fp16":
         return model, []
@@ -305,6 +349,7 @@ def prepare_model(
             quant_granularity=quant_granularity,
             block_rows=block_rows,
             block_cols=block_cols,
+            clip_z=None,
         )
         return model, []
 
@@ -318,6 +363,7 @@ def prepare_model(
             quant_granularity=quant_granularity,
             block_rows=block_rows,
             block_cols=block_cols,
+            clip_z=clip_z,
         )
 
     raise ValueError(f"Unsupported mode: {mode}")
@@ -343,7 +389,7 @@ def evaluate_perplexity_concat(model, tokenizer, texts: List[str], seqlen: int =
     nlls = []
 
     for i in range(nsamples):
-        batch = input_ids[:, i * seqlen : (i + 1) * seqlen].to(device)
+        batch = input_ids[:, i * seqlen: (i + 1) * seqlen].to(device)
 
         outputs = model(
             input_ids=batch,
@@ -377,9 +423,11 @@ def evaluate_perplexity_concat(model, tokenizer, texts: List[str], seqlen: int =
 
 def build_arg_parser():
     parser = argparse.ArgumentParser()
+
     parser.add_argument("--model-key", type=str, required=True, choices=sorted(MODEL_CONFIGS.keys()))
     parser.add_argument("--mode", type=str, required=True, choices=["fp16", "naive", "super"])
     parser.add_argument("--bits", type=int, default=4)
+
     parser.add_argument("--sw-scale", type=float, default=1.0)
     parser.add_argument(
         "--restore-neighborhood",
@@ -387,6 +435,7 @@ def build_arg_parser():
         default="scalar",
         choices=["scalar", "row", "column", "cross"],
     )
+
     parser.add_argument(
         "--quant-granularity",
         type=str,
@@ -395,12 +444,17 @@ def build_arg_parser():
     )
     parser.add_argument("--block-rows", type=int, default=128)
     parser.add_argument("--block-cols", type=int, default=128)
+    parser.add_argument("--clip-z", type=float, default=3.0)
+
     parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
+
     parser.add_argument("--dataset", type=str, default="wikitext2", choices=["wikitext2", "c4"])
     parser.add_argument("--split", type=str, default=None)
     parser.add_argument("--limit", type=int, default=128)
     parser.add_argument("--max-length", type=int, default=2048)
+
     parser.add_argument("--output-json", type=str, required=True)
+
     return parser
 
 
@@ -427,8 +481,8 @@ def main():
         model_id,
         torch_dtype=torch_dtype,
         trust_remote_code=True,
-        device_map=None,
-        low_cpu_mem_usage=False,
+        device_map="auto",
+        low_cpu_mem_usage=True,
     )
     model.eval()
 
@@ -436,7 +490,8 @@ def main():
         f"Preparing model with mode={args.mode}, bits={args.bits}, "
         f"sw_scale={args.sw_scale}, restore_neighborhood={args.restore_neighborhood}, "
         f"quant_granularity={args.quant_granularity}, "
-        f"block_rows={args.block_rows}, block_cols={args.block_cols}"
+        f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
+        f"clip_z={args.clip_z if args.mode == 'super' else None}"
     )
 
     model, protected_values = prepare_model(
@@ -449,6 +504,7 @@ def main():
         quant_granularity=args.quant_granularity,
         block_rows=args.block_rows,
         block_cols=args.block_cols,
+        clip_z=args.clip_z,
     )
 
     print(f"Protected/restored values: {len(protected_values)}")
@@ -485,6 +541,7 @@ def main():
         "quant_granularity": args.quant_granularity,
         "block_rows": args.block_rows,
         "block_cols": args.block_cols,
+        "clip_z": args.clip_z if args.mode == "super" else None,
         "num_protected_values": len(protected_values),
         "protected_values": protected_summary,
         "dtype": args.dtype,
