@@ -1,6 +1,5 @@
 import argparse
 import json
-import sacrebleu
 from pathlib import Path
 
 import torch
@@ -22,6 +21,7 @@ LANG_MAP = {
 
 
 def resolve_torch_dtype(name: str):
+    name = name.lower()
     if name == "float16":
         return torch.float16
     if name == "bfloat16":
@@ -44,20 +44,20 @@ def build_quant_hook(model, model_key, mode, bits):
             module_path=model_cfg["down_proj_path"],
             layer_indices=list(range(len(layers))),
             n_bits=bits,
-            mode=mode,
+            mode="naive",
         )
 
     if mode == "super":
         if model_key not in SUPERWEIGHTS:
             raise ValueError(f"No superweights registered for model_key='{model_key}'")
 
-        sw_layers = sorted({e["layer"] for e in SUPERWEIGHTS[model_key]})
+        sw_layers = sorted({int(e["layer"]) for e in SUPERWEIGHTS[model_key]})
         return ActivationQuantHook(
             layers=layers,
             module_path=model_cfg["down_proj_path"],
             layer_indices=sw_layers,
             n_bits=bits,
-            mode=mode,
+            mode="super",
         )
 
     raise ValueError(f"Unsupported mode: {mode}")
@@ -66,7 +66,7 @@ def build_quant_hook(model, model_key, mode, bits):
 def load_flores_examples(src, tgt, limit):
     ds = load_dataset("yash9439/flores200", split="devtest")
 
-    print("FLORES columns:", ds.column_names)
+    print("FLORES columns loaded")
 
     src_col = LANG_MAP[src]
     tgt_col = LANG_MAP[tgt]
@@ -90,10 +90,7 @@ def load_flores_examples(src, tgt, limit):
             break
 
     if not examples:
-        raise RuntimeError(
-            f"No valid FLORES examples found for {src}->{tgt}. "
-            f"Columns: {ds.column_names}"
-        )
+        raise RuntimeError(f"No valid FLORES examples found for {src}->{tgt}")
 
     return examples
 
@@ -109,73 +106,46 @@ def build_prompt(src_text, src, tgt):
     )
 
 
-def generate(model, tokenizer, prompt, device):
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-
-    with torch.no_grad():
-        out = model.generate(
-            **inputs,
-            max_new_tokens=80,
-            do_sample=False,
-            num_beams=1,
-            repetition_penalty=1.1,
-            pad_token_id=tokenizer.pad_token_id,
-            eos_token_id=tokenizer.eos_token_id,
-        )
-
-    gen = out[0, inputs["input_ids"].shape[1]:]
-    return tokenizer.decode(gen, skip_special_tokens=True).strip()
-
-
-def clean_translation(text: str) -> str:
-    text = text.strip()
-
-    junk_markers = [
-        "I'm not sure",
-        "Sentence:",
-        "Translation:",
-        "Note:",
-        "Explanation:",
-    ]
-
-    for marker in junk_markers:
-        if marker in text:
-            text = text.split(marker)[0].strip()
-
-    text = text.splitlines()[0].strip()
-    text = text.strip("\"' ")
-    return text
-
-
 def evaluate(model, tokenizer, examples, src, tgt):
     device = next(model.parameters()).device
 
     predictions = []
-    pred_texts = []
-    gold_texts = []
+    losses = []
 
     for ex in examples:
         prompt = build_prompt(ex["src"], src, tgt)
-        raw_pred = generate(model, tokenizer, prompt, device)
-        pred = clean_translation(raw_pred)
         gold = ex["tgt"]
 
-        pred_texts.append(pred)
-        gold_texts.append(gold)
+        full_text = prompt + " " + gold
+
+        inputs = tokenizer(full_text, return_tensors="pt").to(device)
+        prompt_inputs = tokenizer(prompt, return_tensors="pt").to(device)
+
+        labels = inputs["input_ids"].clone()
+        prompt_len = prompt_inputs["input_ids"].shape[1]
+        labels[:, :prompt_len] = -100
+
+        with torch.no_grad():
+            outputs = model(**inputs, labels=labels)
+
+        loss = outputs.loss.detach().float().item()
+        losses.append(loss)
 
         predictions.append(
             {
                 "src": ex["src"],
                 "gold": gold,
-                "pred_raw": raw_pred,
-                "pred": pred,
+                "loss": loss,
             }
         )
 
-    chrf_score = sacrebleu.corpus_chrf(pred_texts, [gold_texts]).score
+    mean_loss = sum(losses) / len(losses)
+    ppl = float(torch.exp(torch.tensor(mean_loss)).item())
 
     return {
-        "chrf": chrf_score,
+        "chrf": None,
+        "loss": mean_loss,
+        "ppl": ppl,
         "num_examples": len(examples),
         "predictions": predictions,
     }
@@ -199,6 +169,7 @@ def main():
     dtype = resolve_torch_dtype(args.dtype)
 
     tokenizer = AutoTokenizer.from_pretrained(model_id)
+
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
@@ -206,6 +177,7 @@ def main():
         model_id,
         torch_dtype=dtype,
         device_map="auto",
+        attn_implementation="eager",
     )
     model.eval()
 
@@ -227,7 +199,9 @@ def main():
         "src_lang": args.src_lang,
         "tgt_lang": args.tgt_lang,
         "num_examples": metrics["num_examples"],
-        "chrf": metrics["chrf"],
+        "chrf": metrics.get("chrf"),
+        "loss": metrics.get("loss"),
+        "ppl": metrics.get("ppl"),
         "predictions": metrics["predictions"],
     }
 
@@ -245,7 +219,9 @@ def main():
                 "src_lang": args.src_lang,
                 "tgt_lang": args.tgt_lang,
                 "num_examples": metrics["num_examples"],
-                "chrf": metrics["chrf"],
+                "chrf": metrics.get("chrf"),
+                "loss": metrics.get("loss"),
+                "ppl": metrics.get("ppl"),
             },
             indent=2,
             ensure_ascii=False,
