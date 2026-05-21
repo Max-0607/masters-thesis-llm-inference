@@ -1,198 +1,185 @@
-#!/usr/bin/env python3
-from __future__ import annotations
-
-import argparse
 import json
-import os
-import re
-import subprocess
-import sys
-from dataclasses import dataclass
+import math
+import time
 from pathlib import Path
-from typing import Dict, Optional
+
+import torch
+from datasets import load_dataset
+from transformers import AutoTokenizer
+
+from quantization.gptq.gptq_repo.eval_gptq_olmo1b_ppl import (
+    get_olmo,
+    get_wikitext2_olmo,
+    olmo_sequential,
+    DEV,
+)
 
 
-MODEL_IDS = {
-    "llama-7b": "huggyllama/llama-7b",
-    "olmo-1b": "allenai/OLMo-1B-0724-hf",
-    "olmo-7b": "allenai/OLMo-7B-0724-hf",
-    "mistral-7b": "mistralai/Mistral-7B-v0.1",
-    "phi-3": "microsoft/Phi-3-mini-4k-instruct",
-}
+def load_texts(dataset, limit):
+    if dataset == "wikitext2":
+        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+        texts = [x["text"] for x in ds if x["text"].strip()]
+        return texts[:limit]
+
+    if dataset == "c4":
+        ds = load_dataset("allenai/c4", "en", split="validation", streaming=True)
+        texts = []
+
+        for x in ds:
+            text = x.get("text", "")
+            if text.strip():
+                texts.append(text)
+
+            if len(texts) >= limit:
+                break
+
+        return texts
+
+    raise ValueError(f"Unknown dataset: {dataset}")
 
 
-@dataclass
-class ParsedRun:
-    perplexities: Dict[str, float]
-    raw_stdout: str
+@torch.no_grad()
+def compute_ppl(model, tokenizer, texts, max_length=2048, device=DEV):
+    model.eval()
+    total_loss = 0.0
+    total_tokens = 0
 
+    for i, text in enumerate(texts):
+        enc = tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=max_length,
+        )
 
-def parse_ppls(stdout: str) -> Dict[str, float]:
-    """
-    Parse old GPTQ llama.py output of the form:
+        input_ids = enc.input_ids.to(device)
 
-    wikitext2
-    Evaluating ...
-    8.8469
-    ptb
-    Evaluating ...
-    12.34
-    c4
-    Evaluating ...
-    7.1908
-    """
-    lines = [line.strip() for line in stdout.splitlines()]
-    datasets = {"wikitext2", "ptb", "ptb-new", "c4", "c4-new"}
-    ppls: Dict[str, float] = {}
+        if input_ids.shape[1] < 2:
+            continue
 
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        if line in datasets:
-            dataset = line
-            # search forward for first float-looking line
-            j = i + 1
-            while j < len(lines):
-                candidate = lines[j]
-                if re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", candidate):
-                    ppls[dataset] = float(candidate)
-                    break
-                # if another dataset starts first, stop
-                if candidate in datasets:
-                    break
-                j += 1
-            i = j
-        i += 1
+        outputs = model(
+            input_ids=input_ids,
+            labels=input_ids,
+            use_cache=False,
+            return_dict=True,
+        )
 
-    return ppls
+        num_tokens = input_ids.shape[1] - 1
+        loss = outputs.loss.float().item()
 
+        total_loss += loss * num_tokens
+        total_tokens += num_tokens
 
-def run_command(cmd: list[str], cwd: Path, env: dict[str, str]) -> ParsedRun:
-    process = subprocess.Popen(
-        cmd,
-        cwd=str(cwd),
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-    )
+        if (i + 1) % 25 == 0:
+            current_ppl = math.exp(total_loss / total_tokens)
+            print(f"{i+1}/{len(texts)} | current_ppl={current_ppl:.4f}")
 
-    assert process.stdout is not None
-    captured_lines = []
+    if total_tokens == 0:
+        raise RuntimeError("No valid tokens evaluated.")
 
-    for line in process.stdout:
-        sys.stdout.write(line)
-        sys.stdout.flush()
-        captured_lines.append(line)
+    avg_loss = total_loss / total_tokens
+    ppl = math.exp(avg_loss)
 
-    return_code = process.wait()
-    stdout = "".join(captured_lines)
-
-    if return_code != 0:
-        raise RuntimeError(f"GPTQ run failed with exit code {return_code}")
-
-    return ParsedRun(
-        perplexities=parse_ppls(stdout),
-        raw_stdout=stdout,
-    )
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model-key", required=True, help="e.g. llama-7b")
-    parser.add_argument("--model-id", default=None, help="HF model id override")
-    parser.add_argument("--bits", type=int, default=4)
-    parser.add_argument("--groupsize", type=int, default=128)
-    parser.add_argument("--nsamples", type=int, default=32)
-    parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--calibration-dataset", default="wikitext2", choices=["wikitext2", "ptb", "c4"])
-    parser.add_argument("--cuda-visible-devices", default="0")
-    parser.add_argument("--true-sequential", action="store_true")
-    parser.add_argument("--act-order", action="store_true")
-    parser.add_argument("--sym", action="store_true")
-    parser.add_argument("--new-eval", action="store_true")
-    parser.add_argument("--save-pt", default=None, help="Path to save quantized checkpoint")
-    parser.add_argument("--log-file", default=None, help="Optional raw log output file")
-    parser.add_argument("--output-json", required=True)
-    parser.add_argument(
-        "--gptq-repo",
-        default="quantization/gptq/gptq_repo",
-        help="Path to old GPTQ repo containing llama.py",
-    )
-    args = parser.parse_args()
-
-    project_root = Path(__file__).resolve().parents[2]
-    gptq_repo = (project_root / args.gptq_repo).resolve()
-    output_json = (project_root / args.output_json).resolve() if not Path(args.output_json).is_absolute() else Path(args.output_json)
-    output_json.parent.mkdir(parents=True, exist_ok=True)
-
-    model_id = args.model_id or MODEL_IDS.get(args.model_key, args.model_key)
-
-    cmd = [
-        sys.executable,
-        "llama.py",
-        model_id,
-        args.calibration_dataset,
-        "--wbits",
-        str(args.bits),
-        "--groupsize",
-        str(args.groupsize),
-        "--nsamples",
-        str(args.nsamples),
-        "--seed",
-        str(args.seed),
-    ]
-
-    if args.true_sequential:
-        cmd.append("--true-sequential")
-    if args.act_order:
-        cmd.append("--act-order")
-    if args.sym:
-        cmd.append("--sym")
-    if args.new_eval:
-        cmd.append("--new-eval")
-    if args.save_pt:
-        save_pt = (project_root / args.save_pt).resolve() if not Path(args.save_pt).is_absolute() else Path(args.save_pt)
-        save_pt.parent.mkdir(parents=True, exist_ok=True)
-        cmd.extend(["--save", str(save_pt)])
-    else:
-        save_pt = None
-
-    env = os.environ.copy()
-    env["CUDA_VISIBLE_DEVICES"] = args.cuda_visible_devices
-
-    parsed = run_command(cmd, cwd=gptq_repo, env=env)
-
-    result = {
-        "model_key": args.model_key,
-        "model_id": model_id,
-        "method": "gptq",
-        "bits": args.bits,
-        "groupsize": args.groupsize,
-        "nsamples": args.nsamples,
-        "seed": args.seed,
-        "calibration_dataset": args.calibration_dataset,
-        "true_sequential": args.true_sequential,
-        "act_order": args.act_order,
-        "sym": args.sym,
-        "new_eval": args.new_eval,
-        "checkpoint_path": str(save_pt) if save_pt else None,
-        "perplexity": parsed.perplexities,
+    return {
+        "loss": avg_loss,
+        "perplexity": ppl,
+        "num_tokens": total_tokens,
+        "num_texts": len(texts),
     }
 
-    with output_json.open("w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
 
-    if args.log_file:
-        log_file = (project_root / args.log_file).resolve() if not Path(args.log_file).is_absolute() else Path(args.log_file)
-        log_file.parent.mkdir(parents=True, exist_ok=True)
-        log_file.write_text(parsed.raw_stdout, encoding="utf-8")
+def run(dataset, output_json, limit=512, max_length=2048):
+    model_id = "allenai/OLMo-1B-0724-hf"
 
-    print("\nSaved JSON to:", output_json)
-    if args.log_file:
-        print("Saved log to:", log_file)
+    args = {
+        "nsamples": 32,
+        "wbits": 4,
+        "groupsize": 128,
+        "percdamp": 0.01,
+        "act_order": True,
+    }
+
+    output_json = Path(output_json)
+    output_json.parent.mkdir(parents=True, exist_ok=True)
+
+    print(f"Loading tokenizer: {model_id}")
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+    if tokenizer.pad_token is None and tokenizer.eos_token is not None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    print(f"Loading model: {model_id}")
+    model = get_olmo(model_id)
+    model.eval()
+
+    print("Loading calibration data ...")
+    dataloader, _ = get_wikitext2_olmo(
+        nsamples=args["nsamples"],
+        seed=0,
+        seqlen=model.seqlen,
+        tokenizer=tokenizer,
+    )
+
+    print("Running GPTQ quantization ...")
+    tick = time.time()
+
+    olmo_sequential(
+        model,
+        dataloader,
+        DEV,
+        args,
+    )
+
+    print(f"Quantization done in {time.time() - tick:.2f}s")
+
+    model = model.to(DEV)
+    model.eval()
+
+    print(f"Loading evaluation dataset={dataset}, limit={limit}")
+    texts = load_texts(dataset, limit)
+
+    print(f"Evaluating GPTQ PPL on {dataset} ...")
+    metrics = compute_ppl(
+        model=model,
+        tokenizer=tokenizer,
+        texts=texts,
+        max_length=max_length,
+        device=DEV,
+    )
+
+    out = {
+        "model": "olmo-1b",
+        "model_id": model_id,
+        "method": "gptq_runtime",
+        "dataset": dataset,
+        "bits": args["wbits"],
+        "groupsize": args["groupsize"],
+        "nsamples": args["nsamples"],
+        "limit": limit,
+        "max_length": max_length,
+        **metrics,
+    }
+
+    output_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
+
+    print(json.dumps(out, indent=2))
+    print(f"Saved results to {output_json}")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", required=True, choices=["wikitext2", "c4"])
+    parser.add_argument("--limit", type=int, default=512)
+    parser.add_argument("--max-length", type=int, default=2048)
+    parser.add_argument("--output-json", required=True)
+
+    args = parser.parse_args()
+
+    run(
+        dataset=args.dataset,
+        output_json=args.output_json,
+        limit=args.limit,
+        max_length=args.max_length,
+    )
