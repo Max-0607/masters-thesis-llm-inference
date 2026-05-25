@@ -24,6 +24,44 @@ def resolve_torch_dtype(name: str):
     raise ValueError(f"Unsupported dtype: {name}")
 
 
+def load_superweights_from_json(path: str, top_k: Optional[int] = None):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    entries = []
+    for item in data:
+        entries.append(
+            {
+                "layer": int(item["layer"]),
+                "row": int(item["row"]),
+                "col": int(item["col"]),
+                "score": float(item.get("score", 0.0)),
+                "source": "json",
+            }
+        )
+
+    entries = sorted(entries, key=lambda x: x["score"], reverse=True)
+
+    if top_k is not None:
+        entries = entries[:top_k]
+
+    return entries
+
+
+def get_superweight_entries(model_key: str, superweights_json: Optional[str], top_k_superweights: Optional[int]):
+    if superweights_json is not None:
+        return load_superweights_from_json(superweights_json, top_k_superweights)
+
+    if model_key not in SUPERWEIGHTS:
+        raise ValueError(f"No superweights registered for model_key='{model_key}'")
+
+    entries = SUPERWEIGHTS[model_key]
+    if top_k_superweights is not None:
+        entries = entries[:top_k_superweights]
+
+    return entries
+
+
 def load_eval_texts(dataset_name: str, split: str, limit: int) -> List[str]:
     if dataset_name == "wikitext2":
         ds = load_dataset("wikitext", "wikitext-2-raw-v1", split=split)
@@ -82,14 +120,7 @@ def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]) -> torch
 
 
 @torch.no_grad()
-def uniform_quantize_weight_tensor(
-    w: torch.Tensor,
-    n_bits: int,
-    clip_z: Optional[float] = None,
-) -> torch.Tensor:
-    if n_bits <= 0:
-        raise ValueError("n_bits must be positive")
-
+def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int, clip_z: Optional[float] = None) -> torch.Tensor:
     orig_dtype = w.dtype
     w_float = w.float()
 
@@ -98,7 +129,6 @@ def uniform_quantize_weight_tensor(
 
     qmin = -(2 ** (n_bits - 1))
     qmax = (2 ** (n_bits - 1)) - 1
-
     max_abs = w_float.abs().amax()
 
     if max_abs.item() == 0:
@@ -106,9 +136,7 @@ def uniform_quantize_weight_tensor(
 
     scale = max_abs / qmax
     q = torch.clamp(torch.round(w_float / scale), qmin, qmax)
-    dq = q * scale
-
-    return dq.to(orig_dtype)
+    return (q * scale).to(orig_dtype)
 
 
 @torch.no_grad()
@@ -119,12 +147,6 @@ def uniform_quantize_weight_tensor_blockwise_2d(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ) -> torch.Tensor:
-    if n_bits <= 0:
-        raise ValueError("n_bits must be positive")
-
-    if block_rows <= 0 or block_cols <= 0:
-        raise ValueError("block_rows and block_cols must be positive")
-
     if w.ndim != 2:
         return uniform_quantize_weight_tensor(w, n_bits, clip_z=clip_z)
 
@@ -142,7 +164,6 @@ def uniform_quantize_weight_tensor_blockwise_2d(
 
         for c0 in range(0, n_cols, block_cols):
             c1 = min(c0 + block_cols, n_cols)
-
             block = w_float[r0:r1, c0:c1]
 
             if clip_z is not None:
@@ -171,11 +192,7 @@ def quantize_parameter(
     clip_z: Optional[float] = None,
 ) -> torch.Tensor:
     if quant_granularity == "tensor":
-        return uniform_quantize_weight_tensor(
-            param,
-            n_bits=n_bits,
-            clip_z=clip_z,
-        )
+        return uniform_quantize_weight_tensor(param, n_bits=n_bits, clip_z=clip_z)
 
     if quant_granularity == "block2d":
         return uniform_quantize_weight_tensor_blockwise_2d(
@@ -223,9 +240,14 @@ def collect_protected_superweights(
     model_key: str,
     sw_scale: float = 1.0,
     restore_neighborhood: str = "scalar",
+    superweights_json: Optional[str] = None,
+    top_k_superweights: Optional[int] = None,
 ):
-    if model_key not in SUPERWEIGHTS:
-        raise ValueError(f"No superweights registered for model_key='{model_key}'")
+    entries = get_superweight_entries(
+        model_key=model_key,
+        superweights_json=superweights_json,
+        top_k_superweights=top_k_superweights,
+    )
 
     model_cfg = MODEL_CONFIGS[model_key]
     layer_path = model_cfg["layer_path"]
@@ -234,7 +256,7 @@ def collect_protected_superweights(
     layers = get_nested_attr(model, layer_path)
     protected_values = []
 
-    for entry in SUPERWEIGHTS[model_key]:
+    for entry in entries:
         layer_idx = int(entry["layer"])
         row_idx = int(entry["row"])
         col_idx = int(entry["col"])
@@ -265,6 +287,7 @@ def collect_protected_superweights(
                     "col": int(cc),
                     "value": value,
                     "is_center": is_center,
+                    "source_score": float(entry.get("score", 0.0)),
                 }
             )
 
@@ -281,9 +304,7 @@ def restore_protected_superweights(model, model_key: str, protected_values):
 
     for item in protected_values:
         module = get_nested_attr(layers[item["layer"]], down_proj_path)
-        module.weight.data[item["row"], item["col"]] = item["value"].to(
-            module.weight.data.device
-        )
+        module.weight.data[item["row"], item["col"]] = item["value"].to(module.weight.data.device)
 
     return model
 
@@ -299,15 +320,18 @@ def apply_superweight_quantization(
     block_rows: int = 128,
     block_cols: int = 128,
     clip_z: float = 3.0,
+    superweights_json: Optional[str] = None,
+    top_k_superweights: Optional[int] = None,
 ):
     protected_values = collect_protected_superweights(
         model=model,
         model_key=model_key,
         sw_scale=sw_scale,
         restore_neighborhood=restore_neighborhood,
+        superweights_json=superweights_json,
+        top_k_superweights=top_k_superweights,
     )
 
-    # CLIP_z -> Q -> Q^{-1}
     apply_naive_weight_quantization(
         model,
         n_bits=n_bits,
@@ -317,7 +341,6 @@ def apply_superweight_quantization(
         clip_z=clip_z,
     )
 
-    # RESTORE
     restore_protected_superweights(
         model=model,
         model_key=model_key,
@@ -338,6 +361,8 @@ def prepare_model(
     block_rows: int = 128,
     block_cols: int = 128,
     clip_z: float = 3.0,
+    superweights_json: Optional[str] = None,
+    top_k_superweights: Optional[int] = None,
 ):
     if mode == "fp16":
         return model, []
@@ -364,6 +389,8 @@ def prepare_model(
             block_rows=block_rows,
             block_cols=block_cols,
             clip_z=clip_z,
+            superweights_json=superweights_json,
+            top_k_superweights=top_k_superweights,
         )
 
     raise ValueError(f"Unsupported mode: {mode}")
@@ -381,15 +408,13 @@ def evaluate_perplexity_concat(model, tokenizer, texts: List[str], seqlen: int =
     nsamples = total_tokens // seqlen
 
     if nsamples == 0:
-        raise RuntimeError(
-            f"Not enough tokens for one full sequence. Got {total_tokens}, need at least {seqlen}."
-        )
+        raise RuntimeError(f"Not enough tokens. Got {total_tokens}, need at least {seqlen}.")
 
     model.eval()
     nlls = []
 
     for i in range(nsamples):
-        batch = input_ids[:, i * seqlen: (i + 1) * seqlen].to(device)
+        batch = input_ids[:, i * seqlen : (i + 1) * seqlen].to(device)
 
         outputs = model(
             input_ids=batch,
@@ -436,12 +461,10 @@ def build_arg_parser():
         choices=["scalar", "row", "column", "cross"],
     )
 
-    parser.add_argument(
-        "--quant-granularity",
-        type=str,
-        default="tensor",
-        choices=["tensor", "block2d"],
-    )
+    parser.add_argument("--superweights-json", type=str, default=None)
+    parser.add_argument("--top-k-superweights", type=int, default=None)
+
+    parser.add_argument("--quant-granularity", type=str, default="tensor", choices=["tensor", "block2d"])
     parser.add_argument("--block-rows", type=int, default=128)
     parser.add_argument("--block-cols", type=int, default=128)
     parser.add_argument("--clip-z", type=float, default=3.0)
@@ -489,6 +512,8 @@ def main():
     print(
         f"Preparing model with mode={args.mode}, bits={args.bits}, "
         f"sw_scale={args.sw_scale}, restore_neighborhood={args.restore_neighborhood}, "
+        f"top_k_superweights={args.top_k_superweights}, "
+        f"superweights_json={args.superweights_json}, "
         f"quant_granularity={args.quant_granularity}, "
         f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
         f"clip_z={args.clip_z if args.mode == 'super' else None}"
@@ -505,6 +530,8 @@ def main():
         block_rows=args.block_rows,
         block_cols=args.block_cols,
         clip_z=args.clip_z,
+        superweights_json=args.superweights_json,
+        top_k_superweights=args.top_k_superweights,
     )
 
     print(f"Protected/restored values: {len(protected_values)}")
@@ -527,6 +554,7 @@ def main():
             "row": int(x["row"]),
             "col": int(x["col"]),
             "is_center": bool(x["is_center"]),
+            "source_score": float(x.get("source_score", 0.0)),
         }
         for x in protected_values
     ]
@@ -538,6 +566,8 @@ def main():
         "bits": args.bits,
         "sw_scale": args.sw_scale,
         "restore_neighborhood": args.restore_neighborhood,
+        "superweights_json": args.superweights_json,
+        "top_k_superweights": args.top_k_superweights,
         "quant_granularity": args.quant_granularity,
         "block_rows": args.block_rows,
         "block_cols": args.block_cols,

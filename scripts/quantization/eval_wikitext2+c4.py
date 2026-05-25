@@ -6,7 +6,6 @@ from typing import Optional
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -16,12 +15,15 @@ from src.hooks import get_nested_attr
 
 
 def resolve_torch_dtype(name: str):
+    name = name.lower()
+
     if name == "float16":
         return torch.float16
     if name == "bfloat16":
         return torch.bfloat16
     if name == "float32":
         return torch.float32
+
     raise ValueError(f"Unsupported dtype: {name}")
 
 
@@ -35,22 +37,44 @@ def make_json_safe(obj):
     return obj
 
 
+def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str = "scalar"):
+    n_rows, n_cols = shape
+    indices = set()
+
+    def add(r, c):
+        if 0 <= r < n_rows and 0 <= c < n_cols:
+            indices.add((r, c))
+
+    add(row, col)
+
+    if neighborhood in ["row", "cross"]:
+        add(row, col - 1)
+        add(row, col + 1)
+
+    if neighborhood in ["column", "cross"]:
+        add(row - 1, col)
+        add(row + 1, col)
+
+    return sorted(indices)
+
+
 @torch.no_grad()
 def quantize_activation(x: torch.Tensor, n_bits: int):
     if not torch.is_floating_point(x):
         return x
 
     orig_dtype = x.dtype
-    x = x.float()
+    x_float = x.float()
 
     qmin = -(2 ** (n_bits - 1))
     qmax = (2 ** (n_bits - 1)) - 1
 
-    max_abs = x.abs().amax(dim=-1, keepdim=True)
+    max_abs = x_float.abs().amax(dim=-1, keepdim=True)
     scale = max_abs / qmax
     scale = torch.where(scale == 0, torch.ones_like(scale), scale)
 
-    q = torch.clamp(torch.round(x / scale), qmin, qmax)
+    q = torch.clamp(torch.round(x_float / scale), qmin, qmax)
+
     return (q * scale).to(orig_dtype)
 
 
@@ -60,9 +84,12 @@ def add_activation_hooks(model, n_bits: int):
     def hook(module, inputs):
         if not inputs:
             return inputs
+
         x = inputs[0]
+
         if not torch.is_tensor(x):
             return inputs
+
         return (quantize_activation(x, n_bits),) + tuple(inputs[1:])
 
     for module in model.modules():
@@ -73,39 +100,198 @@ def add_activation_hooks(model, n_bits: int):
 
 
 @torch.no_grad()
-def quantize_weight_tensor(w: torch.Tensor, n_bits: int):
+def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]):
+    if clip_z is None or clip_z <= 0:
+        return w
+
     orig_dtype = w.dtype
-    w = w.float()
+    w_float = w.float()
 
-    qmin = -(2 ** (n_bits - 1))
-    qmax = (2 ** (n_bits - 1)) - 1
+    mean = w_float.mean()
+    std = w_float.std(unbiased=False)
 
-    max_abs = w.abs().amax()
+    if std.item() == 0:
+        return w
 
-    if max_abs.item() == 0:
-        return w.to(orig_dtype)
+    lower = mean - clip_z * std
+    upper = mean + clip_z * std
 
-    scale = max_abs / qmax
-    q = torch.clamp(torch.round(w / scale), qmin, qmax)
-
-    return (q * scale).to(orig_dtype)
+    return torch.clamp(w_float, lower, upper).to(orig_dtype)
 
 
 @torch.no_grad()
-def apply_weight_quantization(model, n_bits: int):
-    for name, param in model.named_parameters():
-        if "weight" not in name:
-            continue
-        if param.ndim < 2:
+def quantize_weight_tensor(w: torch.Tensor, n_bits: int):
+    """
+    Asymmetric min-max RTN quantization:
+    Q(W) = round((W - min(W)) / delta)
+    W_q = Q(W) * delta + min(W)
+    """
+
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    orig_dtype = w.dtype
+    w_float = w.float()
+
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
+
+    w_min = w_float.min()
+    w_max = w_float.max()
+
+    if (w_max - w_min).item() == 0:
+        return w_float.to(orig_dtype)
+
+    delta = (w_max - w_min) / qmax
+
+    q = torch.clamp(
+        torch.round((w_float - w_min) / delta),
+        qmin,
+        qmax,
+    )
+
+    return (q * delta + w_min).to(orig_dtype)
+
+
+@torch.no_grad()
+def quantize_weight_tensor_blockwise_2d(
+    w: torch.Tensor,
+    n_bits: int,
+    block_rows: int = 128,
+    block_cols: int = 128,
+):
+    """
+    Blockwise asymmetric min-max RTN quantization.
+    Each 2D block gets its own min/max range.
+    """
+
+    if n_bits <= 0:
+        raise ValueError("n_bits must be positive")
+
+    if block_rows <= 0 or block_cols <= 0:
+        raise ValueError("block_rows and block_cols must be positive")
+
+    if w.ndim != 2:
+        return quantize_weight_tensor(w, n_bits)
+
+    orig_dtype = w.dtype
+    w_float = w.float()
+    out = torch.empty_like(w_float)
+
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
+
+    n_rows, n_cols = w_float.shape
+
+    for r0 in range(0, n_rows, block_rows):
+        r1 = min(r0 + block_rows, n_rows)
+
+        for c0 in range(0, n_cols, block_cols):
+            c1 = min(c0 + block_cols, n_cols)
+            block = w_float[r0:r1, c0:c1]
+
+            b_min = block.min()
+            b_max = block.max()
+
+            if (b_max - b_min).item() == 0:
+                out[r0:r1, c0:c1] = block
+                continue
+
+            delta = (b_max - b_min) / qmax
+
+            q = torch.clamp(
+                torch.round((block - b_min) / delta),
+                qmin,
+                qmax,
+            )
+
+            out[r0:r1, c0:c1] = q * delta + b_min
+
+    return out.to(orig_dtype)
+
+
+@torch.no_grad()
+def quantize_parameter(
+    param: torch.Tensor,
+    n_bits: int,
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
+    w = clip_weight_tensor_zscore(param, clip_z)
+
+    if quant_granularity == "tensor":
+        return quantize_weight_tensor(w, n_bits)
+
+    if quant_granularity == "block2d":
+        return quantize_weight_tensor_blockwise_2d(
+            w,
+            n_bits=n_bits,
+            block_rows=block_rows,
+            block_cols=block_cols,
+        )
+
+    raise ValueError(f"Unsupported quant_granularity: {quant_granularity}")
+
+
+@torch.no_grad()
+def apply_weight_quantization(
+    model,
+    n_bits: int,
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
+    """
+    Quantize only nn.Linear layers.
+    Skip lm_head and embeddings.
+    """
+
+    quantized_modules = 0
+    skipped_modules = 0
+
+    for module_name, module in model.named_modules():
+        if not isinstance(module, nn.Linear):
             continue
 
-        param.data.copy_(quantize_weight_tensor(param.data, n_bits))
+        if "lm_head" in module_name:
+            skipped_modules += 1
+            continue
+
+        if "embed" in module_name:
+            skipped_modules += 1
+            continue
+
+        q_weight = quantize_parameter(
+            module.weight.data,
+            n_bits=n_bits,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=clip_z,
+        )
+
+        module.weight.data.copy_(q_weight)
+        quantized_modules += 1
+
+    print(
+        f"Weight quantization done: quantized Linear modules={quantized_modules}, "
+        f"skipped Linear modules={skipped_modules}",
+        flush=True,
+    )
 
     return model
 
 
 @torch.no_grad()
-def collect_superweights(model, model_key: str, sw_scale: float = 1.0):
+def collect_superweights(
+    model,
+    model_key: str,
+    sw_scale: float = 1.0,
+    restore_neighborhood: str = "scalar",
+):
     if model_key not in SUPERWEIGHTS:
         raise ValueError(f"No superweights registered for model_key={model_key}")
 
@@ -121,16 +307,33 @@ def collect_superweights(model, model_key: str, sw_scale: float = 1.0):
         col = int(entry["col"])
 
         module = get_nested_attr(layers[layer_idx], down_proj_path)
-        value = module.weight.data[row, col].detach().clone() * sw_scale
+        weight = module.weight.data
 
-        protected.append(
-            {
-                "layer": layer_idx,
-                "row": row,
-                "col": col,
-                "value": value,
-            }
+        restore_indices = get_superweight_restore_indices(
+            row=row,
+            col=col,
+            shape=weight.shape,
+            neighborhood=restore_neighborhood,
         )
+
+        for rr, cc in restore_indices:
+            is_center = rr == row and cc == col
+            value = weight[rr, cc].detach().clone()
+
+            if is_center:
+                value = value * sw_scale
+
+            protected.append(
+                {
+                    "layer": layer_idx,
+                    "center_row": row,
+                    "center_col": col,
+                    "row": int(rr),
+                    "col": int(cc),
+                    "value": value,
+                    "is_center": bool(is_center),
+                }
+            )
 
     return protected
 
@@ -148,7 +351,19 @@ def restore_superweights(model, model_key: str, protected):
     return model
 
 
-def prepare_model(model, model_key: str, mode: str, bits: int, activation_bits: Optional[int], sw_scale: float):
+def prepare_model(
+    model,
+    model_key: str,
+    mode: str,
+    bits: int,
+    activation_bits: Optional[int],
+    sw_scale: float,
+    restore_neighborhood: str = "scalar",
+    quant_granularity: str = "tensor",
+    block_rows: int = 128,
+    block_cols: int = 128,
+    clip_z: Optional[float] = None,
+):
     activation_handles = []
     protected = []
 
@@ -156,7 +371,14 @@ def prepare_model(model, model_key: str, mode: str, bits: int, activation_bits: 
         return model, protected, activation_handles
 
     if mode == "naive":
-        apply_weight_quantization(model, bits)
+        apply_weight_quantization(
+            model=model,
+            n_bits=bits,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=None,
+        )
 
         if activation_bits is not None and activation_bits > 0:
             activation_handles = add_activation_hooks(model, activation_bits)
@@ -164,9 +386,27 @@ def prepare_model(model, model_key: str, mode: str, bits: int, activation_bits: 
         return model, protected, activation_handles
 
     if mode == "super":
-        protected = collect_superweights(model, model_key, sw_scale=sw_scale)
-        apply_weight_quantization(model, bits)
-        restore_superweights(model, model_key, protected)
+        protected = collect_superweights(
+            model=model,
+            model_key=model_key,
+            sw_scale=sw_scale,
+            restore_neighborhood=restore_neighborhood,
+        )
+
+        apply_weight_quantization(
+            model=model,
+            n_bits=bits,
+            quant_granularity=quant_granularity,
+            block_rows=block_rows,
+            block_cols=block_cols,
+            clip_z=clip_z,
+        )
+
+        restore_superweights(
+            model=model,
+            model_key=model_key,
+            protected=protected,
+        )
 
         if activation_bits is not None and activation_bits > 0:
             activation_handles = add_activation_hooks(model, activation_bits)
@@ -178,23 +418,25 @@ def prepare_model(model, model_key: str, mode: str, bits: int, activation_bits: 
 
 def load_texts(dataset: str, split: str, limit: int):
     if dataset == "wikitext2":
-        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split=split)
+        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
         texts = [x["text"] for x in ds if x["text"].strip()]
+        return texts[:limit]
 
-    elif dataset == "c4":
-        ds = load_dataset("allenai/c4", "en", split=split, streaming=True)
+    if dataset == "c4":
+        ds = load_dataset("allenai/c4", "en", split="validation", streaming=True)
+
         texts = []
         for x in ds:
             text = x.get("text", "")
             if text.strip():
                 texts.append(text)
+
             if len(texts) >= limit:
                 break
 
-    else:
-        raise ValueError(f"Unsupported dataset: {dataset}")
+        return texts
 
-    return texts[:limit]
+    raise ValueError(f"Unsupported dataset: {dataset}")
 
 
 @torch.no_grad()
@@ -206,7 +448,7 @@ def evaluate_ppl(model, tokenizer, texts, max_length: int):
 
     model.eval()
 
-    for text in texts:
+    for i, text in enumerate(texts):
         enc = tokenizer(
             text,
             return_tensors="pt",
@@ -214,7 +456,7 @@ def evaluate_ppl(model, tokenizer, texts, max_length: int):
             max_length=max_length,
         )
 
-        input_ids = enc["input_ids"].to(device)
+        input_ids = enc.input_ids.to(device)
 
         if input_ids.shape[1] < 2:
             continue
@@ -232,6 +474,10 @@ def evaluate_ppl(model, tokenizer, texts, max_length: int):
         total_loss += loss * num_tokens
         total_tokens += num_tokens
 
+        if (i + 1) % 25 == 0:
+            current_ppl = math.exp(total_loss / total_tokens)
+            print(f"{i+1}/{len(texts)} | current_ppl={current_ppl:.4f}", flush=True)
+
     if total_tokens == 0:
         raise RuntimeError("No valid tokens evaluated.")
 
@@ -245,8 +491,7 @@ def evaluate_ppl(model, tokenizer, texts, max_length: int):
         "num_texts": len(texts),
     }
 
-
-def main():
+def build_arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--model-key", required=True, choices=sorted(MODEL_CONFIGS.keys()))
@@ -254,6 +499,18 @@ def main():
     parser.add_argument("--bits", type=int, default=8)
     parser.add_argument("--activation-bits", type=int, default=None)
     parser.add_argument("--sw-scale", type=float, default=1.0)
+
+    parser.add_argument(
+        "--restore-neighborhood",
+        type=str,
+        default="scalar",
+        choices=["scalar", "row", "column", "cross"],
+    )
+
+    parser.add_argument("--quant-granularity", type=str, default="tensor", choices=["tensor", "block2d"])
+    parser.add_argument("--block-rows", type=int, default=128)
+    parser.add_argument("--block-cols", type=int, default=128)
+    parser.add_argument("--clip-z", type=float, default=None)
 
     parser.add_argument("--dataset", required=True, choices=["wikitext2", "c4"])
     parser.add_argument("--split", default="validation")
@@ -263,7 +520,11 @@ def main():
     parser.add_argument("--dtype", default="float16", choices=["float16", "bfloat16", "float32"])
     parser.add_argument("--output-json", required=True)
 
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_arg_parser().parse_args()
 
     model_cfg = MODEL_CONFIGS[args.model_key]
     model_id = model_cfg["hf_name"]
@@ -285,7 +546,12 @@ def main():
     model.eval()
 
     print(
-        f"Preparing model mode={args.mode}, bits={args.bits}, activation_bits={args.activation_bits}",
+        f"Preparing model mode={args.mode}, bits={args.bits}, "
+        f"activation_bits={args.activation_bits}, sw_scale={args.sw_scale}, "
+        f"restore_neighborhood={args.restore_neighborhood}, "
+        f"quant_granularity={args.quant_granularity}, "
+        f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
+        f"clip_z={args.clip_z}",
         flush=True,
     )
 
@@ -296,13 +562,22 @@ def main():
         bits=args.bits,
         activation_bits=args.activation_bits,
         sw_scale=args.sw_scale,
+        restore_neighborhood=args.restore_neighborhood,
+        quant_granularity=args.quant_granularity,
+        block_rows=args.block_rows,
+        block_cols=args.block_cols,
+        clip_z=args.clip_z,
     )
 
     print(f"Protected values: {len(protected)}", flush=True)
     print(f"Activation hooks: {len(activation_handles)}", flush=True)
 
     print(f"Loading dataset={args.dataset}, split={args.split}, limit={args.limit}", flush=True)
-    texts = load_texts(args.dataset, args.split, args.limit)
+    texts = load_texts(
+        dataset=args.dataset,
+        split=args.split,
+        limit=args.limit,
+    )
 
     metrics = evaluate_ppl(
         model=model,
@@ -310,6 +585,18 @@ def main():
         texts=texts,
         max_length=args.max_length,
     )
+
+    protected_summary = [
+        {
+            "layer": int(x["layer"]),
+            "center_row": int(x["center_row"]),
+            "center_col": int(x["center_col"]),
+            "row": int(x["row"]),
+            "col": int(x["col"]),
+            "is_center": bool(x["is_center"]),
+        }
+        for x in protected
+    ]
 
     result = {
         "benchmark": "perplexity",
@@ -320,7 +607,13 @@ def main():
         "bits": args.bits,
         "activation_bits": args.activation_bits,
         "sw_scale": args.sw_scale,
+        "restore_neighborhood": args.restore_neighborhood,
+        "quant_granularity": args.quant_granularity,
+        "block_rows": args.block_rows,
+        "block_cols": args.block_cols,
+        "clip_z": args.clip_z,
         "num_protected_values": len(protected),
+        "protected_values": protected_summary,
         "num_activation_hooks": len(activation_handles),
         "dtype": args.dtype,
         "split": args.split,

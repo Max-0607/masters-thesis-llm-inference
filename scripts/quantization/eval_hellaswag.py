@@ -123,24 +123,37 @@ def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]) -> torch
 
 @torch.no_grad()
 def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int) -> torch.Tensor:
+    """
+    Asymmetric min-max RTN quantization:
+    Q(W) = round((W - min(W)) / delta)
+    W_q = Q(W) * delta + min(W)
+    """
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
     orig_dtype = w.dtype
     w_float = w.float()
 
-    qmin = -(2 ** (n_bits - 1))
-    qmax = (2 ** (n_bits - 1)) - 1
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
 
-    max_abs = w_float.abs().amax()
+    w_min = w_float.min()
+    w_max = w_float.max()
 
-    if max_abs.item() == 0:
+    if (w_max - w_min).item() == 0:
         return w_float.to(orig_dtype)
 
-    scale = max_abs / qmax
-    q = torch.clamp(torch.round(w_float / scale), qmin, qmax)
+    delta = (w_max - w_min) / qmax
 
-    return (q * scale).to(orig_dtype)
+    q = torch.clamp(
+        torch.round((w_float - w_min) / delta),
+        qmin,
+        qmax,
+    )
+
+    w_dequant = q * delta + w_min
+
+    return w_dequant.to(orig_dtype)
 
 
 @torch.no_grad()
@@ -150,6 +163,10 @@ def uniform_quantize_weight_tensor_blockwise_2d(
     block_rows: int = 128,
     block_cols: int = 128,
 ) -> torch.Tensor:
+    """
+    Blockwise asymmetric min-max RTN quantization.
+    Each 2D block gets its own min/max range.
+    """
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
@@ -163,8 +180,8 @@ def uniform_quantize_weight_tensor_blockwise_2d(
     w_float = w.float()
     out = torch.empty_like(w_float)
 
-    qmin = -(2 ** (n_bits - 1))
-    qmax = (2 ** (n_bits - 1)) - 1
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
 
     n_rows, n_cols = w_float.shape
 
@@ -173,16 +190,25 @@ def uniform_quantize_weight_tensor_blockwise_2d(
 
         for c0 in range(0, n_cols, block_cols):
             c1 = min(c0 + block_cols, n_cols)
-            block = w_float[r0:r1, c0:c1]
-            max_abs = block.abs().amax()
 
-            if max_abs.item() == 0:
+            block = w_float[r0:r1, c0:c1]
+
+            b_min = block.min()
+            b_max = block.max()
+
+            if (b_max - b_min).item() == 0:
                 out[r0:r1, c0:c1] = block
                 continue
 
-            scale = max_abs / qmax
-            q = torch.clamp(torch.round(block / scale), qmin, qmax)
-            out[r0:r1, c0:c1] = q * scale
+            delta = (b_max - b_min) / qmax
+
+            q = torch.clamp(
+                torch.round((block - b_min) / delta),
+                qmin,
+                qmax,
+            )
+
+            out[r0:r1, c0:c1] = q * delta + b_min
 
     return out.to(orig_dtype)
 
@@ -221,15 +247,23 @@ def apply_weight_quantization(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ):
-    for name, param in model.named_parameters():
-        if "weight" not in name:
+    quantized_modules = 0
+    skipped_modules = 0
+
+    for module_name, module in model.named_modules():
+        if not isinstance(module, nn.Linear):
             continue
 
-        if param.ndim < 2:
+        if "lm_head" in module_name:
+            skipped_modules += 1
+            continue
+
+        if "embed" in module_name:
+            skipped_modules += 1
             continue
 
         q_weight = quantize_parameter(
-            param.data,
+            module.weight.data,
             n_bits=n_bits,
             quant_granularity=quant_granularity,
             block_rows=block_rows,
@@ -237,7 +271,14 @@ def apply_weight_quantization(
             clip_z=clip_z,
         )
 
-        param.data.copy_(q_weight)
+        module.weight.data.copy_(q_weight)
+        quantized_modules += 1
+
+    print(
+        f"Weight quantization done: quantized Linear modules={quantized_modules}, "
+        f"skipped Linear modules={skipped_modules}",
+        flush=True,
+    )
 
     return model
 

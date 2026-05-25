@@ -58,25 +58,31 @@ def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str
 
 
 @torch.no_grad()
-def uniform_quantize_activation_tensor(x: torch.Tensor, n_bits: int) -> torch.Tensor:
+def uniform_quantize_weight_tensor(w: torch.Tensor, n_bits: int) -> torch.Tensor:
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
-    if not torch.is_floating_point(x):
-        return x
+    orig_dtype = w.dtype
+    w_float = w.float()
 
-    orig_dtype = x.dtype
-    x_float = x.float()
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
 
-    qmin = -(2 ** (n_bits - 1))
-    qmax = (2 ** (n_bits - 1)) - 1
+    w_min = w_float.min()
+    w_max = w_float.max()
 
-    max_abs = x_float.abs().amax(dim=-1, keepdim=True)
-    scale = max_abs / qmax
-    scale = torch.where(scale == 0, torch.ones_like(scale), scale)
+    if (w_max - w_min).item() == 0:
+        return w_float.to(orig_dtype)
 
-    q = torch.clamp(torch.round(x_float / scale), qmin, qmax)
-    return (q * scale).to(orig_dtype)
+    delta = (w_max - w_min) / qmax
+
+    q = torch.clamp(
+        torch.round((w_float - w_min) / delta),
+        qmin,
+        qmax,
+    )
+
+    return (q * delta + w_min).to(orig_dtype)
 
 
 def add_activation_quant_hooks(model, n_bits: int):
@@ -148,6 +154,7 @@ def uniform_quantize_weight_tensor_blockwise_2d(
     block_rows: int = 128,
     block_cols: int = 128,
 ) -> torch.Tensor:
+
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
@@ -159,10 +166,11 @@ def uniform_quantize_weight_tensor_blockwise_2d(
 
     orig_dtype = w.dtype
     w_float = w.float()
+
     out = torch.empty_like(w_float)
 
-    qmin = -(2 ** (n_bits - 1))
-    qmax = (2 ** (n_bits - 1)) - 1
+    qmin = 0
+    qmax = (2 ** n_bits) - 1
 
     n_rows, n_cols = w_float.shape
 
@@ -173,15 +181,23 @@ def uniform_quantize_weight_tensor_blockwise_2d(
             c1 = min(c0 + block_cols, n_cols)
 
             block = w_float[r0:r1, c0:c1]
-            max_abs = block.abs().amax()
 
-            if max_abs.item() == 0:
+            b_min = block.min()
+            b_max = block.max()
+
+            if (b_max - b_min).item() == 0:
                 out[r0:r1, c0:c1] = block
                 continue
 
-            scale = max_abs / qmax
-            q = torch.clamp(torch.round(block / scale), qmin, qmax)
-            out[r0:r1, c0:c1] = q * scale
+            delta = (b_max - b_min) / qmax
+
+            q = torch.clamp(
+                torch.round((block - b_min) / delta),
+                qmin,
+                qmax,
+            )
+
+            out[r0:r1, c0:c1] = q * delta + b_min
 
     return out.to(orig_dtype)
 
@@ -220,15 +236,24 @@ def apply_weight_quantization(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ):
-    for name, param in model.named_parameters():
-        if "weight" not in name:
+    quantized_modules = 0
+    skipped_modules = 0
+
+    for module_name, module in model.named_modules():
+
+        if not isinstance(module, nn.Linear):
             continue
 
-        if param.ndim < 2:
+        if "lm_head" in module_name:
+            skipped_modules += 1
+            continue
+
+        if "embed" in module_name:
+            skipped_modules += 1
             continue
 
         q_weight = quantize_parameter(
-            param.data,
+            module.weight.data,
             n_bits=n_bits,
             quant_granularity=quant_granularity,
             block_rows=block_rows,
@@ -236,7 +261,15 @@ def apply_weight_quantization(
             clip_z=clip_z,
         )
 
-        param.data.copy_(q_weight)
+        module.weight.data.copy_(q_weight)
+
+        quantized_modules += 1
+
+    print(
+        f"Weight quantization done: quantized Linear modules={quantized_modules}, "
+        f"skipped Linear modules={skipped_modules}",
+        flush=True,
+    )
 
     return model
 
