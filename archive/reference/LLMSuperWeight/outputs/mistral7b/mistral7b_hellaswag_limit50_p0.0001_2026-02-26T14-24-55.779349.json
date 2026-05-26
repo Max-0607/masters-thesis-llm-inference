@@ -1,0 +1,139 @@
+{
+  "results": {
+    "hellaswag": {
+      "name": "hellaswag",
+      "alias": "hellaswag",
+      "sample_len": 50,
+      "acc,none": 0.26,
+      "acc_stderr,none": 0.06266203485560373,
+      "acc_norm,none": 0.28,
+      "acc_norm_stderr,none": 0.06414269805898185
+    }
+  },
+  "group_subtasks": {},
+  "configs": {
+    "hellaswag": {
+      "task": "hellaswag",
+      "dataset_path": "Rowan/hellaswag",
+      "training_split": "train",
+      "validation_split": "validation",
+      "process_docs": "def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:\n    def _process_doc(doc):\n        ctx = doc[\"ctx_a\"] + \" \" + doc[\"ctx_b\"].capitalize()\n        out_doc = {\n            \"query\": preprocess(doc[\"activity_label\"] + \": \" + ctx),\n            \"choices\": [preprocess(ending) for ending in doc[\"endings\"]],\n            \"gold\": int(doc[\"label\"]),\n        }\n        return out_doc\n\n    return dataset.map(_process_doc)\n",
+      "doc_to_text": "{{query}}",
+      "doc_to_target": "{{label}}",
+      "unsafe_code": false,
+      "doc_to_choice": "choices",
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "fewshot_config": {
+        "sampler": "default",
+        "split": null,
+        "process_docs": "<function process_docs at 0x7021d0bad080>",
+        "fewshot_indices": null,
+        "samples": null,
+        "doc_to_text": "{{query}}",
+        "doc_to_choice": "choices",
+        "doc_to_target": "{{label}}",
+        "gen_prefix": null,
+        "fewshot_delimiter": "\n\n",
+        "target_delimiter": " "
+      },
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "acc",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "acc_norm",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "multiple_choice",
+      "repeats": 1,
+      "should_decontaminate": false,
+      "metadata": {
+        "version": 1.0,
+        "pretrained": "mistralai/Mistral-7B-v0.1",
+        "load_in_8bit": true,
+        "outlier_method": "search_percentage_tensor_percentage_0.0001",
+        "layers": "0-31",
+        "config_source": "/home/mknell/masters-thesis-llm-inference/LLMSuperWeight/venv/lib/python3.13/site-packages/lm_eval/tasks/hellaswag/hellaswag.yaml"
+      }
+    }
+  },
+  "versions": {
+    "hellaswag": 1.0
+  },
+  "n-shot": {
+    "hellaswag": 0
+  },
+  "higher_is_better": {
+    "hellaswag": {
+      "acc": true,
+      "acc_norm": true
+    }
+  },
+  "n-samples": {
+    "hellaswag": {
+      "original": 10042,
+      "effective": 50
+    }
+  },
+  "config": {
+    "model": "hf-outlier",
+    "model_args": {
+      "pretrained": "mistralai/Mistral-7B-v0.1",
+      "load_in_8bit": true,
+      "outlier_method": "search_percentage_tensor_percentage_0.0001",
+      "layers": "0-31"
+    },
+    "model_num_parameters": 7241732096,
+    "model_dtype": "torch.float16",
+    "model_revision": "main",
+    "model_sha": "27d67f1b5f57dc0953326b2601d68371d40ea8da",
+    "batch_size": 1,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "use_cache": null,
+    "limit": 50.0,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": {},
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": "232e4ee",
+  "date": 1772112188.6846106,
+  "pretty_env_info": "PyTorch version: 2.7.1+cu118\nIs debug build: False\nCUDA used to build PyTorch: 11.8\nROCM used to build PyTorch: N/A\n\nOS: Ubuntu 24.04.3 LTS (x86_64)\nGCC version: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nClang version: Could not collect\nCMake version: version 3.28.3\nLibc version: glibc-2.39\n\nPython version: 3.13.12 | packaged by conda-forge | (main, Feb  5 2026, 05:53:46) [GCC 14.3.0] (64-bit runtime)\nPython platform: Linux-6.8.0-85-generic-x86_64-with-glibc2.39\nIs CUDA available: True\nCUDA runtime version: 13.1.115\nCUDA_MODULE_LOADING set to: LAZY\nGPU models and configuration: \nGPU 0: NVIDIA H100 PCIe\n  MIG 1g.10gb     Device  0:\n\nNvidia driver version: 570.124.06\ncuDNN version: Could not collect\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nArchitecture:                         x86_64\nCPU op-mode(s):                       32-bit, 64-bit\nAddress sizes:                        52 bits physical, 57 bits virtual\nByte Order:                           Little Endian\nCPU(s):                               56\nOn-line CPU(s) list:                  0-55\nVendor ID:                            AuthenticAMD\nModel name:                           AMD EPYC 9124 16-Core Processor\nCPU family:                           25\nModel:                                17\nThread(s) per core:                   1\nCore(s) per socket:                   28\nSocket(s):                            2\nStepping:                             1\nBogoMIPS:                             5999.99\nFlags:                                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw perfctr_core ssbd ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx512_bf16 clzero xsaveerptr wbnoinvd arat npt lbrv nrip_save tsc_scale vmcb_clean flushbyasid pausefilter pfthreshold v_vmsave_vmload vgif vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid fsrm flush_l1d arch_capabilities\nVirtualization:                       AMD-V\nHypervisor vendor:                    KVM\nVirtualization type:                  full\nL1d cache:                            3.5 MiB (56 instances)\nL1i cache:                            3.5 MiB (56 instances)\nL2 cache:                             28 MiB (56 instances)\nL3 cache:                             896 MiB (56 instances)\nNUMA node(s):                         2\nNUMA node0 CPU(s):                    0-27\nNUMA node1 CPU(s):                    28-55\nVulnerability Gather data sampling:   Not affected\nVulnerability Itlb multihit:          Not affected\nVulnerability L1tf:                   Not affected\nVulnerability Mds:                    Not affected\nVulnerability Meltdown:               Not affected\nVulnerability Mmio stale data:        Not affected\nVulnerability Reg file data sampling: Not affected\nVulnerability Retbleed:               Not affected\nVulnerability Spec rstack overflow:   Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:      Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:             Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:             Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                  Not affected\nVulnerability Tsx async abort:        Not affected\n\nVersions of relevant libraries:\n[pip3] numpy==2.3.5\n[pip3] nvidia-cublas-cu11==11.11.3.6\n[pip3] nvidia-cuda-cupti-cu11==11.8.87\n[pip3] nvidia-cuda-nvrtc-cu11==11.8.89\n[pip3] nvidia-cuda-runtime-cu11==11.8.89\n[pip3] nvidia-cudnn-cu11==9.1.0.70\n[pip3] nvidia-cufft-cu11==10.9.0.58\n[pip3] nvidia-curand-cu11==10.3.0.86\n[pip3] nvidia-cusolver-cu11==11.4.1.48\n[pip3] nvidia-cusparse-cu11==11.7.5.86\n[pip3] nvidia-nccl-cu11==2.21.5\n[pip3] nvidia-nvtx-cu11==11.8.86\n[pip3] torch==2.7.1+cu118\n[pip3] torchaudio==2.7.1+cu118\n[pip3] torchvision==0.22.1+cu118\n[pip3] triton==3.3.1\n[conda] No relevant packages",
+  "transformers_version": "4.46.3",
+  "lm_eval_version": "0.4.12.dev0",
+  "upper_git_hash": "1c8c7643d7f17502ac296f23aaea824c52a48e2b",
+  "tokenizer_pad_token": [
+    "<unk>",
+    "0"
+  ],
+  "tokenizer_eos_token": [
+    "</s>",
+    "2"
+  ],
+  "tokenizer_bos_token": [
+    "<s>",
+    "1"
+  ],
+  "eot_token_id": 2,
+  "max_length": 32768,
+  "task_hashes": {},
+  "model_source": "hf-outlier",
+  "model_name": "mistralai/Mistral-7B-v0.1",
+  "model_name_sanitized": "mistralai__Mistral-7B-v0.1",
+  "system_instruction": null,
+  "system_instruction_sha": null,
+  "fewshot_as_multiturn": null,
+  "chat_template": null,
+  "chat_template_sha": null,
+  "total_evaluation_time_seconds": "111.99343422427773"
+}
