@@ -50,3 +50,48 @@ def print_superweight_gradients(model, superweights, title: str) -> None:
         print(
             f"layer={layer}, row={row}, col={col}, grad={grad_value}"
         )
+
+def main() -> None:
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    model_name = "allenai/OLMo-1B-0724-hf"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    print(f"Loading model: {model_name}")
+    print(f"Device: {device}")
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+    ).to(device)
+
+    model.train()
+
+    text = "The capital of France is"
+    inputs = tokenizer(text, return_tensors="pt").to(device)
+
+    outputs = model(**inputs, labels=inputs["input_ids"])
+    loss = outputs.loss
+
+    print(f"Loss: {loss.item():.4f}")
+
+    loss.backward()
+
+    print_superweight_gradients(
+        model,
+        OLMO1B_SUPERWEIGHTS,
+        title="Before gradient zeroing",
+    )
+
+    zero_superweight_gradients(model, OLMO1B_SUPERWEIGHTS)
+
+    print_superweight_gradients(
+        model,
+        OLMO1B_SUPERWEIGHTS,
+        title="After gradient zeroing",
+    )
+
+
+if __name__ == "__main__":
+    main()
