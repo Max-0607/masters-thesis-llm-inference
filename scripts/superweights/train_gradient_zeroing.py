@@ -10,17 +10,25 @@ OLMO1B_SUPERWEIGHTS = [
 
 
 def get_olmo_down_proj_weight(model, layer: int) -> torch.nn.Parameter:
-    """
-    Returns the down projection weight for OLMo-style HuggingFace models.
-    """
     return model.model.layers[layer].mlp.down_proj.weight
 
 
+def get_superweight_values(model, superweights) -> dict[str, float]:
+    values = {}
+
+    for sw in superweights:
+        layer = sw["layer"]
+        row = sw["row"]
+        col = sw["col"]
+
+        weight = get_olmo_down_proj_weight(model, layer)
+        key = f"layer{layer}_row{row}_col{col}"
+        values[key] = weight.data[row, col].float().item()
+
+    return values
+
+
 def zero_superweight_gradients(model, superweights) -> None:
-    """
-    Sets gradients of selected superweight coordinates to zero.
-    Call this after loss.backward() and before optimizer.step().
-    """
     for sw in superweights:
         layer = sw["layer"]
         row = sw["row"]
@@ -50,9 +58,7 @@ def print_superweight_gradients(model, superweights, title: str) -> None:
         if weight.grad is not None:
             grad_value = weight.grad[row, col].item()
 
-        print(
-            f"layer={layer}, row={row}, col={col}, grad={grad_value}"
-        )
+        print(f"layer={layer}, row={row}, col={col}, grad={grad_value}")
 
 
 def main() -> None:
@@ -89,6 +95,12 @@ def main() -> None:
         "Gradient zeroing prevents selected weights from updating.",
     ]
 
+    initial_values = get_superweight_values(model, OLMO1B_SUPERWEIGHTS)
+
+    print("\nInitial superweight values")
+    for key, value in initial_values.items():
+        print(f"{key}: {value}")
+
     for step in range(max_steps):
         text = texts[step % len(texts)]
 
@@ -105,7 +117,6 @@ def main() -> None:
         )
 
         loss = outputs.loss
-
         loss.backward()
 
         print(f"\n{'=' * 80}")
@@ -130,6 +141,17 @@ def main() -> None:
         )
 
         optimizer.step()
+
+    final_values = get_superweight_values(model, OLMO1B_SUPERWEIGHTS)
+
+    print("\nFinal superweight values")
+    for key, value in final_values.items():
+        print(f"{key}: {value}")
+
+    print("\nSuperweight deltas")
+    for key in initial_values:
+        delta = final_values[key] - initial_values[key]
+        print(f"{key}: delta={delta}")
 
     print("\nMini training finished.")
 
