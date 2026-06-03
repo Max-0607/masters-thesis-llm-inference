@@ -1,0 +1,22 @@
+model:
+  name: allenai/OLMo-1B-0724-hf
+
+experiment:
+  name: olmo1b_gradient_zeroing
+  output_dir: results/superweights/gradient_zeroing/olmo1b
+
+superweights:
+  - layer: 1
+    module: mlp.down_proj
+    row: 1764
+    col: 1710
+  - layer: 1
+    module: mlp.down_proj
+    row: 1764
+    col: 8041
+
+training:
+  max_steps: 10
+  learning_rate: 0.00001
+  batch_size: 1
+  max_length: 128
