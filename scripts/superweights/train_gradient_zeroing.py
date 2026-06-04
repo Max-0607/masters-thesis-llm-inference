@@ -6,20 +6,48 @@ from pathlib import Path
 
 import torch
 from datasets import load_dataset
+from src.hooks import get_nested_attr
 
 
-SUPERWEIGHTS = {
-    "olmo1b": [
-        {"layer": 1, "row": 1764, "col": 1710},
-        {"layer": 1, "row": 1764, "col": 8041},
-    ],
-    "olmo7b": [
-        {"layer": 1, "row": 269, "col": 7467},
-        {"layer": 2, "row": 269, "col": 8275},
-        {"layer": 7, "row": 269, "col": 453},
-        {"layer": 24, "row": 269, "col": 2300},
-    ],
+MODEL_SPECS = {
+    "mistral-7b": {
+        "hf_name": "mistralai/Mistral-7B-v0.1",
+        "layer_path": "model.layers",
+        "down_proj_path": "mlp.down_proj",
+        "superweights": [(1, 2070, 7310)],
+    },
+    "llama-7b": {
+        "hf_name": "huggyllama/llama-7b",
+        "layer_path": "model.layers",
+        "down_proj_path": "mlp.down_proj",
+        "superweights": [(2, 3968, 7003)],
+    },
+    "olmo1b": {
+        "hf_name": "allenai/OLMo-1B-0724-hf",
+        "layer_path": "model.layers",
+        "down_proj_path": "mlp.down_proj",
+        "superweights": [(1, 1764, 1710), (1, 1764, 8041)],
+    },
+    "olmo7b": {
+        "hf_name": "allenai/OLMo-7B-0724-hf",
+        "layer_path": "model.layers",
+        "down_proj_path": "mlp.down_proj",
+        "superweights": [(1, 269, 7467), (2, 269, 8275), (7, 269, 453), (24, 269, 2300)],
+    },
+    "phi3-mini": {
+        "hf_name": "microsoft/Phi-3-mini-4k-instruct",
+        "layer_path": "model.layers",
+        "down_proj_path": "mlp.down_proj",
+        "superweights": [
+            (2, 525, 808), (2, 1693, 808), (2, 1113, 808),
+            (4, 525, 2723), (4, 1113, 2723), (4, 1693, 2723),
+        ],
+    },
 }
+
+
+def to_sw_dicts(tuples):
+    return [{"layer": l, "row": r, "col": c} for l, r, c in tuples]
 
 
 def load_wikitext_texts(split: str, limit: int) -> list[str]:
@@ -38,74 +66,76 @@ def get_input_device(model):
     return next(model.parameters()).device
 
 
-def get_olmo_down_proj_weight(model, layer: int):
-    return model.model.layers[layer].mlp.down_proj.weight
+def get_layers(model, layer_path: str):
+    return get_nested_attr(model, layer_path)
 
 
-def get_superweight_values(model, superweights) -> dict[str, float]:
+def get_down_proj_weight(model, layer: int, layer_path: str, down_proj_path: str):
+    layers = get_layers(model, layer_path)
+    module = get_nested_attr(layers[layer], down_proj_path)
+    return module.weight
+
+
+def get_superweight_values(model, superweights, layer_path, down_proj_path):
     values = {}
     for sw in superweights:
-        weight = get_olmo_down_proj_weight(model, sw["layer"])
+        weight = get_down_proj_weight(model, sw["layer"], layer_path, down_proj_path)
         key = f"layer{sw['layer']}_row{sw['row']}_col{sw['col']}"
         values[key] = weight.data[sw["row"], sw["col"]].detach().float().cpu().item()
     return values
 
 
-def get_superweight_gradients(model, superweights) -> dict[str, float | None]:
+def get_superweight_gradients(model, superweights, layer_path, down_proj_path):
     gradients = {}
     for sw in superweights:
-        weight = get_olmo_down_proj_weight(model, sw["layer"])
+        weight = get_down_proj_weight(model, sw["layer"], layer_path, down_proj_path)
         key = f"layer{sw['layer']}_row{sw['row']}_col{sw['col']}"
-        if weight.grad is None:
-            gradients[key] = None
-        else:
-            gradients[key] = weight.grad[sw["row"], sw["col"]].detach().float().cpu().item()
+        gradients[key] = None if weight.grad is None else weight.grad[sw["row"], sw["col"]].detach().float().cpu().item()
     return gradients
 
 
-def zero_superweight_gradients(model, superweights) -> None:
+def zero_superweight_gradients(model, superweights, layer_path, down_proj_path):
     for sw in superweights:
-        weight = get_olmo_down_proj_weight(model, sw["layer"])
+        weight = get_down_proj_weight(model, sw["layer"], layer_path, down_proj_path)
         if weight.grad is None:
             raise RuntimeError(f"No gradient found for layer {sw['layer']} down_proj.weight")
         weight.grad[sw["row"], sw["col"]] = 0.0
 
 
-def save_superweight_values(model, superweights):
+def save_superweight_values(model, superweights, layer_path, down_proj_path):
     saved = {}
     for sw in superweights:
-        layer, row, col = sw["layer"], sw["row"], sw["col"]
-        weight = get_olmo_down_proj_weight(model, layer)
-        saved[(layer, row, col)] = weight.data[row, col].detach().clone()
+        weight = get_down_proj_weight(model, sw["layer"], layer_path, down_proj_path)
+        saved[(sw["layer"], sw["row"], sw["col"])] = weight.data[sw["row"], sw["col"]].detach().clone()
     return saved
 
 
-def restore_superweight_values(model, saved_values) -> None:
+def restore_superweight_values(model, saved_values, layer_path, down_proj_path):
     with torch.no_grad():
         for (layer, row, col), value in saved_values.items():
-            weight = get_olmo_down_proj_weight(model, layer)
+            weight = get_down_proj_weight(model, layer, layer_path, down_proj_path)
             weight.data[row, col] = value.to(weight.device)
 
 
-def maybe_dropout_superweights(model, superweights, dropout_prob: float) -> bool:
+def maybe_dropout_superweights(model, superweights, dropout_prob, layer_path, down_proj_path):
     if torch.rand(1).item() >= dropout_prob:
         return False
-
     with torch.no_grad():
         for sw in superweights:
-            weight = get_olmo_down_proj_weight(model, sw["layer"])
+            weight = get_down_proj_weight(model, sw["layer"], layer_path, down_proj_path)
             weight.data[sw["row"], sw["col"]] = 0.0
     return True
 
 
-def freeze_all_except_superweight_layers(model, superweights) -> None:
+def freeze_all_except_superweight_layers(model, superweights, layer_path):
     layers_to_train = sorted({sw["layer"] for sw in superweights})
+    layers = get_layers(model, layer_path)
 
     for param in model.parameters():
         param.requires_grad = False
 
     for layer_idx in layers_to_train:
-        for param in model.model.layers[layer_idx].parameters():
+        for param in layers[layer_idx].parameters():
             param.requires_grad = True
 
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -116,7 +146,7 @@ def freeze_all_except_superweight_layers(model, superweights) -> None:
     print(f"Trainable ratio: {trainable / total:.6f}")
 
 
-def compute_mean_loss(model, tokenizer, texts, max_length: int) -> float:
+def compute_mean_loss(model, tokenizer, texts, max_length):
     model.eval()
     losses = []
     input_device = get_input_device(model)
@@ -137,11 +167,11 @@ def compute_mean_loss(model, tokenizer, texts, max_length: int) -> float:
     return sum(losses) / len(losses)
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--model-type", choices=["olmo1b", "olmo7b"], required=True)
-    parser.add_argument("--model-name", type=str, required=True)
+    parser.add_argument("--model-key", choices=list(MODEL_SPECS.keys()), required=True)
+    parser.add_argument("--model-name", type=str, default=None)
     parser.add_argument("--mode", choices=["baseline", "grad_zero", "sw_dropout"], required=True)
 
     parser.add_argument("--max-steps", type=int, default=100)
@@ -158,20 +188,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
+def main():
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     args = parse_args()
-    superweights = SUPERWEIGHTS[args.model_type]
+    spec = MODEL_SPECS[args.model_key]
 
-    print(f"Model type: {args.model_type}")
-    print(f"Loading model: {args.model_name}")
+    model_name = args.model_name or spec["hf_name"]
+    layer_path = spec["layer_path"]
+    down_proj_path = spec["down_proj_path"]
+    superweights = to_sw_dicts(spec["superweights"])
+
+    print(f"Model key: {args.model_key}")
+    print(f"Loading model: {model_name}")
     print(f"Mode: {args.mode}")
     print(f"Max steps: {args.max_steps}")
     print(f"Learning rate: {args.learning_rate}")
+    print(f"SW dropout prob: {args.sw_dropout_prob}")
     print(f"Train only SW layers: {args.train_only_superweight_layers}")
 
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
@@ -179,7 +215,7 @@ def main() -> None:
     eval_texts = load_wikitext_texts("validation", args.eval_samples)
 
     model = AutoModelForCausalLM.from_pretrained(
-        args.model_name,
+        model_name,
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
         device_map="auto" if torch.cuda.is_available() else None,
         trust_remote_code=True,
@@ -190,14 +226,14 @@ def main() -> None:
     print(f"Input device: {input_device}")
 
     if args.train_only_superweight_layers:
-        freeze_all_except_superweight_layers(model, superweights)
+        freeze_all_except_superweight_layers(model, superweights, layer_path)
 
     optimizer = torch.optim.SGD(
         [p for p in model.parameters() if p.requires_grad],
         lr=args.learning_rate,
     )
 
-    initial_values = get_superweight_values(model, superweights)
+    initial_values = get_superweight_values(model, superweights, layer_path, down_proj_path)
 
     print("\nInitial superweight values")
     for key, value in initial_values.items():
@@ -229,28 +265,30 @@ def main() -> None:
         dropout_applied = False
 
         if args.mode == "sw_dropout":
-            saved_sw_values = save_superweight_values(model, superweights)
+            saved_sw_values = save_superweight_values(model, superweights, layer_path, down_proj_path)
             dropout_applied = maybe_dropout_superweights(
                 model,
                 superweights,
                 args.sw_dropout_prob,
+                layer_path,
+                down_proj_path,
             )
 
         outputs = model(**inputs, labels=inputs["input_ids"])
         loss = outputs.loss
         loss.backward()
 
-        gradients_before = get_superweight_gradients(model, superweights)
+        gradients_before = get_superweight_gradients(model, superweights, layer_path, down_proj_path)
 
         if args.mode == "grad_zero":
-            zero_superweight_gradients(model, superweights)
+            zero_superweight_gradients(model, superweights, layer_path, down_proj_path)
 
-        gradients_after = get_superweight_gradients(model, superweights)
+        gradients_after = get_superweight_gradients(model, superweights, layer_path, down_proj_path)
 
         optimizer.step()
 
         if args.mode == "sw_dropout" and saved_sw_values is not None:
-            restore_superweight_values(model, saved_sw_values)
+            restore_superweight_values(model, saved_sw_values, layer_path, down_proj_path)
 
         if (step + 1) % 10 == 0 or step == 0:
             print(
@@ -269,7 +307,7 @@ def main() -> None:
             }
         )
 
-    final_values = get_superweight_values(model, superweights)
+    final_values = get_superweight_values(model, superweights, layer_path, down_proj_path)
     deltas = {key: final_values[key] - initial_values[key] for key in initial_values}
 
     loss_after_training = compute_mean_loss(
@@ -281,8 +319,8 @@ def main() -> None:
     print(f"\nEval loss after training: {loss_after_training:.4f}")
 
     results = {
-        "model": args.model_name,
-        "model_type": args.model_type,
+        "model": model_name,
+        "model_key": args.model_key,
         "mode": args.mode,
         "max_steps": args.max_steps,
         "learning_rate": args.learning_rate,
@@ -293,6 +331,8 @@ def main() -> None:
         "sw_dropout_prob": args.sw_dropout_prob,
         "train_only_superweight_layers": args.train_only_superweight_layers,
         "sw_dropout_count": sum(1 for x in step_logs if x["sw_dropout_applied"]),
+        "layer_path": layer_path,
+        "down_proj_path": down_proj_path,
         "superweights": superweights,
         "initial_values": initial_values,
         "final_values": final_values,

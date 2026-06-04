@@ -1,0 +1,54 @@
+{
+  "model_key": "phi3-mini",
+  "model_path": "results/superweights/phi3mini/models/sw_dropout_p0_25_500steps",
+  "task": "hellaswag",
+  "limit": 100,
+  "ablate_superweights": true,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 2,
+      "row": 525,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1693,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1113,
+      "col": 808
+    },
+    {
+      "layer": 4,
+      "row": 525,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1113,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1693,
+      "col": 2723
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.53,
+        "acc_stderr": 0.05016135580465919,
+        "acc_norm": 0.67,
+        "acc_norm_stderr": 0.04725815626252609
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}
