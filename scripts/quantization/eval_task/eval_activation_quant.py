@@ -33,7 +33,7 @@ def load_eval_texts(dataset_name: str, split: str, limit: int) -> List[str]:
 
     if dataset_name == "c4":
         ds = load_dataset("allenai/c4", "en", split="validation", streaming=True)
-    
+
         texts = []
         for row in ds:
             text = row.get("text", "")
@@ -41,7 +41,7 @@ def load_eval_texts(dataset_name: str, split: str, limit: int) -> List[str]:
                 texts.append(text)
             if len(texts) >= limit:
                 break
-    
+
         return texts
 
     raise ValueError(f"Unknown dataset_name: {dataset_name}")
@@ -79,6 +79,7 @@ def build_quant_hook(model, model_key: str, mode: str, bits: int):
         )
 
     raise ValueError(f"Unsupported mode: {mode}")
+
 
 def evaluate_perplexity(
     model,
@@ -141,12 +142,37 @@ def evaluate_perplexity(
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-key",type=str,required=True,choices=sorted(MODEL_CONFIGS.keys()),)
-    parser.add_argument("--mode", type=str, default="fp16", choices=["fp16", "naive", "super"])
-    parser.add_argument("--bits", type=int, default=8)
-    parser.add_argument("--dtype", type=str, default="float16", choices=["float16", "bfloat16", "float32"])
 
-    parser.add_argument("--dataset", type=str, default="wikitext2", choices=["wikitext2", "c4"])
+    parser.add_argument(
+        "--model-key",
+        type=str,
+        required=True,
+        choices=sorted(MODEL_CONFIGS.keys()),
+    )
+
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="fp16",
+        choices=["fp16", "naive", "super"]
+    )
+
+    parser.add_argument("--bits", type=int, default=8)
+
+    parser.add_argument(
+        "--dtype",
+        type=str,
+        default="float16",
+        choices=["float16", "bfloat16", "float32"]
+    )
+
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="wikitext2",
+        choices=["wikitext2", "c4"]
+    )
+
     parser.add_argument("--split", type=str, default="validation")
     parser.add_argument("--limit", type=int, default=128)
     parser.add_argument("--max-length", type=int, default=512)
@@ -161,25 +187,37 @@ def main():
 
     model_cfg = MODEL_CONFIGS[args.model_key]
     model_id = model_cfg["hf_name"]
+
     torch_dtype = resolve_torch_dtype(args.dtype)
 
     print(f"Loading tokenizer: {model_id}")
-    tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_id,
+        trust_remote_code=True
+    )
 
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
         tokenizer.pad_token = tokenizer.eos_token
 
     print(f"Loading model: {model_id} ({args.dtype})")
+
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch_dtype,
         trust_remote_code=True,
         device_map="auto",
     )
+
     model.eval()
 
     print(f"Loading dataset: {args.dataset} [{args.split}] limit={args.limit}")
-    texts = load_eval_texts(args.dataset, args.split, args.limit)
+
+    texts = load_eval_texts(
+        args.dataset,
+        args.split,
+        args.limit
+    )
 
     quant_hook = build_quant_hook(
         model=model,
@@ -195,6 +233,7 @@ def main():
             texts=texts,
             max_length=args.max_length,
         )
+
     finally:
         if quant_hook is not None:
             quant_hook.remove()

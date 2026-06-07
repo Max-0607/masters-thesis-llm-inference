@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 from pathlib import Path
 
 import torch
@@ -122,10 +123,7 @@ class LoadedHFLM(BaseLM):
         return next(self.model.parameters()).device
 
     def tok_encode(self, string: str):
-        return self.tokenizer.encode(
-            string,
-            add_special_tokens=False,
-        )
+        return self.tokenizer.encode(string, add_special_tokens=False)
 
     def tok_decode(self, tokens):
         return self.tokenizer.decode(tokens)
@@ -133,16 +131,9 @@ class LoadedHFLM(BaseLM):
     def _model_call(self, inps):
         first_device = next(self.model.parameters()).device
         with torch.no_grad():
-            return self.model(
-                inps.to(first_device)
-            ).logits
+            return self.model(inps.to(first_device)).logits
 
-    def _model_generate(
-        self,
-        context,
-        max_length,
-        eos_token_id,
-    ):
+    def _model_generate(self, context, max_length, eos_token_id):
         first_device = next(self.model.parameters()).device
         return self.model.generate(
             context.to(first_device),
@@ -158,27 +149,81 @@ def get_down_proj_weight(model, layer: int, layer_path: str, down_proj_path: str
     return module.weight
 
 
-def ablate_superweights(model, superweights, layer_path, down_proj_path):
+def ablate_positions(model, positions, layer_path, down_proj_path):
     with torch.no_grad():
-        for sw in superweights:
+        for pos in positions:
             weight = get_down_proj_weight(
                 model=model,
-                layer=sw["layer"],
+                layer=pos["layer"],
                 layer_path=layer_path,
                 down_proj_path=down_proj_path,
             )
 
-            weight[
-                sw["row"],
-                sw["col"]
-            ] = 0.0
+            old_value = None
+            try:
+                old_value = float(
+                    weight[pos["row"], pos["col"]]
+                    .detach()
+                    .float()
+                    .cpu()
+                    .item()
+                )
+            except Exception:
+                old_value = None
+
+            weight[pos["row"], pos["col"]] = 0.0
+
+            pos["old_value"] = old_value
 
             print(
                 f"Ablated "
-                f"layer={sw['layer']} "
-                f"row={sw['row']} "
-                f"col={sw['col']}"
+                f"layer={pos['layer']} "
+                f"row={pos['row']} "
+                f"col={pos['col']} "
+                f"old={old_value}"
             )
+
+
+def sample_random_positions(model, superweights, layer_path, down_proj_path, seed: int):
+    rng = random.Random(seed)
+    sw_set = {
+        (sw["layer"], sw["row"], sw["col"])
+        for sw in superweights
+    }
+
+    random_positions = []
+
+    for sw in superweights:
+        layer = sw["layer"]
+        weight = get_down_proj_weight(
+            model=model,
+            layer=layer,
+            layer_path=layer_path,
+            down_proj_path=down_proj_path,
+        )
+
+        rows, cols = weight.shape
+
+        while True:
+            row = rng.randrange(rows)
+            col = rng.randrange(cols)
+            key = (layer, row, col)
+
+            if key not in sw_set and key not in {
+                (p["layer"], p["row"], p["col"])
+                for p in random_positions
+            }:
+                break
+
+        random_positions.append(
+            {
+                "layer": layer,
+                "row": row,
+                "col": col,
+            }
+        )
+
+    return random_positions
 
 
 def parse_args():
@@ -196,16 +241,8 @@ def parse_args():
         help="Model path/id. If omitted, MODEL_SPECS hf_name is used.",
     )
 
-    parser.add_argument(
-        "--task",
-        default="hellaswag",
-    )
-
-    parser.add_argument(
-        "--limit",
-        type=int,
-        default=500,
-    )
+    parser.add_argument("--task", default="hellaswag")
+    parser.add_argument("--limit", type=int, default=500)
 
     parser.add_argument(
         "--ablate-superweights",
@@ -213,15 +250,29 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--output-json",
-        required=True,
+        "--ablate-random",
+        action="store_true",
+        help="Ablate the same number of random weights as superweights.",
     )
+
+    parser.add_argument(
+        "--random-seed",
+        type=int,
+        default=42,
+    )
+
+    parser.add_argument("--output-json", required=True)
 
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+
+    if args.ablate_superweights and args.ablate_random:
+        raise ValueError(
+            "Use only one ablation mode: --ablate-superweights or --ablate-random"
+        )
 
     spec = MODEL_SPECS[args.model_key]
 
@@ -240,6 +291,8 @@ def main():
     print(f"Task: {args.task}")
     print(f"Limit: {args.limit}")
     print(f"Ablate superweights: {args.ablate_superweights}")
+    print(f"Ablate random: {args.ablate_random}")
+    print(f"Random seed: {args.random_seed}")
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_path,
@@ -266,22 +319,36 @@ def main():
 
     model.eval()
 
+    ablated_positions = []
+
     if args.ablate_superweights:
-        ablate_superweights(
+        ablated_positions = [dict(sw) for sw in superweights]
+        ablate_positions(
             model=model,
-            superweights=superweights,
+            positions=ablated_positions,
             layer_path=layer_path,
             down_proj_path=down_proj_path,
         )
 
-    lm = LoadedHFLM(
-        model=model,
-        tokenizer=tokenizer,
-    )
+    elif args.ablate_random:
+        ablated_positions = sample_random_positions(
+            model=model,
+            superweights=superweights,
+            layer_path=layer_path,
+            down_proj_path=down_proj_path,
+            seed=args.random_seed,
+        )
 
-    task_dict = tasks.get_task_dict(
-        [args.task]
-    )
+        ablate_positions(
+            model=model,
+            positions=ablated_positions,
+            layer_path=layer_path,
+            down_proj_path=down_proj_path,
+        )
+
+    lm = LoadedHFLM(model=model, tokenizer=tokenizer)
+
+    task_dict = tasks.get_task_dict([args.task])
 
     results = evaluator.evaluate(
         lm=lm,
@@ -295,18 +362,23 @@ def main():
         "model_path": model_path,
         "task": args.task,
         "limit": args.limit,
-        "ablate_superweights": args.ablate_superweights,
+        "ablation_mode": (
+            "superweights"
+            if args.ablate_superweights
+            else "random"
+            if args.ablate_random
+            else "none"
+        ),
+        "random_seed": args.random_seed if args.ablate_random else None,
         "layer_path": layer_path,
         "down_proj_path": down_proj_path,
         "superweights": superweights,
+        "ablated_positions": ablated_positions,
         "results": results,
     }
 
     output_path = Path(args.output_json)
-    output_path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output_path.write_text(
         json.dumps(out, indent=2),
@@ -314,13 +386,7 @@ def main():
     )
 
     print("\n=== RESULTS ===")
-    print(
-        json.dumps(
-            results["results"][args.task],
-            indent=2,
-        )
-    )
-
+    print(json.dumps(results["results"][args.task], indent=2))
     print(f"\nSaved to {output_path}")
 
 
