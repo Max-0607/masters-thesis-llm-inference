@@ -21,8 +21,26 @@ venv/
 .venv_awq/
 venv_awq/
 
-# AWQ repo / experiments
-awq/
+# AWQ large artifacts
+quantization/awq/models/
+quantization/awq/**/*.pt
+quantization/awq/**/*.pth
+quantization/awq/**/*.bin
+quantization/awq/**/*.safetensors
+
+# caches / build artifacts
+quantization/awq/**/__pycache__/
+quantization/awq/**/*.pyc
+quantization/awq/build/
+quantization/awq/dist/
+
+# AWQ demos / media
+quantization/awq/**/*.mp4
+quantization/awq/**/*.gif
+quantization/awq/**/examples/
+quantization/awq/tinychat/
+quantization/awq/olmo1b/olmo1b-w4-g128.pt4
+
 # HuggingFace / Models
 *.safetensors
 *.bin
@@ -30,9 +48,11 @@ awq/
 *.ckpt
 
 # Large outputs
-outputs/
-checkpoints/
 models/
+outputs/Ablated Models/
+outputs/scaled_models/
+outputs/task_heatmaps/
+outputs/Archive/
 
 # Jupyter checkpoints
 .ipynb_checkpoints/

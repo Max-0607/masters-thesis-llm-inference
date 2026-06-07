@@ -1,0 +1,1057 @@
+{
+  "benchmark": "xcopa",
+  "model_key": "olmo-1b",
+  "model_id": "allenai/OLMo-1B-0724-hf",
+  "mode": "super",
+  "bits": 4,
+  "activation_bits": null,
+  "sw_scale": 1.0,
+  "restore_neighborhood": "scalar",
+  "quant_granularity": "tensor",
+  "block_rows": 128,
+  "block_cols": 128,
+  "clip_z": 4.0,
+  "normalize_by_length": false,
+  "num_protected_values": 2,
+  "protected_values": [
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 1710,
+      "row": 1764,
+      "col": 1710,
+      "is_center": true
+    },
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 8041,
+      "row": 1764,
+      "col": 8041,
+      "is_center": true
+    }
+  ],
+  "num_activation_hooks": 0,
+  "dtype": "float16",
+  "language": "en",
+  "split": "validation",
+  "limit": 500,
+  "max_length": 256,
+  "num_examples": 100,
+  "accuracy": 0.66,
+  "num_correct": 66,
+  "per_question": {
+    "cause": {
+      "total": 52,
+      "correct": 30,
+      "accuracy": 0.5769230769230769
+    },
+    "effect": {
+      "total": 48,
+      "correct": 36,
+      "accuracy": 0.75
+    }
+  },
+  "predictions": [
+    {
+      "id": 0,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -34.39079284667969,
+      "score_choice2": -48.50086975097656,
+      "margin": 14.110076904296875
+    },
+    {
+      "id": 1,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -39.497718811035156,
+      "score_choice2": -23.13492202758789,
+      "margin": -16.362796783447266
+    },
+    {
+      "id": 2,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -33.479827880859375,
+      "score_choice2": -35.24586486816406,
+      "margin": 1.7660369873046875
+    },
+    {
+      "id": 3,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -77.99077606201172,
+      "score_choice2": -75.62025451660156,
+      "margin": -2.3705215454101562
+    },
+    {
+      "id": 4,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -37.90632629394531,
+      "score_choice2": -38.06894302368164,
+      "margin": 0.16261672973632812
+    },
+    {
+      "id": 5,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -46.64824676513672,
+      "score_choice2": -34.702491760253906,
+      "margin": -11.945755004882812
+    },
+    {
+      "id": 6,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -50.59303283691406,
+      "score_choice2": -29.0399169921875,
+      "margin": -21.553115844726562
+    },
+    {
+      "id": 7,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -22.344345092773438,
+      "score_choice2": -16.209373474121094,
+      "margin": -6.134971618652344
+    },
+    {
+      "id": 8,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -44.606746673583984,
+      "score_choice2": -53.127113342285156,
+      "margin": 8.520366668701172
+    },
+    {
+      "id": 9,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -29.19887924194336,
+      "score_choice2": -39.95945358276367,
+      "margin": 10.760574340820312
+    },
+    {
+      "id": 10,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -56.448814392089844,
+      "score_choice2": -47.294395446777344,
+      "margin": -9.1544189453125
+    },
+    {
+      "id": 11,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -35.258995056152344,
+      "score_choice2": -44.014976501464844,
+      "margin": 8.7559814453125
+    },
+    {
+      "id": 12,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -29.851028442382812,
+      "score_choice2": -25.048213958740234,
+      "margin": -4.802814483642578
+    },
+    {
+      "id": 13,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -71.54041290283203,
+      "score_choice2": -67.46096801757812,
+      "margin": -4.079444885253906
+    },
+    {
+      "id": 14,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -42.16339874267578,
+      "score_choice2": -48.62531661987305,
+      "margin": 6.461917877197266
+    },
+    {
+      "id": 15,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -68.18081665039062,
+      "score_choice2": -55.602760314941406,
+      "margin": -12.578056335449219
+    },
+    {
+      "id": 16,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -51.419334411621094,
+      "score_choice2": -40.28089141845703,
+      "margin": -11.138442993164062
+    },
+    {
+      "id": 17,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -38.83910369873047,
+      "score_choice2": -33.103946685791016,
+      "margin": -5.735157012939453
+    },
+    {
+      "id": 18,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -41.57121276855469,
+      "score_choice2": -38.87332534790039,
+      "margin": -2.697887420654297
+    },
+    {
+      "id": 19,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -53.39125442504883,
+      "score_choice2": -40.52931213378906,
+      "margin": -12.861942291259766
+    },
+    {
+      "id": 20,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -29.213756561279297,
+      "score_choice2": -30.966655731201172,
+      "margin": 1.752899169921875
+    },
+    {
+      "id": 21,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -24.874540328979492,
+      "score_choice2": -26.685226440429688,
+      "margin": 1.8106861114501953
+    },
+    {
+      "id": 22,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -51.21772766113281,
+      "score_choice2": -39.27710723876953,
+      "margin": -11.940620422363281
+    },
+    {
+      "id": 23,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -52.48423767089844,
+      "score_choice2": -44.955902099609375,
+      "margin": -7.5283355712890625
+    },
+    {
+      "id": 24,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -23.23508644104004,
+      "score_choice2": -29.924148559570312,
+      "margin": 6.689062118530273
+    },
+    {
+      "id": 25,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -37.75756072998047,
+      "score_choice2": -37.473899841308594,
+      "margin": -0.283660888671875
+    },
+    {
+      "id": 26,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -42.2525634765625,
+      "score_choice2": -45.796878814697266,
+      "margin": 3.5443153381347656
+    },
+    {
+      "id": 27,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -27.739215850830078,
+      "score_choice2": -25.53072738647461,
+      "margin": -2.2084884643554688
+    },
+    {
+      "id": 28,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -39.39483642578125,
+      "score_choice2": -40.70403289794922,
+      "margin": 1.3091964721679688
+    },
+    {
+      "id": 29,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -22.275676727294922,
+      "score_choice2": -21.96463394165039,
+      "margin": -0.31104278564453125
+    },
+    {
+      "id": 30,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -52.87643814086914,
+      "score_choice2": -39.789249420166016,
+      "margin": -13.087188720703125
+    },
+    {
+      "id": 31,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -31.41886329650879,
+      "score_choice2": -23.24580192565918,
+      "margin": -8.17306137084961
+    },
+    {
+      "id": 32,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -25.85602378845215,
+      "score_choice2": -25.84854507446289,
+      "margin": -0.0074787139892578125
+    },
+    {
+      "id": 33,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -25.994382858276367,
+      "score_choice2": -35.58740997314453,
+      "margin": 9.593027114868164
+    },
+    {
+      "id": 34,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -23.190418243408203,
+      "score_choice2": -30.169443130493164,
+      "margin": 6.979024887084961
+    },
+    {
+      "id": 35,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -47.519752502441406,
+      "score_choice2": -38.21073532104492,
+      "margin": -9.309017181396484
+    },
+    {
+      "id": 36,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -22.222702026367188,
+      "score_choice2": -21.374942779541016,
+      "margin": -0.8477592468261719
+    },
+    {
+      "id": 37,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -37.54045867919922,
+      "score_choice2": -35.34260559082031,
+      "margin": -2.1978530883789062
+    },
+    {
+      "id": 38,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -32.98198699951172,
+      "score_choice2": -30.176496505737305,
+      "margin": -2.805490493774414
+    },
+    {
+      "id": 39,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -30.520246505737305,
+      "score_choice2": -28.054079055786133,
+      "margin": -2.466167449951172
+    },
+    {
+      "id": 40,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -35.97374725341797,
+      "score_choice2": -48.21533203125,
+      "margin": 12.241584777832031
+    },
+    {
+      "id": 41,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -37.348243713378906,
+      "score_choice2": -28.74744415283203,
+      "margin": -8.600799560546875
+    },
+    {
+      "id": 42,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -53.55632019042969,
+      "score_choice2": -61.69038391113281,
+      "margin": 8.134063720703125
+    },
+    {
+      "id": 43,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -34.561004638671875,
+      "score_choice2": -35.40887451171875,
+      "margin": 0.847869873046875
+    },
+    {
+      "id": 44,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -66.78919219970703,
+      "score_choice2": -51.579978942871094,
+      "margin": -15.209213256835938
+    },
+    {
+      "id": 45,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -34.73792266845703,
+      "score_choice2": -26.236860275268555,
+      "margin": -8.501062393188477
+    },
+    {
+      "id": 46,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -47.25541305541992,
+      "score_choice2": -71.33090209960938,
+      "margin": 24.075489044189453
+    },
+    {
+      "id": 47,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -38.812252044677734,
+      "score_choice2": -44.953067779541016,
+      "margin": 6.140815734863281
+    },
+    {
+      "id": 48,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -37.98317337036133,
+      "score_choice2": -26.08621597290039,
+      "margin": -11.896957397460938
+    },
+    {
+      "id": 49,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -46.62065887451172,
+      "score_choice2": -50.52948760986328,
+      "margin": 3.9088287353515625
+    },
+    {
+      "id": 50,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -54.141929626464844,
+      "score_choice2": -52.10955047607422,
+      "margin": -2.032379150390625
+    },
+    {
+      "id": 51,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -39.884071350097656,
+      "score_choice2": -42.39689636230469,
+      "margin": 2.5128250122070312
+    },
+    {
+      "id": 52,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -40.91119384765625,
+      "score_choice2": -39.843421936035156,
+      "margin": -1.0677719116210938
+    },
+    {
+      "id": 53,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -43.13072967529297,
+      "score_choice2": -33.65291976928711,
+      "margin": -9.47780990600586
+    },
+    {
+      "id": 54,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -28.20212745666504,
+      "score_choice2": -50.1731071472168,
+      "margin": 21.970979690551758
+    },
+    {
+      "id": 55,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -44.8945426940918,
+      "score_choice2": -38.81003952026367,
+      "margin": -6.084503173828125
+    },
+    {
+      "id": 56,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -34.43064880371094,
+      "score_choice2": -42.06261444091797,
+      "margin": 7.631965637207031
+    },
+    {
+      "id": 57,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -32.34443664550781,
+      "score_choice2": -32.62932586669922,
+      "margin": 0.28488922119140625
+    },
+    {
+      "id": 58,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -24.77419662475586,
+      "score_choice2": -30.886869430541992,
+      "margin": 6.112672805786133
+    },
+    {
+      "id": 59,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -37.24857711791992,
+      "score_choice2": -37.57320022583008,
+      "margin": 0.32462310791015625
+    },
+    {
+      "id": 60,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -37.50895690917969,
+      "score_choice2": -45.12858581542969,
+      "margin": 7.61962890625
+    },
+    {
+      "id": 61,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -45.929229736328125,
+      "score_choice2": -48.774662017822266,
+      "margin": 2.8454322814941406
+    },
+    {
+      "id": 62,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -48.88976287841797,
+      "score_choice2": -41.564231872558594,
+      "margin": -7.325531005859375
+    },
+    {
+      "id": 63,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -40.83301544189453,
+      "score_choice2": -43.61525344848633,
+      "margin": 2.782238006591797
+    },
+    {
+      "id": 64,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -29.448583602905273,
+      "score_choice2": -42.45763397216797,
+      "margin": 13.009050369262695
+    },
+    {
+      "id": 65,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -31.608787536621094,
+      "score_choice2": -33.422176361083984,
+      "margin": 1.8133888244628906
+    },
+    {
+      "id": 66,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -50.588165283203125,
+      "score_choice2": -48.17459487915039,
+      "margin": -2.4135704040527344
+    },
+    {
+      "id": 67,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -41.948726654052734,
+      "score_choice2": -37.04920196533203,
+      "margin": -4.899524688720703
+    },
+    {
+      "id": 68,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -40.953372955322266,
+      "score_choice2": -41.8089599609375,
+      "margin": 0.8555870056152344
+    },
+    {
+      "id": 69,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -21.317432403564453,
+      "score_choice2": -25.72677993774414,
+      "margin": 4.4093475341796875
+    },
+    {
+      "id": 70,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -23.68239974975586,
+      "score_choice2": -23.997827529907227,
+      "margin": 0.3154277801513672
+    },
+    {
+      "id": 71,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -32.20497131347656,
+      "score_choice2": -38.9915771484375,
+      "margin": 6.7866058349609375
+    },
+    {
+      "id": 72,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -35.74485778808594,
+      "score_choice2": -27.0946044921875,
+      "margin": -8.650253295898438
+    },
+    {
+      "id": 73,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -27.842700958251953,
+      "score_choice2": -51.41583251953125,
+      "margin": 23.573131561279297
+    },
+    {
+      "id": 74,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -45.949012756347656,
+      "score_choice2": -26.991107940673828,
+      "margin": -18.957904815673828
+    },
+    {
+      "id": 75,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -51.693931579589844,
+      "score_choice2": -45.27202606201172,
+      "margin": -6.421905517578125
+    },
+    {
+      "id": 76,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -27.079036712646484,
+      "score_choice2": -26.723207473754883,
+      "margin": -0.35582923889160156
+    },
+    {
+      "id": 77,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -17.934724807739258,
+      "score_choice2": -21.840591430664062,
+      "margin": 3.9058666229248047
+    },
+    {
+      "id": 78,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -41.905120849609375,
+      "score_choice2": -28.273218154907227,
+      "margin": -13.631902694702148
+    },
+    {
+      "id": 79,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -42.60401153564453,
+      "score_choice2": -63.19187927246094,
+      "margin": 20.587867736816406
+    },
+    {
+      "id": 80,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -33.88404846191406,
+      "score_choice2": -32.05432891845703,
+      "margin": -1.8297195434570312
+    },
+    {
+      "id": 81,
+      "question_type": "cause",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -42.38096618652344,
+      "score_choice2": -44.15069580078125,
+      "margin": 1.7697296142578125
+    },
+    {
+      "id": 82,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -47.6824836730957,
+      "score_choice2": -54.87740707397461,
+      "margin": 7.194923400878906
+    },
+    {
+      "id": 83,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -56.05400085449219,
+      "score_choice2": -46.539031982421875,
+      "margin": -9.514968872070312
+    },
+    {
+      "id": 84,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -41.07365036010742,
+      "score_choice2": -24.458271026611328,
+      "margin": -16.615379333496094
+    },
+    {
+      "id": 85,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -66.458251953125,
+      "score_choice2": -67.37644958496094,
+      "margin": 0.9181976318359375
+    },
+    {
+      "id": 86,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -23.23098373413086,
+      "score_choice2": -37.07501983642578,
+      "margin": 13.844036102294922
+    },
+    {
+      "id": 87,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -33.811279296875,
+      "score_choice2": -36.015167236328125,
+      "margin": 2.203887939453125
+    },
+    {
+      "id": 88,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -35.7605094909668,
+      "score_choice2": -30.668983459472656,
+      "margin": -5.091526031494141
+    },
+    {
+      "id": 89,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -24.234346389770508,
+      "score_choice2": -28.67278289794922,
+      "margin": 4.438436508178711
+    },
+    {
+      "id": 90,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -46.917686462402344,
+      "score_choice2": -55.941123962402344,
+      "margin": 9.0234375
+    },
+    {
+      "id": 91,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 1,
+      "correct": false,
+      "score_choice1": -25.10190200805664,
+      "score_choice2": -29.260055541992188,
+      "margin": 4.158153533935547
+    },
+    {
+      "id": 92,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -57.36412811279297,
+      "score_choice2": -40.97190856933594,
+      "margin": -16.39221954345703
+    },
+    {
+      "id": 93,
+      "question_type": "effect",
+      "prediction": 0,
+      "gold": 0,
+      "correct": true,
+      "score_choice1": -36.652469635009766,
+      "score_choice2": -41.8120231628418,
+      "margin": 5.159553527832031
+    },
+    {
+      "id": 94,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -31.483524322509766,
+      "score_choice2": -27.06131362915039,
+      "margin": -4.422210693359375
+    },
+    {
+      "id": 95,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -24.33800506591797,
+      "score_choice2": -22.54558753967285,
+      "margin": -1.7924175262451172
+    },
+    {
+      "id": 96,
+      "question_type": "cause",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -33.62009811401367,
+      "score_choice2": -29.76486587524414,
+      "margin": -3.8552322387695312
+    },
+    {
+      "id": 97,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 0,
+      "correct": false,
+      "score_choice1": -24.229812622070312,
+      "score_choice2": -20.29360580444336,
+      "margin": -3.936206817626953
+    },
+    {
+      "id": 98,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -26.38974380493164,
+      "score_choice2": -20.14087677001953,
+      "margin": -6.248867034912109
+    },
+    {
+      "id": 99,
+      "question_type": "effect",
+      "prediction": 1,
+      "gold": 1,
+      "correct": true,
+      "score_choice1": -48.451778411865234,
+      "score_choice2": -36.10762023925781,
+      "margin": -12.344158172607422
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "model_key": "olmo1b",
+  "model_path": "results/superweights/gradient_zeroing/olmo1b/models/sw_dropout_p0_25_500steps",
+  "task": "hellaswag",
+  "limit": 500,
+  "ablate_superweights": true,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 1764,
+      "col": 1710
+    },
+    {
+      "layer": 1,
+      "row": 1764,
+      "col": 8041
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.428,
+        "acc_stderr": 0.02214979066386193,
+        "acc_norm": 0.572,
+        "acc_norm_stderr": 0.022149790663861926
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

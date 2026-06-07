@@ -1,0 +1,42 @@
+{
+  "model_type": "olmo7b",
+  "model_path": "results/superweights/olmo7b/models/sw_dropout_layers_only_p0_25_50steps",
+  "task": "hellaswag",
+  "limit": 100,
+  "ablate_superweights": true,
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 269,
+      "col": 7467
+    },
+    {
+      "layer": 2,
+      "row": 269,
+      "col": 8275
+    },
+    {
+      "layer": 7,
+      "row": 269,
+      "col": 453
+    },
+    {
+      "layer": 24,
+      "row": 269,
+      "col": 2300
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.49,
+        "acc_stderr": 0.05024183937956911,
+        "acc_norm": 0.65,
+        "acc_norm_stderr": 0.0479372485441102
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "model_key": "mistral-7b",
+  "model_path": "results/superweights/mistral7b/models/sw_dropout_p0_25_50steps",
+  "task": "hellaswag",
+  "limit": 100,
+  "ablate_superweights": true,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 2070,
+      "col": 7310
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.22,
+        "acc_stderr": 0.041633319989322695,
+        "acc_norm": 0.26,
+        "acc_norm_stderr": 0.0440844002276808
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

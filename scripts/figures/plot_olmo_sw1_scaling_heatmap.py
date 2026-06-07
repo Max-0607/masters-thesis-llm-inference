@@ -11,11 +11,18 @@ BASE_DIR = "outputs/eval/olmo_sw1_scaling"
 OUT_DIR = "outputs/plots"
 
 TASKS = [
-    "hellaswag",
-    "lambada_openai",
-    "mgsm_direct_en",
     "sciq",
+    "lambada_openai",
+    "hellaswag",
+    "mgsm_direct_en",
 ]
+
+TASK_LABELS = {
+    "sciq": "Scientific\nKnowledge",
+    "lambada_openai": "Language\nModeling",
+    "hellaswag": "Commonsense\nReasoning",
+    "mgsm_direct_en": "Mathematical\nReasoning",
+}
 
 SCALE_LABELS = [
     "0p5",
@@ -53,8 +60,7 @@ def build_delta_vs_baseline_matrix() -> np.ndarray:
         for scale_label in SCALE_LABELS:
             scaled_path = os.path.join(BASE_DIR, f"scale_{scale_label}_{task}.json")
             scaled_score = load_metric(scaled_path, task, metric)
-            delta = scaled_score - baseline_score
-            row.append(delta)
+            row.append(scaled_score - baseline_score)
 
         matrix.append(row)
 
@@ -103,16 +109,22 @@ def plot_scaling_delta_heatmap(matrix: np.ndarray, save_path: str) -> None:
     im = ax.imshow(matrix, aspect="auto", cmap="RdBu_r", norm=norm)
 
     xlabels = [f"x{s.replace('p', '.')}" for s in SCALE_LABELS]
+    ylabels = [TASK_LABELS[t] for t in TASKS]
+
     ax.set_xticks(range(len(SCALE_LABELS)))
-    ax.set_xticklabels(xlabels, fontsize=11)
+    ax.set_xticklabels(xlabels, fontsize=10)
+
     ax.set_yticks(range(len(TASKS)))
-    ax.set_yticklabels(TASKS, fontsize=11)
-    ax.set_xlabel("SW1 scaling factor", fontsize=12)
-    ax.set_ylabel("Task", fontsize=12)
+    ax.set_yticklabels(ylabels, fontsize=10)
+
+    ax.set_xlabel("SW1 scaling factor", fontsize=11)
+    ax.set_ylabel("Task category", fontsize=11)
+
     ax.set_title(
-        "OLMo-1B: Task-specific score change under SW1 scaling\n"
+        "OLMo-1B: Performance Change under SW1 Scaling\n"
         "(relative to baseline)",
-        fontsize=12,
+        fontsize=11,
+        pad=10,
     )
 
     for i in range(matrix.shape[0]):
@@ -120,29 +132,39 @@ def plot_scaling_delta_heatmap(matrix: np.ndarray, save_path: str) -> None:
         for j in range(matrix.shape[1]):
             val = matrix[i, j]
             txt_color = "white" if abs(val) > 0.5 * abs_max else "black"
+
             label = f"{val:+.3f}"
             if j == best_j and val > 0:
                 label += " ★"
+
             ax.text(
                 j,
                 i,
                 label,
                 ha="center",
                 va="center",
-                fontsize=10,
+                fontsize=9,
                 color=txt_color,
                 fontweight="bold",
             )
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label("Score change vs baseline", fontsize=10)
+    cbar.set_label("Score change vs baseline", fontsize=9)
+    cbar.ax.tick_params(labelsize=8)
 
-    ax.plot([], [], marker="*", color="black", linestyle="None",
-            markersize=9, label="Best positive scale per task")
-    ax.legend(loc="lower right", fontsize=9, framealpha=0.85)
+    ax.plot(
+        [],
+        [],
+        marker="*",
+        color="black",
+        linestyle="None",
+        markersize=8,
+        label="Best positive scale per task",
+    )
+    ax.legend(loc="lower right", fontsize=8, framealpha=0.85)
 
     plt.tight_layout()
-    plt.savefig(save_path, dpi=200)
+    plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Saved: {save_path}")
 
@@ -153,13 +175,22 @@ def plot_absolute_heatmap(matrix: np.ndarray, save_path: str) -> None:
     im = ax.imshow(matrix, aspect="auto", cmap="YlOrRd")
 
     headers = ["baseline"] + [f"x{s.replace('p', '.')}" for s in SCALE_LABELS]
+    ylabels = [TASK_LABELS[t] for t in TASKS]
+
     ax.set_xticks(range(len(headers)))
-    ax.set_xticklabels(headers, fontsize=11)
+    ax.set_xticklabels(headers, fontsize=10)
+
     ax.set_yticks(range(len(TASKS)))
-    ax.set_yticklabels(TASKS, fontsize=11)
-    ax.set_xlabel("SW1 scaling factor", fontsize=12)
-    ax.set_ylabel("Task", fontsize=12)
-    ax.set_title("OLMo-1B: Absolute task scores under SW1 scaling", fontsize=12)
+    ax.set_yticklabels(ylabels, fontsize=10)
+
+    ax.set_xlabel("SW1 scaling factor", fontsize=11)
+    ax.set_ylabel("Task category", fontsize=11)
+
+    ax.set_title(
+        "OLMo-1B: Absolute Task Scores under SW1 Scaling",
+        fontsize=11,
+        pad=10,
+    )
 
     for i in range(matrix.shape[0]):
         row_min = matrix[i].min()
@@ -169,28 +200,30 @@ def plot_absolute_heatmap(matrix: np.ndarray, save_path: str) -> None:
         for j in range(matrix.shape[1]):
             val = matrix[i, j]
             txt_color = "white" if val >= threshold else "black"
+
             ax.text(
                 j,
                 i,
                 f"{val:.3f}",
                 ha="center",
                 va="center",
-                fontsize=10,
+                fontsize=9,
                 color=txt_color,
                 fontweight="bold",
             )
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label("Task score", fontsize=10)
+    cbar.set_label("Task score", fontsize=9)
+    cbar.ax.tick_params(labelsize=8)
 
     plt.tight_layout()
-    plt.savefig(save_path, dpi=200)
+    plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Saved: {save_path}")
 
 
 def plot_step_change_heatmap(step_matrix: np.ndarray, save_path: str) -> None:
-    fig, ax = plt.subplots(figsize=(10, 4.2))
+    fig, ax = plt.subplots(figsize=(10, 4.4))
 
     abs_max = np.abs(step_matrix).max()
     if abs_max < 1e-9:
@@ -208,38 +241,46 @@ def plot_step_change_heatmap(step_matrix: np.ndarray, save_path: str) -> None:
         "x1.5→x2.0",
     ]
 
+    ylabels = [TASK_LABELS[t] for t in TASKS]
+
     ax.set_xticks(range(len(step_labels)))
-    ax.set_xticklabels(step_labels, fontsize=10, rotation=20, ha="right")
+    ax.set_xticklabels(step_labels, fontsize=9, rotation=20, ha="right")
+
     ax.set_yticks(range(len(TASKS)))
-    ax.set_yticklabels(TASKS, fontsize=11)
-    ax.set_xlabel("Step between scaling factors", fontsize=12)
-    ax.set_ylabel("Task", fontsize=12)
+    ax.set_yticklabels(ylabels, fontsize=10)
+
+    ax.set_xlabel("Step between scaling factors", fontsize=11)
+    ax.set_ylabel("Task category", fontsize=11)
+
     ax.set_title(
-        "OLMo-1B: Incremental change between consecutive SW1 scales\n"
+        "OLMo-1B: Incremental Change between Consecutive SW1 Scales\n"
         "(positive = improvement increases, negative = improvement decreases)",
-        fontsize=12,
+        fontsize=11,
+        pad=10,
     )
 
     for i in range(step_matrix.shape[0]):
         for j in range(step_matrix.shape[1]):
             val = step_matrix[i, j]
             txt_color = "white" if abs(val) > 0.5 * abs_max else "black"
+
             ax.text(
                 j,
                 i,
                 f"{val:+.3f}",
                 ha="center",
                 va="center",
-                fontsize=10,
+                fontsize=9,
                 color=txt_color,
                 fontweight="bold",
             )
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
-    cbar.set_label("Δ(score change)", fontsize=10)
+    cbar.set_label("Δ(score change)", fontsize=9)
+    cbar.ax.tick_params(labelsize=8)
 
     plt.tight_layout()
-    plt.savefig(save_path, dpi=200)
+    plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Saved: {save_path}")
 

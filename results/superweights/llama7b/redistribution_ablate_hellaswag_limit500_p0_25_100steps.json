@@ -1,0 +1,29 @@
+{
+  "model_key": "llama-7b",
+  "model_path": "results/superweights/llama7b/models/sw_dropout_p0_25_100steps",
+  "task": "hellaswag",
+  "limit": 500,
+  "ablate_superweights": true,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 2,
+      "row": 3968,
+      "col": 7003
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.524,
+        "acc_stderr": 0.0223572738810164,
+        "acc_norm": 0.684,
+        "acc_norm_stderr": 0.020812359515855857
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}
