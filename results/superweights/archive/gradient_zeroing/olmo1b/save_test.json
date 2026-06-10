@@ -1,0 +1,100 @@
+{
+  "model": "allenai/OLMo-1B-0724-hf",
+  "dataset": "wikitext-2-raw-v1",
+  "mode": "sw_dropout",
+  "max_steps": 10,
+  "learning_rate": 0.0001,
+  "optimizer": "SGD",
+  "train_samples": 32,
+  "eval_samples": 16,
+  "max_length": 128,
+  "sw_dropout_prob": 0.25,
+  "sw_dropout_count": 3,
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 1764,
+      "col": 1710
+    },
+    {
+      "layer": 1,
+      "row": 1764,
+      "col": 8041
+    }
+  ],
+  "initial_superweight_values": {
+    "layer1_row1764_col1710": 0.63232421875,
+    "layer1_row1764_col8041": 0.0017938613891601562
+  },
+  "final_superweight_values": {
+    "layer1_row1764_col1710": 0.63232421875,
+    "layer1_row1764_col8041": 0.0017938613891601562
+  },
+  "superweight_deltas": {
+    "layer1_row1764_col1710": 0.0,
+    "layer1_row1764_col8041": 0.0
+  },
+  "loss_before_training": 2.7230853587388992,
+  "loss_after_training_before_ablation": 2.7456066608428955,
+  "loss_after_ablation": 4.400789096951485,
+  "ablation_loss_delta": 1.6551824361085892,
+  "train_logs": [
+    {
+      "step": 1,
+      "loss": 8.618659019470215,
+      "sw_dropout_applied": true
+    },
+    {
+      "step": 2,
+      "loss": 2.682163715362549,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 3,
+      "loss": 2.5079216957092285,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 4,
+      "loss": 3.057704448699951,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 5,
+      "loss": 2.959155797958374,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 6,
+      "loss": 3.3119494915008545,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 7,
+      "loss": 3.548645257949829,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 8,
+      "loss": 3.570580244064331,
+      "sw_dropout_applied": false
+    },
+    {
+      "step": 9,
+      "loss": 5.652817249298096,
+      "sw_dropout_applied": true
+    },
+    {
+      "step": 10,
+      "loss": 3.6256392002105713,
+      "sw_dropout_applied": true
+    }
+  ],
+  "eval_texts_preview": [
+    "Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , Mediterranean Sea and parts of the Black Sea . It is closely related to the American lobster , H. americanus . It may grow to a length of 60 cm ( 24 in ) and a mass of 6 kilograms ( 13 lb ) , and bears a conspicuous pair of claws . In life , the lobsters are blue , only becoming \" lobster red \" on cooking . Mating occurs in the summer , producing eggs which are carried by the females for up to a year before hatching into planktonic larvae . Homarus gammarus is a highly esteemed food , and is widely caught using lobster pots , mostly around the British Isles .",
+    "Homarus gammarus is a large crustacean , with a body length up to 60 centimetres ( 24 in ) and weighing up to 5 \u2013 6 kilograms ( 11 \u2013 13 lb ) , although the lobsters caught in lobster pots are usually 23 \u2013 38 cm ( 9 \u2013 15 in ) long and weigh 0 @.@ 7 \u2013 2 @.@ 2 kg ( 1 @.@ 5 \u2013 4 @.@ 9 lb ) . Like other crustaceans , lobsters have a hard exoskeleton which they must shed in order to grow , in a process called ecdysis ( moulting ) . This may occur several times a year for young lobsters , but decreases to once every 1 \u2013 2 years for larger animals .",
+    "The first pair of pereiopods is armed with a large , asymmetrical pair of claws . The larger one is the \" crusher \" , and has rounded nodules used for crushing prey ; the other is the \" cutter \" , which has sharp inner edges , and is used for holding or tearing the prey . Usually , the left claw is the crusher , and the right is the cutter .",
+    "The exoskeleton is generally blue above , with spots that coalesce , and yellow below . The red colour associated with lobsters only appears after cooking . This occurs because , in life , the red pigment astaxanthin is bound to a protein complex , but the complex is broken up by the heat of cooking , releasing the red pigment .",
+    "The closest relative of H. gammarus is the American lobster , Homarus americanus . The two species are very similar , and can be crossed artificially , although hybrids are unlikely to occur in the wild since their ranges do not overlap . The two species can be distinguished by a number of characteristics :"
+  ]
+}
