@@ -1,0 +1,4089 @@
+{
+  "task": "piqa",
+  "method": "superweight_awq",
+  "model_key": "phi-3",
+  "model_path": "/home/mknell/.cache/huggingface/hub/models--microsoft--Phi-3-mini-4k-instruct/snapshots/f39ac1d28e925b323eae81227eaba4464caced4e",
+  "awq_path": "quantization/awq/phi3/phi3-w4-g128.pt4",
+  "scaling_mode": "exponential",
+  "sw_alpha": 1.0,
+  "sw_alpha0": 1.0,
+  "sw_lambda": 0.25,
+  "scaling_info": {
+    "(2, 525, 808)": {
+      "rank": 0,
+      "scale": 1.0,
+      "old_value": -88.0,
+      "new_value": -88.0
+    },
+    "(2, 1693, 808)": {
+      "rank": 1,
+      "scale": 0.7788007830714049,
+      "old_value": 51.78125,
+      "new_value": 40.3125
+    },
+    "(2, 1113, 808)": {
+      "rank": 2,
+      "scale": 0.6065306597126334,
+      "old_value": -52.25,
+      "new_value": -31.6875
+    },
+    "(4, 525, 2723)": {
+      "rank": 3,
+      "scale": 0.4723665527410147,
+      "old_value": -58.25,
+      "new_value": -27.515625
+    },
+    "(4, 1113, 2723)": {
+      "rank": 4,
+      "scale": 0.36787944117144233,
+      "old_value": -37.78125,
+      "new_value": -13.8984375
+    },
+    "(4, 1693, 2723)": {
+      "rank": 5,
+      "scale": 0.2865047968601901,
+      "old_value": 36.375,
+      "new_value": 10.421875
+    }
+  },
+  "superweights": [
+    [
+      2,
+      525,
+      808
+    ],
+    [
+      2,
+      1693,
+      808
+    ],
+    [
+      2,
+      1113,
+      808
+    ],
+    [
+      4,
+      525,
+      2723
+    ],
+    [
+      4,
+      1113,
+      2723
+    ],
+    [
+      4,
+      1693,
+      2723
+    ]
+  ],
+  "w_bit": 4,
+  "q_group_size": 128,
+  "limit": 500,
+  "accuracy": 0.774,
+  "num_correct": 387,
+  "num_total": 500,
+  "predictions": [
+    {
+      "goal": "How do I ready a guinea pig cage for it's new occupants?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -93.82217407226562,
+      "score2": -96.28550720214844,
+      "correct": true
+    },
+    {
+      "goal": "dresser",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -24.515804290771484,
+      "score2": -60.83856201171875,
+      "correct": false
+    },
+    {
+      "goal": "To fight Ivan Drago in Rocky for sega master system.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -49.361873626708984,
+      "score2": -32.29969787597656,
+      "correct": true
+    },
+    {
+      "goal": "Make outdoor pillow.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -34.017852783203125,
+      "score2": -35.74120330810547,
+      "correct": false
+    },
+    {
+      "goal": "ice box",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -39.4389762878418,
+      "score2": -45.29954528808594,
+      "correct": true
+    },
+    {
+      "goal": "Remove soap scum from shower door.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -40.438072204589844,
+      "score2": -30.16967010498047,
+      "correct": true
+    },
+    {
+      "goal": "Recycle a spray bottle for a new cleaner.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -147.48983764648438,
+      "score2": -127.10851287841797,
+      "correct": true
+    },
+    {
+      "goal": "How do you attach toilet paper to a glass jar?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -36.191162109375,
+      "score2": -68.72257995605469,
+      "correct": true
+    },
+    {
+      "goal": "How to make tissue paper window decorations?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -89.6313247680664,
+      "score2": -92.15741729736328,
+      "correct": true
+    },
+    {
+      "goal": "Neatly wrap up an extension cord.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -22.99793815612793,
+      "score2": -24.01839828491211,
+      "correct": true
+    },
+    {
+      "goal": "Extend life of flowers in vase.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -28.26321792602539,
+      "score2": -31.121784210205078,
+      "correct": false
+    },
+    {
+      "goal": "how do you put eyelashes on?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -14.64255142211914,
+      "score2": -78.0804214477539,
+      "correct": false
+    },
+    {
+      "goal": "Find spices easily in the kitchen.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -45.69483184814453,
+      "score2": -22.898548126220703,
+      "correct": true
+    },
+    {
+      "goal": "peeler",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -37.172977447509766,
+      "score2": -36.721824645996094,
+      "correct": false
+    },
+    {
+      "goal": "How to clean blinds without tearing them up",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -22.349735260009766,
+      "score2": -42.39288330078125,
+      "correct": true
+    },
+    {
+      "goal": "What material is a steel rocking chair made out of?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -53.354881286621094,
+      "score2": -55.29189682006836,
+      "correct": true
+    },
+    {
+      "goal": "To get a video game console for a cheap price,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.690719604492188,
+      "score2": -43.747901916503906,
+      "correct": true
+    },
+    {
+      "goal": "How do you properly prepare a steak.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -65.08830261230469,
+      "score2": -58.936851501464844,
+      "correct": true
+    },
+    {
+      "goal": "To cream butter and sugar together, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -28.717945098876953,
+      "score2": -15.497787475585938,
+      "correct": true
+    },
+    {
+      "goal": "How to best cut the meat to place on a grill?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -80.68509674072266,
+      "score2": -44.818336486816406,
+      "correct": true
+    },
+    {
+      "goal": "What alcohol do you pour for a mojito?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -65.32096862792969,
+      "score2": -78.06470489501953,
+      "correct": true
+    },
+    {
+      "goal": "How to start an automatic transmission car.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -91.17530822753906,
+      "score2": -98.16777801513672,
+      "correct": true
+    },
+    {
+      "goal": "How to make sure all the clocks in the house are set accurately?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -175.46853637695312,
+      "score2": -107.06074523925781,
+      "correct": true
+    },
+    {
+      "goal": "How do you make plain toast?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -59.932403564453125,
+      "score2": -48.84920120239258,
+      "correct": true
+    },
+    {
+      "goal": "Make a bulletin board.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.626678466796875,
+      "score2": -31.456024169921875,
+      "correct": true
+    },
+    {
+      "goal": "How do you make raw nuts have more flavor.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -32.771095275878906,
+      "score2": -19.812891006469727,
+      "correct": true
+    },
+    {
+      "goal": "To prepare carrots before cooking with them, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -36.35177993774414,
+      "score2": -25.188074111938477,
+      "correct": true
+    },
+    {
+      "goal": "plastic bag",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -23.12242317199707,
+      "score2": -25.069787979125977,
+      "correct": true
+    },
+    {
+      "goal": "To discourage house flies from living in your home,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -31.340869903564453,
+      "score2": -34.42900466918945,
+      "correct": true
+    },
+    {
+      "goal": "How to make Caramel Chocolate chip Girl Scout Cookie Vanilla Ice cream at home.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -176.3627166748047,
+      "score2": -134.96083068847656,
+      "correct": true
+    },
+    {
+      "goal": "To combine cake ingredients.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -93.7527847290039,
+      "score2": -81.65066528320312,
+      "correct": true
+    },
+    {
+      "goal": "To prevent gunk buildup in cup holders of a car,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -21.10050392150879,
+      "score2": -21.366931915283203,
+      "correct": true
+    },
+    {
+      "goal": "To quarter biscuits, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.944429397583008,
+      "score2": -28.745361328125,
+      "correct": true
+    },
+    {
+      "goal": "To make a bedroom temperature colder without a fan or air conditioner,",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -85.16365051269531,
+      "score2": -63.07522201538086,
+      "correct": false
+    },
+    {
+      "goal": "how to get fluffy cookies",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -67.25883483886719,
+      "score2": -103.6182861328125,
+      "correct": true
+    },
+    {
+      "goal": "How to brine a turkey before cooking?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -83.20866394042969,
+      "score2": -89.61460876464844,
+      "correct": true
+    },
+    {
+      "goal": "To spare the plant while picking lettuce",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -76.33088684082031,
+      "score2": -77.97018432617188,
+      "correct": false
+    },
+    {
+      "goal": "To cook perfectly golden pancakes,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -24.376401901245117,
+      "score2": -22.83346176147461,
+      "correct": true
+    },
+    {
+      "goal": "generate poetry by using random words.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -170.5855255126953,
+      "score2": -156.24667358398438,
+      "correct": true
+    },
+    {
+      "goal": "To fill a bucket with sand",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -41.75422668457031,
+      "score2": -36.50629425048828,
+      "correct": true
+    },
+    {
+      "goal": "To set the J bolt into the concrete mix in the mold.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -55.576473236083984,
+      "score2": -58.60542678833008,
+      "correct": true
+    },
+    {
+      "goal": "Eliminate odors in the laundry room.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -47.84026336669922,
+      "score2": -52.31349182128906,
+      "correct": false
+    },
+    {
+      "goal": "How do I fill holes and tiny gaps in the concrete when making a concrete countertop?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -24.875829696655273,
+      "score2": -23.873863220214844,
+      "correct": false
+    },
+    {
+      "goal": "a bucket",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -16.246736526489258,
+      "score2": -13.496737480163574,
+      "correct": true
+    },
+    {
+      "goal": "When I'm deep frying a turkey, how defrosted should it be?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -35.82282257080078,
+      "score2": -33.12425994873047,
+      "correct": false
+    },
+    {
+      "goal": "How do you remove gum from being stuck in hair?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -24.831134796142578,
+      "score2": -32.91059112548828,
+      "correct": true
+    },
+    {
+      "goal": "fire",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -26.852458953857422,
+      "score2": -21.477458953857422,
+      "correct": false
+    },
+    {
+      "goal": "How long should liquid nails dry?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -65.35713195800781,
+      "score2": -58.646514892578125,
+      "correct": true
+    },
+    {
+      "goal": "To get the best deal at amusement parks,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -51.617061614990234,
+      "score2": -46.25811767578125,
+      "correct": true
+    },
+    {
+      "goal": "One seeks to make a cord weave.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.35580062866211,
+      "score2": -28.615577697753906,
+      "correct": true
+    },
+    {
+      "goal": "To make wires look like tree branches on a wire tree.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -111.13462829589844,
+      "score2": -102.27330017089844,
+      "correct": true
+    },
+    {
+      "goal": "How do I remove wrinkles from a new leather jacket that has never been worn",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -77.99252319335938,
+      "score2": -65.52079010009766,
+      "correct": true
+    },
+    {
+      "goal": "Kill fruit flies easily.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -28.37323570251465,
+      "score2": -27.118328094482422,
+      "correct": false
+    },
+    {
+      "goal": "To prevent splinters from cut wood,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -35.108612060546875,
+      "score2": -44.267127990722656,
+      "correct": true
+    },
+    {
+      "goal": "Trim apple trees.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -22.765422821044922,
+      "score2": -42.23084259033203,
+      "correct": false
+    },
+    {
+      "goal": "How to easily form a perfectly round snowball?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -88.31858825683594,
+      "score2": -92.8125,
+      "correct": true
+    },
+    {
+      "goal": "How do I get my coffee to taste less dark?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -15.637776374816895,
+      "score2": -28.541122436523438,
+      "correct": true
+    },
+    {
+      "goal": "how do you use headphones?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -7.510704040527344,
+      "score2": -59.497108459472656,
+      "correct": false
+    },
+    {
+      "goal": "After staining wood, you should",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -28.004947662353516,
+      "score2": -34.87641906738281,
+      "correct": true
+    },
+    {
+      "goal": "How to order room service",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -85.056640625,
+      "score2": -85.53014373779297,
+      "correct": true
+    },
+    {
+      "goal": "How to sneak past guards in Metal Gear NES?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -73.88076782226562,
+      "score2": -75.27044677734375,
+      "correct": false
+    },
+    {
+      "goal": "What are the benefits of anti-allergen vacuum cleaners?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -86.43807983398438,
+      "score2": -94.83895874023438,
+      "correct": true
+    },
+    {
+      "goal": "How do you make an oil and vinegar dressing?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -116.4615478515625,
+      "score2": -128.63853454589844,
+      "correct": true
+    },
+    {
+      "goal": "Avoid germs from hotel bed.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -25.437049865722656,
+      "score2": -21.190959930419922,
+      "correct": true
+    },
+    {
+      "goal": "To allow the oil for the turkey fryer to reach the correct cooking temp",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -35.9188232421875,
+      "score2": -29.461490631103516,
+      "correct": false
+    },
+    {
+      "goal": "how to clean a container that held melted wax",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -80.9011001586914,
+      "score2": -102.68896484375,
+      "correct": true
+    },
+    {
+      "goal": "How to light a candle with a deep seated wick?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -45.596824645996094,
+      "score2": -52.565399169921875,
+      "correct": false
+    },
+    {
+      "goal": "To shape duct tape into a perfect circle.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -34.521820068359375,
+      "score2": -20.739261627197266,
+      "correct": false
+    },
+    {
+      "goal": "What can you do when someone presses all the buttons on the elevator then gets off and you are in a hurry?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -79.32122039794922,
+      "score2": -98.37828826904297,
+      "correct": true
+    },
+    {
+      "goal": "What materials are needed to hand sew an article of clothing?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -28.746871948242188,
+      "score2": -38.805885314941406,
+      "correct": true
+    },
+    {
+      "goal": "To make a hard shelled taco,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -40.99932861328125,
+      "score2": -35.444759368896484,
+      "correct": true
+    },
+    {
+      "goal": "One wants to eat Vegetarian.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -26.672945022583008,
+      "score2": -30.184675216674805,
+      "correct": false
+    },
+    {
+      "goal": "How do I find something I lost on the carpet?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -47.82261657714844,
+      "score2": -37.37033462524414,
+      "correct": true
+    },
+    {
+      "goal": "To make small candles to float in water,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -133.82522583007812,
+      "score2": -146.2399444580078,
+      "correct": true
+    },
+    {
+      "goal": "To clean your microwave without having to scrub it.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -37.792205810546875,
+      "score2": -51.07752990722656,
+      "correct": true
+    },
+    {
+      "goal": "To bend a PVC conduit,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -164.35186767578125,
+      "score2": -131.67156982421875,
+      "correct": true
+    },
+    {
+      "goal": "Make a camping shower head.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -25.528018951416016,
+      "score2": -27.125295639038086,
+      "correct": true
+    },
+    {
+      "goal": "Make Halloween lanterns.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -44.186378479003906,
+      "score2": -36.69586944580078,
+      "correct": true
+    },
+    {
+      "goal": "change a lightbulb in a ceiling fan",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -140.93496704101562,
+      "score2": -122.74571228027344,
+      "correct": true
+    },
+    {
+      "goal": "Which direction to properly install an air filter.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -19.73480224609375,
+      "score2": -47.900962829589844,
+      "correct": false
+    },
+    {
+      "goal": "Protect a bare shiny piece of metal, like a hinge, from rusting.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -73.18505859375,
+      "score2": -75.14692687988281,
+      "correct": false
+    },
+    {
+      "goal": "making a picture Frame on Your Wrist",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -133.80126953125,
+      "score2": -126.32979583740234,
+      "correct": true
+    },
+    {
+      "goal": "How do you bake a cheesecake properly?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -89.95742797851562,
+      "score2": -77.6962661743164,
+      "correct": true
+    },
+    {
+      "goal": "Easy way to hang your shoes in your closet.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -79.71368408203125,
+      "score2": -89.60912322998047,
+      "correct": true
+    },
+    {
+      "goal": "Get cheap pizza.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -39.26225280761719,
+      "score2": -50.78980255126953,
+      "correct": true
+    },
+    {
+      "goal": "How do you harvest honey from a bee box?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -181.58853149414062,
+      "score2": -174.15782165527344,
+      "correct": false
+    },
+    {
+      "goal": "What supplies are needed to make a  small decorative Christmas tree?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -110.93197631835938,
+      "score2": -98.4418716430664,
+      "correct": true
+    },
+    {
+      "goal": "How to create Dorodango (Japanese mud-art).",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -104.87141418457031,
+      "score2": -60.0093879699707,
+      "correct": true
+    },
+    {
+      "goal": "How to sleep in proper posture?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -28.677106857299805,
+      "score2": -19.402324676513672,
+      "correct": true
+    },
+    {
+      "goal": "To extend the shelf life of lettuce,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -23.804550170898438,
+      "score2": -35.39979553222656,
+      "correct": true
+    },
+    {
+      "goal": "To dye the white fondant to make the fondant roses",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -76.3346939086914,
+      "score2": -51.200706481933594,
+      "correct": true
+    },
+    {
+      "goal": "To make seed starter pots",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.821285247802734,
+      "score2": -27.972408294677734,
+      "correct": true
+    },
+    {
+      "goal": "To prepare a loaf pan for Blueberry Lemon Financiers.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -51.650238037109375,
+      "score2": -55.470123291015625,
+      "correct": true
+    },
+    {
+      "goal": "How can I raise and lower a picavet with a camera attached so it can be flown with a kite?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -42.02935028076172,
+      "score2": -38.67053985595703,
+      "correct": true
+    },
+    {
+      "goal": "Increase ability to learn something new.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -25.43927001953125,
+      "score2": -26.392568588256836,
+      "correct": false
+    },
+    {
+      "goal": "When building a survival fishing kit, what can you use to make fishing hooks?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -64.25516510009766,
+      "score2": -61.537940979003906,
+      "correct": false
+    },
+    {
+      "goal": "How can I set my umbrella up on my deck more effectively?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -169.12100219726562,
+      "score2": -163.67617797851562,
+      "correct": true
+    },
+    {
+      "goal": "To remove sharpie pen from a couch,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -61.961952209472656,
+      "score2": -29.52340316772461,
+      "correct": true
+    },
+    {
+      "goal": "To remove folds and creases from a sewing pattern",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -65.7200927734375,
+      "score2": -66.78993225097656,
+      "correct": true
+    },
+    {
+      "goal": "how to get perfectly done grilled meat",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -80.6202392578125,
+      "score2": -78.33863067626953,
+      "correct": true
+    },
+    {
+      "goal": "how do you floss your teeth with a toothpick?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -26.03053855895996,
+      "score2": -10.659268379211426,
+      "correct": false
+    },
+    {
+      "goal": "how to winterize windows",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -45.07426452636719,
+      "score2": -61.87511444091797,
+      "correct": true
+    },
+    {
+      "goal": "PET ANT",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -29.108034133911133,
+      "score2": -35.946746826171875,
+      "correct": true
+    },
+    {
+      "goal": "How can I get free gym memberships?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -54.273990631103516,
+      "score2": -58.983673095703125,
+      "correct": true
+    },
+    {
+      "goal": "how do you use cream?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -20.830425262451172,
+      "score2": -68.81979370117188,
+      "correct": false
+    },
+    {
+      "goal": "Make a picture for your fish tank.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -154.14234924316406,
+      "score2": -96.39705657958984,
+      "correct": true
+    },
+    {
+      "goal": "To get a good look at the hidden space above a room.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -83.98844146728516,
+      "score2": -95.29949951171875,
+      "correct": false
+    },
+    {
+      "goal": "To build a giant Jenga set",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -81.38690948486328,
+      "score2": -25.03418731689453,
+      "correct": false
+    },
+    {
+      "goal": "tissue",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -50.61138916015625,
+      "score2": -58.15337371826172,
+      "correct": true
+    },
+    {
+      "goal": "What is the best material to be used for the solar air heating box?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -64.67959594726562,
+      "score2": -63.253204345703125,
+      "correct": true
+    },
+    {
+      "goal": "how to dry flowers",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -132.9832763671875,
+      "score2": -121.24834442138672,
+      "correct": true
+    },
+    {
+      "goal": "How can I give a home made dog bed shape?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -37.58235549926758,
+      "score2": -32.54480743408203,
+      "correct": true
+    },
+    {
+      "goal": "To create a replica of Back to the Future's Sports Almanac.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -53.532318115234375,
+      "score2": -33.65294647216797,
+      "correct": false
+    },
+    {
+      "goal": "how do you give your fingerprints at a police station?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -71.80462646484375,
+      "score2": -64.77305603027344,
+      "correct": true
+    },
+    {
+      "goal": "To get bricks to stay together permanently when building a structure, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -24.303882598876953,
+      "score2": -9.21090030670166,
+      "correct": true
+    },
+    {
+      "goal": "Add taco filling easily.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -47.604026794433594,
+      "score2": -51.241722106933594,
+      "correct": false
+    },
+    {
+      "goal": "Learn how to use a candy thermometer.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -73.32235717773438,
+      "score2": -73.45637512207031,
+      "correct": false
+    },
+    {
+      "goal": "To smooth mayo onto raw chicken, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -25.98361587524414,
+      "score2": -19.252273559570312,
+      "correct": true
+    },
+    {
+      "goal": "how do you keep blood circulating in your legs?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -21.826675415039062,
+      "score2": -11.9834566116333,
+      "correct": true
+    },
+    {
+      "goal": "Make temporary hair dye for kids.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -44.80481719970703,
+      "score2": -55.13616180419922,
+      "correct": true
+    },
+    {
+      "goal": "how to keep bedding wrinkle free",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -24.408491134643555,
+      "score2": -48.32929229736328,
+      "correct": true
+    },
+    {
+      "goal": "To tear apart a cheeseburger, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -25.583576202392578,
+      "score2": -30.724552154541016,
+      "correct": true
+    },
+    {
+      "goal": "crossing out",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -60.8479118347168,
+      "score2": -52.27629089355469,
+      "correct": false
+    },
+    {
+      "goal": "How to grow a plant.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -41.91974639892578,
+      "score2": -35.005348205566406,
+      "correct": true
+    },
+    {
+      "goal": "Maximize full toothpaste.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -22.328168869018555,
+      "score2": -27.113889694213867,
+      "correct": true
+    },
+    {
+      "goal": "To seal the end of a plastic tube,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -51.913307189941406,
+      "score2": -47.722572326660156,
+      "correct": true
+    },
+    {
+      "goal": "How can I get more use out of my utility knife?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -189.048828125,
+      "score2": -199.8316650390625,
+      "correct": true
+    },
+    {
+      "goal": "To attach magnets to a piece of wood, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -7.444525718688965,
+      "score2": -11.4846773147583,
+      "correct": true
+    },
+    {
+      "goal": "ask for help reading it",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -64.74066162109375,
+      "score2": -73.7021255493164,
+      "correct": true
+    },
+    {
+      "goal": "To simmer water, you can",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -33.992469787597656,
+      "score2": -34.213653564453125,
+      "correct": false
+    },
+    {
+      "goal": "how to add a deeper flavor to ground beef?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -88.64164733886719,
+      "score2": -67.58781433105469,
+      "correct": true
+    },
+    {
+      "goal": "To make the base for a 3D Mickey Mouse head.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -44.78852844238281,
+      "score2": -41.21963119506836,
+      "correct": false
+    },
+    {
+      "goal": "When heating milk to make cheese",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -49.037532806396484,
+      "score2": -26.39810562133789,
+      "correct": true
+    },
+    {
+      "goal": "To prevent cupcakes from sticking to a pan, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -20.733989715576172,
+      "score2": -29.52608299255371,
+      "correct": true
+    },
+    {
+      "goal": "How do I clean car upholstery",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -43.3416748046875,
+      "score2": -41.18560791015625,
+      "correct": false
+    },
+    {
+      "goal": "To get air bubbles out of cakes.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -135.36129760742188,
+      "score2": -130.52462768554688,
+      "correct": true
+    },
+    {
+      "goal": "To prepare an empty 2 litter soda bottle to use as a plant pot.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -71.15963745117188,
+      "score2": -75.85302734375,
+      "correct": true
+    },
+    {
+      "goal": "How to attach a pendant to a necklace.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -211.27638244628906,
+      "score2": -201.36883544921875,
+      "correct": true
+    },
+    {
+      "goal": "How do I make the pattern for the baby leather shoes?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -46.740760803222656,
+      "score2": -43.792335510253906,
+      "correct": false
+    },
+    {
+      "goal": "how so I make apple pie chis pudding?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -211.426025390625,
+      "score2": -191.7233428955078,
+      "correct": true
+    },
+    {
+      "goal": "clothing",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -37.797080993652344,
+      "score2": -30.478960037231445,
+      "correct": false
+    },
+    {
+      "goal": "how do you smear liquid?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -14.296339988708496,
+      "score2": -18.247934341430664,
+      "correct": false
+    },
+    {
+      "goal": "How to make Lemon Swirl Lemon curd fudge at home.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -227.61077880859375,
+      "score2": -212.09112548828125,
+      "correct": true
+    },
+    {
+      "goal": "how do you hydrate after working out?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -29.85696792602539,
+      "score2": -11.071147918701172,
+      "correct": true
+    },
+    {
+      "goal": "blankets",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.537246704101562,
+      "score2": -21.288122177124023,
+      "correct": true
+    },
+    {
+      "goal": "How can a person use images from the internet to create a Candy advent calendar?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -18.567508697509766,
+      "score2": -36.51799774169922,
+      "correct": true
+    },
+    {
+      "goal": "To hold a bungee cord so it stays stretched out, you can",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -33.049930572509766,
+      "score2": -36.643959045410156,
+      "correct": false
+    },
+    {
+      "goal": "How to peel an onion?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -72.23638916015625,
+      "score2": -62.571250915527344,
+      "correct": true
+    },
+    {
+      "goal": "How can I get the best Bell pepper?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -115.86285400390625,
+      "score2": -133.93801879882812,
+      "correct": true
+    },
+    {
+      "goal": "To make a hood for a cloak.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -11.552545547485352,
+      "score2": -10.789226531982422,
+      "correct": false
+    },
+    {
+      "goal": "To make the caffeine in coffee release slowly after consumption,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -84.78121948242188,
+      "score2": -63.1717529296875,
+      "correct": true
+    },
+    {
+      "goal": "To obtain meximum deliciousness of the nutella cookies",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -12.669696807861328,
+      "score2": -14.294696807861328,
+      "correct": true
+    },
+    {
+      "goal": "To hit a volleyball",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -79.28519439697266,
+      "score2": -80.40147399902344,
+      "correct": true
+    },
+    {
+      "goal": "Remove pop bottle cap that is stuck on",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -76.82861328125,
+      "score2": -79.09693145751953,
+      "correct": true
+    },
+    {
+      "goal": "How to keep cool outside.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.8231201171875,
+      "score2": -8.578364372253418,
+      "correct": true
+    },
+    {
+      "goal": "How do you make gluten free brownies?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -58.826290130615234,
+      "score2": -67.47889709472656,
+      "correct": true
+    },
+    {
+      "goal": "Make a yoga mat carrier.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -26.349430084228516,
+      "score2": -34.11089324951172,
+      "correct": false
+    },
+    {
+      "goal": "how do you sign into your chime account?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -34.10466003417969,
+      "score2": -32.45842742919922,
+      "correct": true
+    },
+    {
+      "goal": "How do I lower the foot on a sewing machine?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -52.25645446777344,
+      "score2": -43.28092575073242,
+      "correct": true
+    },
+    {
+      "goal": "Melt mini marshmallows.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -57.11766815185547,
+      "score2": -48.84220886230469,
+      "correct": true
+    },
+    {
+      "goal": "Who wants dirt tracked inside the tent?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.89235305786133,
+      "score2": -63.165626525878906,
+      "correct": true
+    },
+    {
+      "goal": "napkin",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -30.85172462463379,
+      "score2": -35.54478454589844,
+      "correct": false
+    },
+    {
+      "goal": "How can I keep paint off my carpet when painting my baseboards?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -224.29165649414062,
+      "score2": -221.98916625976562,
+      "correct": true
+    },
+    {
+      "goal": "how do you wear a sweatshirt?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -9.869970321655273,
+      "score2": -26.958560943603516,
+      "correct": true
+    },
+    {
+      "goal": "toilet tissue",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -43.50243377685547,
+      "score2": -48.566749572753906,
+      "correct": true
+    },
+    {
+      "goal": "Shave using an organic shaving cream",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -69.36564636230469,
+      "score2": -66.11349487304688,
+      "correct": true
+    },
+    {
+      "goal": "How can I soothe my tongue if I burn it?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -16.618188858032227,
+      "score2": -14.460151672363281,
+      "correct": true
+    },
+    {
+      "goal": "How do I prepare the dough for butter cookies?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -122.16461944580078,
+      "score2": -112.26917266845703,
+      "correct": true
+    },
+    {
+      "goal": "how to make smoky pretzel mix",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -136.8805694580078,
+      "score2": -107.28611755371094,
+      "correct": true
+    },
+    {
+      "goal": "How do I put a game in an Xbox",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.62472915649414,
+      "score2": -40.33094024658203,
+      "correct": true
+    },
+    {
+      "goal": "how do you change your profile picture on facbook?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -35.34951400756836,
+      "score2": -36.088714599609375,
+      "correct": true
+    },
+    {
+      "goal": "How do I melt beef fat?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -23.34927749633789,
+      "score2": -37.09359359741211,
+      "correct": true
+    },
+    {
+      "goal": "How to grow a new grapevine using cuttings.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -224.75340270996094,
+      "score2": -234.48281860351562,
+      "correct": true
+    },
+    {
+      "goal": "how do you find out what's wrong with a car?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -26.841712951660156,
+      "score2": -19.3511905670166,
+      "correct": false
+    },
+    {
+      "goal": "Detect odd car noise.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.875164031982422,
+      "score2": -31.966028213500977,
+      "correct": true
+    },
+    {
+      "goal": "How to Raise Threadfin Rainbowfish Fry",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -263.373046875,
+      "score2": -256.5791931152344,
+      "correct": true
+    },
+    {
+      "goal": "Install cabinet pulls.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -42.13485336303711,
+      "score2": -43.66947937011719,
+      "correct": false
+    },
+    {
+      "goal": "To sprout seeds for your garden,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -83.72835540771484,
+      "score2": -85.84861755371094,
+      "correct": true
+    },
+    {
+      "goal": "how to find the perimeter of a trapezoid",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -58.09650421142578,
+      "score2": -43.96784591674805,
+      "correct": true
+    },
+    {
+      "goal": "How to teach your toddler how to talk.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -30.21604347229004,
+      "score2": -40.79429626464844,
+      "correct": false
+    },
+    {
+      "goal": "How to prevent BBQ chicken skin from burning on the grill?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -60.46037292480469,
+      "score2": -57.2342529296875,
+      "correct": false
+    },
+    {
+      "goal": "Prevent earbuds from tangling.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -29.458587646484375,
+      "score2": -27.698684692382812,
+      "correct": false
+    },
+    {
+      "goal": "mittens",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -36.76787185668945,
+      "score2": -45.8079948425293,
+      "correct": true
+    },
+    {
+      "goal": "how to cut sticky desserts",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.719507217407227,
+      "score2": -23.894065856933594,
+      "correct": true
+    },
+    {
+      "goal": "To cook the kebab meat on a grill",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -9.260309219360352,
+      "score2": -24.14751434326172,
+      "correct": false
+    },
+    {
+      "goal": "How do you prepare fresh chicken eggs?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -135.7679901123047,
+      "score2": -139.04331970214844,
+      "correct": true
+    },
+    {
+      "goal": "aluminum foil",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -22.14729118347168,
+      "score2": -39.02313995361328,
+      "correct": false
+    },
+    {
+      "goal": "how do you strut?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -26.66973876953125,
+      "score2": -23.073843002319336,
+      "correct": true
+    },
+    {
+      "goal": "Finish the concrete patio.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -63.769248962402344,
+      "score2": -66.36090087890625,
+      "correct": true
+    },
+    {
+      "goal": "safety pin",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -31.137327194213867,
+      "score2": -34.28606414794922,
+      "correct": false
+    },
+    {
+      "goal": "How do I get glitter to stay on ribbon?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -114.04505920410156,
+      "score2": -67.85087585449219,
+      "correct": false
+    },
+    {
+      "goal": "How can I paint stars on a black background?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -55.36347961425781,
+      "score2": -42.983306884765625,
+      "correct": true
+    },
+    {
+      "goal": "To keep Boots and thick shoes dry and smelling fresh.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -84.85989379882812,
+      "score2": -128.70567321777344,
+      "correct": true
+    },
+    {
+      "goal": "To open up google,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -52.67610168457031,
+      "score2": -41.67057418823242,
+      "correct": true
+    },
+    {
+      "goal": "Save money on airplane flights.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -16.296506881713867,
+      "score2": -21.594947814941406,
+      "correct": true
+    },
+    {
+      "goal": "how to remove really sticky tape",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -128.91432189941406,
+      "score2": -164.46200561523438,
+      "correct": true
+    },
+    {
+      "goal": "how do you distract someone?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -15.512323379516602,
+      "score2": -18.301271438598633,
+      "correct": true
+    },
+    {
+      "goal": "One wishes to make a place for their plants.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -23.615707397460938,
+      "score2": -22.259239196777344,
+      "correct": true
+    },
+    {
+      "goal": "how do you use an eraser?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -24.423059463500977,
+      "score2": -27.381389617919922,
+      "correct": false
+    },
+    {
+      "goal": "To save cookie dough to use at a later date, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -23.22299575805664,
+      "score2": -18.11693572998047,
+      "correct": true
+    },
+    {
+      "goal": "What is the best way to check if a baby's milk isn't too hot?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -23.751792907714844,
+      "score2": -17.447729110717773,
+      "correct": true
+    },
+    {
+      "goal": "How to roll chocolate truffles.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -127.54386901855469,
+      "score2": -149.09063720703125,
+      "correct": true
+    },
+    {
+      "goal": "How to sharpen scissors easily.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -28.082168579101562,
+      "score2": -21.93587303161621,
+      "correct": true
+    },
+    {
+      "goal": "how to keep colors from fading in the wash",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -20.981491088867188,
+      "score2": -29.024118423461914,
+      "correct": true
+    },
+    {
+      "goal": "how to unzip a backpack?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -85.40862274169922,
+      "score2": -87.92578887939453,
+      "correct": true
+    },
+    {
+      "goal": "To prevent burning overflowed cookie batter to your oven",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -58.74724578857422,
+      "score2": -40.58912658691406,
+      "correct": true
+    },
+    {
+      "goal": "table top",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -24.910850524902344,
+      "score2": -24.329837799072266,
+      "correct": false
+    },
+    {
+      "goal": "To create the force behind a DIY table top crushing press.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -21.496360778808594,
+      "score2": -23.871902465820312,
+      "correct": true
+    },
+    {
+      "goal": "How to make the eyes of your diy Halloween mask?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -143.73776245117188,
+      "score2": -142.21456909179688,
+      "correct": false
+    },
+    {
+      "goal": "Harvest maple syrup.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -186.36346435546875,
+      "score2": -143.34938049316406,
+      "correct": false
+    },
+    {
+      "goal": "How to make the front of your DIY Viking Cardboard shield?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -100.67375183105469,
+      "score2": -97.96395874023438,
+      "correct": true
+    },
+    {
+      "goal": "how do you return a package to sender?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -20.201217651367188,
+      "score2": -71.3701171875,
+      "correct": false
+    },
+    {
+      "goal": "To cure a hangover",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -60.09886932373047,
+      "score2": -73.47535705566406,
+      "correct": true
+    },
+    {
+      "goal": "What plants work best for upcycled kitchen planters?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -53.70499801635742,
+      "score2": -58.87665557861328,
+      "correct": false
+    },
+    {
+      "goal": "Making mac and cheese.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -62.426918029785156,
+      "score2": -71.20693969726562,
+      "correct": true
+    },
+    {
+      "goal": "How do I build a bike wall mount?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -68.75802612304688,
+      "score2": -65.94086456298828,
+      "correct": true
+    },
+    {
+      "goal": "When doing sit-ups",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -44.05457305908203,
+      "score2": -63.86806106567383,
+      "correct": true
+    },
+    {
+      "goal": "spoons",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -26.550739288330078,
+      "score2": -16.8397274017334,
+      "correct": true
+    },
+    {
+      "goal": "dish towel",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -67.37300872802734,
+      "score2": -47.867374420166016,
+      "correct": false
+    },
+    {
+      "goal": "What do you need to make a knife rust-proof?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -73.87125396728516,
+      "score2": -78.9016342163086,
+      "correct": true
+    },
+    {
+      "goal": "To make honey chipotle marinade for chicken",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -175.8936767578125,
+      "score2": -186.4087677001953,
+      "correct": true
+    },
+    {
+      "goal": "telescope",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -37.5338134765625,
+      "score2": -36.31044006347656,
+      "correct": false
+    },
+    {
+      "goal": "To delete a folder in a windows laptop.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -12.517451286315918,
+      "score2": -12.560827255249023,
+      "correct": true
+    },
+    {
+      "goal": "How To Find a Stud in the Wall to Secure Workshop Cabinets",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -91.49151611328125,
+      "score2": -149.303466796875,
+      "correct": false
+    },
+    {
+      "goal": "penny",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -30.18275260925293,
+      "score2": -38.157386779785156,
+      "correct": false
+    },
+    {
+      "goal": "Remove oil based paints from painting tools and brushes.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -73.30106353759766,
+      "score2": -73.93478393554688,
+      "correct": false
+    },
+    {
+      "goal": "Turn any cup into a travel cup",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -58.6515007019043,
+      "score2": -63.948299407958984,
+      "correct": true
+    },
+    {
+      "goal": "To make a folder paper easier to mount to a wall, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.52309226989746,
+      "score2": -20.607120513916016,
+      "correct": true
+    },
+    {
+      "goal": "Hold a cheap ring.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -24.23988151550293,
+      "score2": -29.449974060058594,
+      "correct": true
+    },
+    {
+      "goal": "How can you  spread butter if it is cool or too hard to spread?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -63.599082946777344,
+      "score2": -71.5751953125,
+      "correct": true
+    },
+    {
+      "goal": "To use a readily available item as a pen to run electricity through for DIY metal etching.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -10.752571105957031,
+      "score2": -13.189733505249023,
+      "correct": false
+    },
+    {
+      "goal": "How to cut out square on Styrofoam ice box.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -100.71186828613281,
+      "score2": -107.50243377685547,
+      "correct": true
+    },
+    {
+      "goal": "Avoid frozen wiper blades.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -32.77831268310547,
+      "score2": -39.218955993652344,
+      "correct": true
+    },
+    {
+      "goal": "To prevent a certain area of a piece of paper from being colored when applying dye, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -26.189617156982422,
+      "score2": -38.04825210571289,
+      "correct": true
+    },
+    {
+      "goal": "Create a Mask Armature",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -301.91058349609375,
+      "score2": -293.4224548339844,
+      "correct": true
+    },
+    {
+      "goal": "What type of shirt is best used when ranger rolling a shirt?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -15.72658920288086,
+      "score2": -8.994404792785645,
+      "correct": true
+    },
+    {
+      "goal": "To shoot a nail gun.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -52.62628173828125,
+      "score2": -50.25448226928711,
+      "correct": false
+    },
+    {
+      "goal": "How can I stop Eye strain and help prevent headaches?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -92.47627258300781,
+      "score2": -119.07537841796875,
+      "correct": true
+    },
+    {
+      "goal": "How to remove a temporary tattoo.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -53.376197814941406,
+      "score2": -31.716209411621094,
+      "correct": true
+    },
+    {
+      "goal": "How to get water out of coconut.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -40.74081039428711,
+      "score2": -43.35093688964844,
+      "correct": true
+    },
+    {
+      "goal": "how to hold a match for a fading flame",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -91.39009094238281,
+      "score2": -67.77262878417969,
+      "correct": true
+    },
+    {
+      "goal": "squinting",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -20.2398624420166,
+      "score2": -23.768762588500977,
+      "correct": true
+    },
+    {
+      "goal": "What can I use to go to London the quickest",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -41.28338623046875,
+      "score2": -24.256898880004883,
+      "correct": true
+    },
+    {
+      "goal": "table",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -29.50497817993164,
+      "score2": -24.18070411682129,
+      "correct": false
+    },
+    {
+      "goal": "How to get people to come to the carnival.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -117.988037109375,
+      "score2": -47.61817932128906,
+      "correct": true
+    },
+    {
+      "goal": "To store your briquettes",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.552860260009766,
+      "score2": -57.926177978515625,
+      "correct": true
+    },
+    {
+      "goal": "What supplies are needed to make a bird sculpture out of broken CDs?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -279.46771240234375,
+      "score2": -261.3397216796875,
+      "correct": true
+    },
+    {
+      "goal": "How to remove water stains from shower glass?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -42.000205993652344,
+      "score2": -50.31207275390625,
+      "correct": true
+    },
+    {
+      "goal": "how do you use a chip on a debit card?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -17.03590965270996,
+      "score2": -52.16204071044922,
+      "correct": false
+    },
+    {
+      "goal": "To make dry shampoo",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -53.84138107299805,
+      "score2": -64.17256164550781,
+      "correct": true
+    },
+    {
+      "goal": "To add light to a project on a circuit board, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -21.818214416503906,
+      "score2": -12.195505142211914,
+      "correct": true
+    },
+    {
+      "goal": "How do I prevent my muscles from getting sore after lifting weights or exercise?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -89.87975311279297,
+      "score2": -74.32627868652344,
+      "correct": true
+    },
+    {
+      "goal": "How make design on leather ?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -44.89967346191406,
+      "score2": -55.77566909790039,
+      "correct": false
+    },
+    {
+      "goal": "How to Make Easy Apple Roses",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -112.61709594726562,
+      "score2": -100.9417724609375,
+      "correct": true
+    },
+    {
+      "goal": "How to chill dough for ricotta tart.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -34.23593521118164,
+      "score2": -36.132164001464844,
+      "correct": false
+    },
+    {
+      "goal": "To make steak tender.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -70.267333984375,
+      "score2": -20.84609031677246,
+      "correct": true
+    },
+    {
+      "goal": "how do you serenade someone?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.65260124206543,
+      "score2": -19.862438201904297,
+      "correct": true
+    },
+    {
+      "goal": "How can I make a funnel?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -27.743778228759766,
+      "score2": -25.855060577392578,
+      "correct": false
+    },
+    {
+      "goal": "how do you belt someone?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -12.920644760131836,
+      "score2": -11.522528648376465,
+      "correct": false
+    },
+    {
+      "goal": "how to make bulgur with figs",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -92.93367004394531,
+      "score2": -125.88055419921875,
+      "correct": true
+    },
+    {
+      "goal": "What knife is best to cut a watermelon?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -43.461395263671875,
+      "score2": -47.26759338378906,
+      "correct": true
+    },
+    {
+      "goal": "how do you gain arm muscle?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -15.715633392333984,
+      "score2": -12.902496337890625,
+      "correct": true
+    },
+    {
+      "goal": "How can I sweat less?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -229.72509765625,
+      "score2": -212.79483032226562,
+      "correct": true
+    },
+    {
+      "goal": "To remove excess grease from the cooked bacon for the zombie burger",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.20938491821289,
+      "score2": -45.8172492980957,
+      "correct": true
+    },
+    {
+      "goal": "After baking the rollo cookies",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -19.129838943481445,
+      "score2": -112.38389587402344,
+      "correct": false
+    },
+    {
+      "goal": "What supplies are needed to make homemade butter?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -113.35916137695312,
+      "score2": -104.83464050292969,
+      "correct": true
+    },
+    {
+      "goal": "How can I get the lumps out of gravy?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -50.9967155456543,
+      "score2": -45.30357360839844,
+      "correct": true
+    },
+    {
+      "goal": "How do I prepare eggs for an easy omelet?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -58.40657043457031,
+      "score2": -68.86137390136719,
+      "correct": true
+    },
+    {
+      "goal": "To keep jewelry organized when travelling.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -47.595584869384766,
+      "score2": -51.3126220703125,
+      "correct": true
+    },
+    {
+      "goal": "To follow a link in a task.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -24.09697723388672,
+      "score2": -19.63848876953125,
+      "correct": true
+    },
+    {
+      "goal": "peeler",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -69.22493743896484,
+      "score2": -96.90155792236328,
+      "correct": true
+    },
+    {
+      "goal": "To prevent the bottoms of your shoes from touching your clothes in a suitcase.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -42.17837905883789,
+      "score2": -50.811302185058594,
+      "correct": true
+    },
+    {
+      "goal": "To learn French.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -34.80354690551758,
+      "score2": -22.132579803466797,
+      "correct": true
+    },
+    {
+      "goal": "How to make sun catchers in christmas (or other holiday) shapes",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -261.79644775390625,
+      "score2": -267.36761474609375,
+      "correct": true
+    },
+    {
+      "goal": "how do I remove a chocolate milk stain?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -112.23868560791016,
+      "score2": -135.86666870117188,
+      "correct": true
+    },
+    {
+      "goal": "How do I get a stain out of my curtains?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -107.43696594238281,
+      "score2": -111.10062408447266,
+      "correct": true
+    },
+    {
+      "goal": "How to format a USB drive.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -61.255577087402344,
+      "score2": -51.510986328125,
+      "correct": true
+    },
+    {
+      "goal": "To make hay.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -14.686233520507812,
+      "score2": -50.97331619262695,
+      "correct": true
+    },
+    {
+      "goal": "Best way to pierce ears.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -43.68345642089844,
+      "score2": -66.4255142211914,
+      "correct": true
+    },
+    {
+      "goal": "how to get great cookies",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -12.104791641235352,
+      "score2": -18.908496856689453,
+      "correct": true
+    },
+    {
+      "goal": "Clean dirty cup coaster.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -13.121644973754883,
+      "score2": -13.625936508178711,
+      "correct": true
+    },
+    {
+      "goal": "How to create scary halloween lights?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -105.90929412841797,
+      "score2": -89.92899322509766,
+      "correct": false
+    },
+    {
+      "goal": "how to make asparagus omelet toast",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -199.56021118164062,
+      "score2": -219.1627960205078,
+      "correct": true
+    },
+    {
+      "goal": "How to make the caramel fudge?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -145.30804443359375,
+      "score2": -151.41595458984375,
+      "correct": true
+    },
+    {
+      "goal": "how do you use ice cubes?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -21.788043975830078,
+      "score2": -15.326650619506836,
+      "correct": true
+    },
+    {
+      "goal": "To dry stinging nettle leaves for future use.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.867107391357422,
+      "score2": -28.44702911376953,
+      "correct": true
+    },
+    {
+      "goal": "mold",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.411598205566406,
+      "score2": -50.4050407409668,
+      "correct": true
+    },
+    {
+      "goal": "what is the best way to apply car wax?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -43.7884521484375,
+      "score2": -17.229747772216797,
+      "correct": true
+    },
+    {
+      "goal": "Jig Saw",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -45.65423583984375,
+      "score2": -43.506282806396484,
+      "correct": true
+    },
+    {
+      "goal": "how do you use a zipper?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -59.03189468383789,
+      "score2": -34.65481185913086,
+      "correct": true
+    },
+    {
+      "goal": "How would a person reattach a handle portion of a styrofoam foam board sword if it broke off?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -123.24237060546875,
+      "score2": -138.90890502929688,
+      "correct": true
+    },
+    {
+      "goal": "machete",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -24.667789459228516,
+      "score2": -31.819669723510742,
+      "correct": false
+    },
+    {
+      "goal": "What is the best way to get rid of hiccups?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -45.00965881347656,
+      "score2": -52.562522888183594,
+      "correct": true
+    },
+    {
+      "goal": "How to keep my child from knocking over my purse?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -50.40850067138672,
+      "score2": -40.44207000732422,
+      "correct": true
+    },
+    {
+      "goal": "How to apply suntan lotion",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -37.832401275634766,
+      "score2": -28.751169204711914,
+      "correct": true
+    },
+    {
+      "goal": "To make ensure your apartment has good cellphone service,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -70.88201904296875,
+      "score2": -54.182159423828125,
+      "correct": true
+    },
+    {
+      "goal": "fruit",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -22.777931213378906,
+      "score2": -34.685890197753906,
+      "correct": true
+    },
+    {
+      "goal": "bath tub",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -22.545120239257812,
+      "score2": -23.813249588012695,
+      "correct": false
+    },
+    {
+      "goal": "To open a milk container.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -29.695514678955078,
+      "score2": -42.25450134277344,
+      "correct": true
+    },
+    {
+      "goal": "Prepare clay for a kiln",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -56.94396209716797,
+      "score2": -56.27814483642578,
+      "correct": false
+    },
+    {
+      "goal": "cut an onion without crying",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -27.550596237182617,
+      "score2": -42.94728088378906,
+      "correct": true
+    },
+    {
+      "goal": "To cut a precise chunk out of a wood plank, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -5.756107330322266,
+      "score2": -9.40278148651123,
+      "correct": true
+    },
+    {
+      "goal": "how do you set the reward goal on mturk?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -42.00889587402344,
+      "score2": -27.341293334960938,
+      "correct": true
+    },
+    {
+      "goal": "Establish a health history for new puppy.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -17.007884979248047,
+      "score2": -21.962326049804688,
+      "correct": true
+    },
+    {
+      "goal": "To mince a carrot",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -10.261521339416504,
+      "score2": -5.721979141235352,
+      "correct": true
+    },
+    {
+      "goal": "How to underline text in OneNote",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -74.3095703125,
+      "score2": -54.357303619384766,
+      "correct": true
+    },
+    {
+      "goal": "How do I make a PB&J?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -25.90871810913086,
+      "score2": -33.92597961425781,
+      "correct": true
+    },
+    {
+      "goal": "How do you clean an aquarium filter?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -215.99923706054688,
+      "score2": -218.0522003173828,
+      "correct": true
+    },
+    {
+      "goal": "camera",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -53.5181884765625,
+      "score2": -50.52313232421875,
+      "correct": false
+    },
+    {
+      "goal": "To sew the bike inner tube fabric using a sewing machine.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -87.62689971923828,
+      "score2": -90.64961242675781,
+      "correct": true
+    },
+    {
+      "goal": "How do you blend out your eye shadow?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -83.22476959228516,
+      "score2": -76.22138977050781,
+      "correct": true
+    },
+    {
+      "goal": "Mold and shape eyeglasses.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -33.15235137939453,
+      "score2": -29.30344009399414,
+      "correct": true
+    },
+    {
+      "goal": "How to keep ice from melting in the freezer?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.26609992980957,
+      "score2": -24.593307495117188,
+      "correct": true
+    },
+    {
+      "goal": "How to prevent a poached egg from losing its shape?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -32.126914978027344,
+      "score2": -35.36338806152344,
+      "correct": true
+    },
+    {
+      "goal": "To make Belgian waffles",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -484.77435302734375,
+      "score2": -470.1434326171875,
+      "correct": true
+    },
+    {
+      "goal": "To heat set a length of ribbon, you can",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -17.796369552612305,
+      "score2": -17.223445892333984,
+      "correct": false
+    },
+    {
+      "goal": "How do I make a hanging lamp with Christmas lights?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -64.6236572265625,
+      "score2": -87.62734985351562,
+      "correct": true
+    },
+    {
+      "goal": "toilet tissue",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -49.57422637939453,
+      "score2": -55.671226501464844,
+      "correct": true
+    },
+    {
+      "goal": "how to make Dry Buttermilk Pancake Mix",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -149.66964721679688,
+      "score2": -119.74684143066406,
+      "correct": true
+    },
+    {
+      "goal": "how do you dial on a home phone?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -18.683107376098633,
+      "score2": -25.26681900024414,
+      "correct": true
+    },
+    {
+      "goal": "Add more fluff to whip cream.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -31.847946166992188,
+      "score2": -25.691768646240234,
+      "correct": true
+    },
+    {
+      "goal": "Make a new sponge from an old plastic mesh bag.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -104.08411407470703,
+      "score2": -86.05647277832031,
+      "correct": true
+    },
+    {
+      "goal": "Scrub tough grime off kitchen counter tops.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -34.352989196777344,
+      "score2": -31.040491104125977,
+      "correct": false
+    },
+    {
+      "goal": "To repair a cracked cranberry cookie dough log while cutting",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -38.646240234375,
+      "score2": -57.94319152832031,
+      "correct": true
+    },
+    {
+      "goal": "how do you put a stamp on a t-shirt?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -16.559593200683594,
+      "score2": -14.573502540588379,
+      "correct": true
+    },
+    {
+      "goal": "How to add water to soda bottle.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -57.42699432373047,
+      "score2": -54.083316802978516,
+      "correct": true
+    },
+    {
+      "goal": "How to make hot chocolate",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -107.44456481933594,
+      "score2": -105.67752838134766,
+      "correct": true
+    },
+    {
+      "goal": "How to teach a child to be responsible?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -65.81664276123047,
+      "score2": -76.86979675292969,
+      "correct": true
+    },
+    {
+      "goal": "lipstick",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -27.192737579345703,
+      "score2": -29.254615783691406,
+      "correct": false
+    },
+    {
+      "goal": "How do you tell if a water bottle has been opened?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -43.68129348754883,
+      "score2": -24.419450759887695,
+      "correct": false
+    },
+    {
+      "goal": "How to ensure all parts of the wall are insulated.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -75.71528625488281,
+      "score2": -71.37115478515625,
+      "correct": false
+    },
+    {
+      "goal": "How to tie shoes.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -47.30498504638672,
+      "score2": -42.274810791015625,
+      "correct": true
+    },
+    {
+      "goal": "How to make a rabbit cage physically cozy for the rabbits?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -75.10692596435547,
+      "score2": -139.83462524414062,
+      "correct": false
+    },
+    {
+      "goal": "To protect yourself while deep frying a turkey",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -90.7182846069336,
+      "score2": -86.5867919921875,
+      "correct": true
+    },
+    {
+      "goal": "How to beautify a hanging basket.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -49.207664489746094,
+      "score2": -33.83842086791992,
+      "correct": false
+    },
+    {
+      "goal": "To cook the leeks before adding rest of Skyrim tomato soup ingredients.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -17.23725128173828,
+      "score2": -10.92219352722168,
+      "correct": false
+    },
+    {
+      "goal": "Make a glass vase.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -21.06390953063965,
+      "score2": -26.491079330444336,
+      "correct": false
+    },
+    {
+      "goal": "To save plants from rot root.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -125.74842071533203,
+      "score2": -113.30621337890625,
+      "correct": true
+    },
+    {
+      "goal": "How to reuse old kitchen jars?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -31.933073043823242,
+      "score2": -43.959171295166016,
+      "correct": true
+    },
+    {
+      "goal": "To make cake mix used for cupcakes more dense.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -16.277896881103516,
+      "score2": -15.660308837890625,
+      "correct": true
+    },
+    {
+      "goal": "plastic wrap",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -36.53648376464844,
+      "score2": -29.302263259887695,
+      "correct": true
+    },
+    {
+      "goal": "How do you make sugar cubes?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -248.27699279785156,
+      "score2": -243.50205993652344,
+      "correct": false
+    },
+    {
+      "goal": "One seeks to shield themselves from the rain via easy DIY methods.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -24.660791397094727,
+      "score2": -17.79416847229004,
+      "correct": true
+    },
+    {
+      "goal": "Avoid being under powered during trips.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.376277923583984,
+      "score2": -22.710424423217773,
+      "correct": true
+    },
+    {
+      "goal": "To wash clothes in a washing machine.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -47.169837951660156,
+      "score2": -64.32439422607422,
+      "correct": true
+    },
+    {
+      "goal": "To prevent the jars from breaking when they are filled and processed with homemade dog food",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -46.556358337402344,
+      "score2": -63.57330322265625,
+      "correct": true
+    },
+    {
+      "goal": "how do you save a contact in your phone?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -55.81153869628906,
+      "score2": -58.26887512207031,
+      "correct": true
+    },
+    {
+      "goal": "How can I organize waste in my car?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -147.76803588867188,
+      "score2": -133.9930419921875,
+      "correct": true
+    },
+    {
+      "goal": "How to create a shape out of duct tape?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -59.733604431152344,
+      "score2": -58.56961441040039,
+      "correct": true
+    },
+    {
+      "goal": "To cut the bacon for the zombie burger",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -64.51402282714844,
+      "score2": -79.48201751708984,
+      "correct": true
+    },
+    {
+      "goal": "How to use an earth magnet to find a stud in the wall.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -68.7699203491211,
+      "score2": -52.23124313354492,
+      "correct": true
+    },
+    {
+      "goal": "Cut out pages from a book",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -49.129127502441406,
+      "score2": -46.23613739013672,
+      "correct": false
+    },
+    {
+      "goal": "To get the clay flower pot bread flower pot out of the coals",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -61.76032257080078,
+      "score2": -65.5623779296875,
+      "correct": true
+    },
+    {
+      "goal": "To prevent birds from pooping on your car.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -61.510711669921875,
+      "score2": -69.07405090332031,
+      "correct": true
+    },
+    {
+      "goal": "How to make tuna salad.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -113.93766784667969,
+      "score2": -127.38402557373047,
+      "correct": true
+    },
+    {
+      "goal": "compactor",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -28.38780403137207,
+      "score2": -30.88177490234375,
+      "correct": false
+    },
+    {
+      "goal": "How can I fill dents and rough areas on the surface of a wooden table I am building?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -23.479101181030273,
+      "score2": -28.72737693786621,
+      "correct": true
+    },
+    {
+      "goal": "A nice canvas",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -49.54008102416992,
+      "score2": -50.587337493896484,
+      "correct": true
+    },
+    {
+      "goal": "How can I neatly store my headphones?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -82.46231079101562,
+      "score2": -77.59857940673828,
+      "correct": true
+    },
+    {
+      "goal": "How can you you ensure that wood planks do not split when drilling holes in them?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -18.698911666870117,
+      "score2": -14.380545616149902,
+      "correct": true
+    },
+    {
+      "goal": "To cut radiant foils to be used to cover the attics.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -85.68101501464844,
+      "score2": -72.96080780029297,
+      "correct": true
+    },
+    {
+      "goal": "To make the monkeys mouth on the monkey cupcake",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -53.765411376953125,
+      "score2": -50.089027404785156,
+      "correct": true
+    },
+    {
+      "goal": "How do I get fish for my aquarium?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -38.3557014465332,
+      "score2": -74.98269653320312,
+      "correct": true
+    },
+    {
+      "goal": "To keep the sun out of your face while outside on a sunny day,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -62.089935302734375,
+      "score2": -53.788841247558594,
+      "correct": true
+    },
+    {
+      "goal": "To glue the pieces together,",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -42.10039520263672,
+      "score2": -55.697601318359375,
+      "correct": false
+    },
+    {
+      "goal": "wire",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -35.78204345703125,
+      "score2": -28.901268005371094,
+      "correct": true
+    },
+    {
+      "goal": "how do you use dumbbell bars?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -26.370820999145508,
+      "score2": -32.46744155883789,
+      "correct": false
+    },
+    {
+      "goal": "When following a recipe that calls for a baking pan, how do you know whether you should use a glass or metal pan?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -58.032196044921875,
+      "score2": -69.25281524658203,
+      "correct": true
+    },
+    {
+      "goal": "How to easily leave a note in invisible ink?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -25.262624740600586,
+      "score2": -50.65408706665039,
+      "correct": true
+    },
+    {
+      "goal": "how do you take soap off of clean dishes?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -13.76663589477539,
+      "score2": -14.142570495605469,
+      "correct": false
+    },
+    {
+      "goal": "how do you customize a phone case?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -17.97304916381836,
+      "score2": -11.878259658813477,
+      "correct": true
+    },
+    {
+      "goal": "To make a decorative pencil holder,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -115.39836120605469,
+      "score2": -113.8760757446289,
+      "correct": true
+    },
+    {
+      "goal": "To roast an eggplant, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -24.836814880371094,
+      "score2": -35.586814880371094,
+      "correct": true
+    },
+    {
+      "goal": "How do I clean the deck of my lawn mower?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -161.95108032226562,
+      "score2": -147.78256225585938,
+      "correct": true
+    },
+    {
+      "goal": "How do you separate the yolk from the egg white?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -81.13461303710938,
+      "score2": -61.096214294433594,
+      "correct": true
+    },
+    {
+      "goal": "How should I use a sumatriptan injector?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -90.93359375,
+      "score2": -101.51324462890625,
+      "correct": true
+    },
+    {
+      "goal": "sofa",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -60.19586944580078,
+      "score2": -67.45063018798828,
+      "correct": true
+    },
+    {
+      "goal": "Treat a dry nose.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -20.998382568359375,
+      "score2": -20.698734283447266,
+      "correct": false
+    },
+    {
+      "goal": "how do you cook a cookie?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -14.741183280944824,
+      "score2": -8.243544578552246,
+      "correct": true
+    },
+    {
+      "goal": "To cut a length of PVC to size, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -13.444544792175293,
+      "score2": -5.262426376342773,
+      "correct": true
+    },
+    {
+      "goal": "how do you turn on an iphone?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -26.139652252197266,
+      "score2": -45.81758499145508,
+      "correct": false
+    },
+    {
+      "goal": "What supplies are needed to make flubber soap?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -111.59993743896484,
+      "score2": -109.86622619628906,
+      "correct": true
+    },
+    {
+      "goal": "How to quickly cool down a bottled water drink?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -56.057373046875,
+      "score2": -44.51026153564453,
+      "correct": true
+    },
+    {
+      "goal": "paperweight",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -45.290740966796875,
+      "score2": -41.05656433105469,
+      "correct": false
+    },
+    {
+      "goal": "Increase chances of lost phone return.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -39.85752868652344,
+      "score2": -32.61208724975586,
+      "correct": true
+    },
+    {
+      "goal": "Stop stones from slipping while gluing together",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -99.82475280761719,
+      "score2": -94.80464935302734,
+      "correct": true
+    },
+    {
+      "goal": "To grow herbs in homemade pot.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -118.7840576171875,
+      "score2": -108.7525405883789,
+      "correct": true
+    },
+    {
+      "goal": "To keep sweat out of your eyes while exercising,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -14.72390079498291,
+      "score2": -23.679317474365234,
+      "correct": true
+    },
+    {
+      "goal": "To absorb moisture in a closet, to preserve clothing,",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -22.99086570739746,
+      "score2": -24.318431854248047,
+      "correct": false
+    },
+    {
+      "goal": "To avoid dripping juices in the oven while roasting,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -21.682004928588867,
+      "score2": -17.41596221923828,
+      "correct": true
+    },
+    {
+      "goal": "How to mail a letter.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -67.49636840820312,
+      "score2": -62.3270378112793,
+      "correct": false
+    },
+    {
+      "goal": "To keep from making a mess when putting holes in drywall.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -69.36449432373047,
+      "score2": -62.07883071899414,
+      "correct": true
+    },
+    {
+      "goal": "how do you dispense of something?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -14.558282852172852,
+      "score2": -5.429518699645996,
+      "correct": true
+    },
+    {
+      "goal": "How to make the dough for your peppermint candy?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -123.85647583007812,
+      "score2": -120.69407653808594,
+      "correct": true
+    },
+    {
+      "goal": "How should I drill the hole in the back of the frame?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -89.02999877929688,
+      "score2": -69.99336242675781,
+      "correct": true
+    },
+    {
+      "goal": "hands",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -43.478431701660156,
+      "score2": -39.10258483886719,
+      "correct": true
+    },
+    {
+      "goal": "How can I make glow sticks last longer?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -76.59732055664062,
+      "score2": -82.14613342285156,
+      "correct": true
+    },
+    {
+      "goal": "To prevent egg shells in your cookie dough,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -65.15324401855469,
+      "score2": -70.78922271728516,
+      "correct": true
+    },
+    {
+      "goal": "When working on the electrical components inside a lamp, you should",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -8.110865592956543,
+      "score2": -19.43333625793457,
+      "correct": true
+    },
+    {
+      "goal": "What size fish tank should I buy for my Betta fish?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -100.49295043945312,
+      "score2": -79.59346008300781,
+      "correct": true
+    },
+    {
+      "goal": "sofa",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -42.92296600341797,
+      "score2": -39.03574752807617,
+      "correct": true
+    },
+    {
+      "goal": "How do I start getting clean in the shower?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -79.36376190185547,
+      "score2": -73.04999542236328,
+      "correct": true
+    },
+    {
+      "goal": "To easily disburse pancake mix on a pan,",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -67.98553466796875,
+      "score2": -46.30487823486328,
+      "correct": false
+    },
+    {
+      "goal": "Boil potatoes",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -44.36076736450195,
+      "score2": -28.118255615234375,
+      "correct": true
+    },
+    {
+      "goal": "To prevent a door from latching shut,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -40.15533447265625,
+      "score2": -49.09865188598633,
+      "correct": true
+    },
+    {
+      "goal": "How to cut out your base?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -138.86260986328125,
+      "score2": -132.5575714111328,
+      "correct": true
+    },
+    {
+      "goal": "Prevent bottles from rolling in fridge.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -34.979732513427734,
+      "score2": -47.586021423339844,
+      "correct": true
+    },
+    {
+      "goal": "how do you sail a ship?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -15.51387882232666,
+      "score2": -24.14583969116211,
+      "correct": true
+    },
+    {
+      "goal": "gun",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -27.576671600341797,
+      "score2": -22.97470474243164,
+      "correct": true
+    },
+    {
+      "goal": "To store old beer bottle tops to use for crafts later.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -73.07608795166016,
+      "score2": -54.76277160644531,
+      "correct": false
+    },
+    {
+      "goal": "how do you check something in the stove without opening the door?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -12.824688911437988,
+      "score2": -12.981355667114258,
+      "correct": false
+    },
+    {
+      "goal": "How to sharpen a pencil without a pencil sharpener?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -59.3882942199707,
+      "score2": -47.121124267578125,
+      "correct": true
+    },
+    {
+      "goal": "How to clean a hairbrush.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -73.10743713378906,
+      "score2": -74.0294189453125,
+      "correct": true
+    },
+    {
+      "goal": "how to add feet to a coaster.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -48.572021484375,
+      "score2": -61.25434494018555,
+      "correct": false
+    },
+    {
+      "goal": "how to find the surface area of a cube",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -77.08538055419922,
+      "score2": -98.22894287109375,
+      "correct": true
+    },
+    {
+      "goal": "What ingredient is left out of fluffy slime that is normally in regular slime?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -8.178679466247559,
+      "score2": -2.637061595916748,
+      "correct": true
+    },
+    {
+      "goal": "Easy way to maintain a shopping list for groceries.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -134.4657440185547,
+      "score2": -154.7030029296875,
+      "correct": true
+    },
+    {
+      "goal": "To create an orange pigment with paint you already have, you can",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -22.586835861206055,
+      "score2": -16.604217529296875,
+      "correct": true
+    },
+    {
+      "goal": "How do I keep the contents of a cooler cool without using ice?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -71.18367767333984,
+      "score2": -89.41111755371094,
+      "correct": true
+    },
+    {
+      "goal": "How to prepare fishing line.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -63.79037857055664,
+      "score2": -56.80702209472656,
+      "correct": true
+    },
+    {
+      "goal": "How do you make maracas?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -145.02452087402344,
+      "score2": -158.7840576171875,
+      "correct": true
+    },
+    {
+      "goal": "hands",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -18.707334518432617,
+      "score2": -23.426084518432617,
+      "correct": true
+    },
+    {
+      "goal": "To make the binding for a book, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -24.01525115966797,
+      "score2": -27.01062774658203,
+      "correct": true
+    },
+    {
+      "goal": "Deep clean coffee grinder.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -27.935523986816406,
+      "score2": -30.53084373474121,
+      "correct": true
+    },
+    {
+      "goal": "To ensure your wood screws don't go all the way through the wood.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -26.108322143554688,
+      "score2": -34.810672760009766,
+      "correct": true
+    },
+    {
+      "goal": "To protect a dish while it's in the fridge",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -33.5887451171875,
+      "score2": -10.090047836303711,
+      "correct": true
+    },
+    {
+      "goal": "a brush",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.56439208984375,
+      "score2": -31.83352279663086,
+      "correct": true
+    },
+    {
+      "goal": "shirt",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -32.348690032958984,
+      "score2": -30.895030975341797,
+      "correct": true
+    },
+    {
+      "goal": "Avoid wasting power in fridge.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -23.664764404296875,
+      "score2": -21.990806579589844,
+      "correct": false
+    },
+    {
+      "goal": "To make a wine rack.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -47.432010650634766,
+      "score2": -56.76750183105469,
+      "correct": true
+    },
+    {
+      "goal": "To attach 2 pieces of fabric together",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -126.4522705078125,
+      "score2": -105.84381866455078,
+      "correct": true
+    },
+    {
+      "goal": "How to Make Peach Puree",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -144.59719848632812,
+      "score2": -181.0038604736328,
+      "correct": true
+    },
+    {
+      "goal": "How can I get wood filler into a small crack?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -15.725988388061523,
+      "score2": -20.36157989501953,
+      "correct": true
+    },
+    {
+      "goal": "old shirt",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -22.000713348388672,
+      "score2": -32.16633605957031,
+      "correct": true
+    },
+    {
+      "goal": "How to remove milk from car seat upholstery",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -126.59011840820312,
+      "score2": -137.74205017089844,
+      "correct": true
+    },
+    {
+      "goal": "To help clear out breathing ways when you're congested,",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -41.2140007019043,
+      "score2": -51.900672912597656,
+      "correct": false
+    },
+    {
+      "goal": "To separate egg whiles from the yolk using a water bottle.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -61.402278900146484,
+      "score2": -71.07441711425781,
+      "correct": true
+    },
+    {
+      "goal": "how to make basic risotto",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -227.8561248779297,
+      "score2": -193.77279663085938,
+      "correct": true
+    },
+    {
+      "goal": "To prepare frappucino bottles to be repurposed as spice storage bottles.",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -67.82225799560547,
+      "score2": -68.53904724121094,
+      "correct": false
+    },
+    {
+      "goal": "hook",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.215065002441406,
+      "score2": -33.9833869934082,
+      "correct": true
+    },
+    {
+      "goal": "How do I preserve a 63-year-old bomber jacket that my father wore in WWII?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -113.35982513427734,
+      "score2": -122.51769256591797,
+      "correct": true
+    },
+    {
+      "goal": "To turn heavy cream into whipping cream without equipment.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -45.75568771362305,
+      "score2": -36.12450408935547,
+      "correct": true
+    },
+    {
+      "goal": "How do you grill fish without it falling apart?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -181.456787109375,
+      "score2": -174.87623596191406,
+      "correct": true
+    },
+    {
+      "goal": "How do you organize dirty clothes?",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -36.08213424682617,
+      "score2": -58.644203186035156,
+      "correct": false
+    },
+    {
+      "goal": "Removing small scratches in the finish of wooden furniture.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -41.118263244628906,
+      "score2": -87.78013610839844,
+      "correct": true
+    },
+    {
+      "goal": "To quiet and noisy box fan.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -37.150726318359375,
+      "score2": -36.91950225830078,
+      "correct": true
+    },
+    {
+      "goal": "spear",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -38.787200927734375,
+      "score2": -34.618778228759766,
+      "correct": true
+    },
+    {
+      "goal": "how to bulk up thin soup?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -19.227285385131836,
+      "score2": -45.417396545410156,
+      "correct": true
+    },
+    {
+      "goal": "To mend hems quickly without sewing.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -105.05708312988281,
+      "score2": -54.247928619384766,
+      "correct": true
+    },
+    {
+      "goal": "Make extra money using my house this year.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -66.75239562988281,
+      "score2": -73.82440948486328,
+      "correct": true
+    },
+    {
+      "goal": "To cover the slide portion of a child's wooden slide",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -33.194400787353516,
+      "score2": -29.83062171936035,
+      "correct": true
+    },
+    {
+      "goal": "Supplement a possible bad gift.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -25.962726593017578,
+      "score2": -23.555641174316406,
+      "correct": true
+    },
+    {
+      "goal": "To get a rebound in a basketball game,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -22.73212432861328,
+      "score2": -21.128433227539062,
+      "correct": true
+    },
+    {
+      "goal": "to taser someone",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -119.60006713867188,
+      "score2": -117.20417785644531,
+      "correct": true
+    },
+    {
+      "goal": "Prevent rugs from moving.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -17.640018463134766,
+      "score2": -21.8277645111084,
+      "correct": true
+    },
+    {
+      "goal": "How to heat a knife to cut thru plastic, rope and other hard materials",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -150.0498809814453,
+      "score2": -151.49765014648438,
+      "correct": false
+    },
+    {
+      "goal": "How can I sneeze when I feel like I want to sneeze but can't?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -48.43052291870117,
+      "score2": -43.57475662231445,
+      "correct": true
+    },
+    {
+      "goal": "How to keep brown sugar from going hard?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -70.46501922607422,
+      "score2": -59.49625778198242,
+      "correct": true
+    },
+    {
+      "goal": "How do you clean inside windows?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -52.253543853759766,
+      "score2": -67.19080352783203,
+      "correct": true
+    },
+    {
+      "goal": "How do you replace fabric in something with a hole?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -26.488771438598633,
+      "score2": -37.403282165527344,
+      "correct": true
+    },
+    {
+      "goal": "How to create a golf ball pendant?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -49.28337860107422,
+      "score2": -62.94813919067383,
+      "correct": true
+    },
+    {
+      "goal": "how do you blame someone?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -14.035429000854492,
+      "score2": -21.830886840820312,
+      "correct": true
+    },
+    {
+      "goal": "The best nail to use at every crossing of a roofing job",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -44.141029357910156,
+      "score2": -56.32973098754883,
+      "correct": true
+    },
+    {
+      "goal": "Freshen up breath.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -15.653388023376465,
+      "score2": -18.596986770629883,
+      "correct": true
+    },
+    {
+      "goal": "Get enough rest before a trip.",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.823253631591797,
+      "score2": -27.333171844482422,
+      "correct": true
+    },
+    {
+      "goal": "To clean an engagement ring,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -25.719234466552734,
+      "score2": -16.35858154296875,
+      "correct": true
+    },
+    {
+      "goal": "Hammers",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -69.32955932617188,
+      "score2": -62.81970977783203,
+      "correct": true
+    },
+    {
+      "goal": "desktop keyboard",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -42.84961700439453,
+      "score2": -45.609867095947266,
+      "correct": true
+    },
+    {
+      "goal": "Melt marshmallows and butter for Rice crispie treats",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -95.42877197265625,
+      "score2": -41.89375305175781,
+      "correct": true
+    },
+    {
+      "goal": "two forks",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.835792541503906,
+      "score2": -37.55189514160156,
+      "correct": true
+    },
+    {
+      "goal": "to make popcorn without a microwave.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -71.61050415039062,
+      "score2": -79.64997863769531,
+      "correct": true
+    },
+    {
+      "goal": "To keep your entertainment center safe from children,",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -39.493873596191406,
+      "score2": -31.4302978515625,
+      "correct": false
+    },
+    {
+      "goal": "How to seal off small damage on a plastic surface?",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -77.7690658569336,
+      "score2": -70.84966278076172,
+      "correct": true
+    },
+    {
+      "goal": "soap",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -17.917417526245117,
+      "score2": -16.457399368286133,
+      "correct": true
+    },
+    {
+      "goal": "Use peroxide to lighten hair",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -47.543190002441406,
+      "score2": -37.01416778564453,
+      "correct": true
+    },
+    {
+      "goal": "How can I remove wrinkles from clothing?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -48.76390075683594,
+      "score2": -53.78839874267578,
+      "correct": true
+    },
+    {
+      "goal": "To add a cinnamon swirl into your loaf of bread",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -334.0166015625,
+      "score2": -344.1300354003906,
+      "correct": true
+    },
+    {
+      "goal": "how to clean road salt off of leather shoes",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -113.37535095214844,
+      "score2": -81.51438903808594,
+      "correct": true
+    },
+    {
+      "goal": "How to thicken barbecue sauce.",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -32.300132751464844,
+      "score2": -31.382152557373047,
+      "correct": false
+    },
+    {
+      "goal": "basket",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -29.95701789855957,
+      "score2": -23.73834991455078,
+      "correct": true
+    },
+    {
+      "goal": "To flatten a woven rug so it doesn't bunch up, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -30.62596893310547,
+      "score2": -43.870567321777344,
+      "correct": true
+    },
+    {
+      "goal": "To keep berry and granola layers intact when making Granola Crunch Berry Yogurt Popsicle.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -50.361236572265625,
+      "score2": -56.64136505126953,
+      "correct": true
+    },
+    {
+      "goal": "dresser",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -47.14812469482422,
+      "score2": -42.23968505859375,
+      "correct": false
+    },
+    {
+      "goal": "How to open an electronic gadget's case",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -42.79815673828125,
+      "score2": -56.99424743652344,
+      "correct": true
+    },
+    {
+      "goal": "To hang a picture frame up.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -46.53742980957031,
+      "score2": -56.55766677856445,
+      "correct": true
+    },
+    {
+      "goal": "Cut the sleeves off the shirt",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -31.717132568359375,
+      "score2": -25.906835556030273,
+      "correct": false
+    },
+    {
+      "goal": "cotton ball",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -32.80454635620117,
+      "score2": -37.31269836425781,
+      "correct": true
+    },
+    {
+      "goal": "To fully cook the mac and cheese in the oven",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -41.75389862060547,
+      "score2": -50.716102600097656,
+      "correct": true
+    },
+    {
+      "goal": "To make seat belt metal cool on a hot day,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -18.833393096923828,
+      "score2": -31.614990234375,
+      "correct": true
+    },
+    {
+      "goal": "comb",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -45.462928771972656,
+      "score2": -48.435569763183594,
+      "correct": false
+    },
+    {
+      "goal": "my eggs are almost expired, do I have to toss them?",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -31.762226104736328,
+      "score2": -53.285369873046875,
+      "correct": true
+    },
+    {
+      "goal": "Make a candy cane ornament out of beads and a pipe cleaner",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -53.0759391784668,
+      "score2": -44.253013610839844,
+      "correct": true
+    },
+    {
+      "goal": "To attach wefts of synthetic hair to one another.",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -57.808494567871094,
+      "score2": -62.55640411376953,
+      "correct": true
+    },
+    {
+      "goal": "watering can",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -36.09787368774414,
+      "score2": -36.93841552734375,
+      "correct": false
+    },
+    {
+      "goal": "crisp, textured layers in crust",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -114.75568389892578,
+      "score2": -73.7065658569336,
+      "correct": true
+    },
+    {
+      "goal": "To mark lines in a piece of dough, you can",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -14.933011054992676,
+      "score2": -20.067115783691406,
+      "correct": true
+    },
+    {
+      "goal": "How to infuse coffee flavor into cream?",
+      "gold": "1",
+      "prediction": "2",
+      "score1": -32.93161392211914,
+      "score2": -31.82318687438965,
+      "correct": false
+    },
+    {
+      "goal": "radio",
+      "gold": "2",
+      "prediction": "1",
+      "score1": -45.477081298828125,
+      "score2": -49.829166412353516,
+      "correct": false
+    },
+    {
+      "goal": "To make an effective piece of origami,",
+      "gold": "2",
+      "prediction": "2",
+      "score1": -30.75264549255371,
+      "score2": -25.116546630859375,
+      "correct": true
+    },
+    {
+      "goal": "To insert a G-Tube into a stoma,",
+      "gold": "1",
+      "prediction": "1",
+      "score1": -53.487491607666016,
+      "score2": -67.98179626464844,
+      "correct": true
+    }
+  ]
+}

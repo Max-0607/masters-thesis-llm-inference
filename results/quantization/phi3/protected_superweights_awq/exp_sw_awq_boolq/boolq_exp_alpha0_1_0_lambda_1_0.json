@@ -1,0 +1,4089 @@
+{
+  "task": "boolq",
+  "method": "superweight_awq",
+  "model_key": "phi-3",
+  "model_path": "/home/mknell/.cache/huggingface/hub/models--microsoft--Phi-3-mini-4k-instruct/snapshots/f39ac1d28e925b323eae81227eaba4464caced4e",
+  "awq_path": "quantization/awq/phi3/phi3-w4-g128.pt4",
+  "scaling_mode": "exponential",
+  "sw_alpha": 1.0,
+  "sw_alpha0": 1.0,
+  "sw_lambda": 1.0,
+  "scaling_info": {
+    "(2, 525, 808)": {
+      "rank": 0,
+      "scale": 1.0,
+      "old_value": -88.0,
+      "new_value": -88.0
+    },
+    "(2, 1693, 808)": {
+      "rank": 1,
+      "scale": 0.36787944117144233,
+      "old_value": 51.78125,
+      "new_value": 19.046875
+    },
+    "(2, 1113, 808)": {
+      "rank": 2,
+      "scale": 0.1353352832366127,
+      "old_value": -52.25,
+      "new_value": -7.0703125
+    },
+    "(4, 525, 2723)": {
+      "rank": 3,
+      "scale": 0.049787068367863944,
+      "old_value": -58.25,
+      "new_value": -2.900390625
+    },
+    "(4, 1113, 2723)": {
+      "rank": 4,
+      "scale": 0.01831563888873418,
+      "old_value": -37.78125,
+      "new_value": -0.69189453125
+    },
+    "(4, 1693, 2723)": {
+      "rank": 5,
+      "scale": 0.006737946999085467,
+      "old_value": 36.375,
+      "new_value": 0.2451171875
+    }
+  },
+  "superweights": [
+    [
+      2,
+      525,
+      808
+    ],
+    [
+      2,
+      1693,
+      808
+    ],
+    [
+      2,
+      1113,
+      808
+    ],
+    [
+      4,
+      525,
+      2723
+    ],
+    [
+      4,
+      1113,
+      2723
+    ],
+    [
+      4,
+      1693,
+      2723
+    ]
+  ],
+  "w_bit": 4,
+  "q_group_size": 128,
+  "limit": 500,
+  "accuracy": 0.736,
+  "num_correct": 368,
+  "num_total": 500,
+  "predictions": [
+    {
+      "question": "does ethanol take more energy make that produces",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -6.65523099899292,
+      "no_score": -5.59273099899292,
+      "correct": true
+    },
+    {
+      "question": "is house tax and property tax are same",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -5.920814037322998,
+      "no_score": -4.608314037322998,
+      "correct": false
+    },
+    {
+      "question": "is pain experienced in a missing body part or paralyzed area",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.320099353790283,
+      "no_score": -9.851348876953125,
+      "correct": true
+    },
+    {
+      "question": "is harry potter and the escape from gringotts a roller coaster ride",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.220767974853516,
+      "no_score": -12.595767974853516,
+      "correct": true
+    },
+    {
+      "question": "is there a difference between hydroxyzine hcl and hydroxyzine pam",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.129050254821777,
+      "no_score": -8.855612754821777,
+      "correct": true
+    },
+    {
+      "question": "is barq's root beer a pepsi product",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.37110137939453,
+      "no_score": -6.949225902557373,
+      "correct": true
+    },
+    {
+      "question": "can an odd number be divided by an even number",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.946484565734863,
+      "no_score": -4.727734565734863,
+      "correct": false
+    },
+    {
+      "question": "is there a word with q without u",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -3.701151132583618,
+      "no_score": -4.904275894165039,
+      "correct": true
+    },
+    {
+      "question": "can u drive in canada with us license",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -15.526349067687988,
+      "no_score": -8.948224067687988,
+      "correct": false
+    },
+    {
+      "question": "is there a play off for third place in the world cup",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.822841644287109,
+      "no_score": -9.30721664428711,
+      "correct": true
+    },
+    {
+      "question": "can minors drink with parents in new york",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.329855918884277,
+      "no_score": -9.704855918884277,
+      "correct": false
+    },
+    {
+      "question": "is the show bloodline based on a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.62093734741211,
+      "no_score": -7.214687824249268,
+      "correct": true
+    },
+    {
+      "question": "is it bad to wash your hair with shower gel",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -17.002521514892578,
+      "no_score": -7.799395561218262,
+      "correct": false
+    },
+    {
+      "question": "is the liver part of the excretory system",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.172883987426758,
+      "no_score": -9.516633987426758,
+      "correct": true
+    },
+    {
+      "question": "is fantastic beasts and where to find them a prequel",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.858455657958984,
+      "no_score": -9.561580657958984,
+      "correct": true
+    },
+    {
+      "question": "will there be a season 8 of vampire diaries",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.383561611175537,
+      "no_score": -10.461687088012695,
+      "correct": true
+    },
+    {
+      "question": "was the movie strangers based on a true story",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.061383247375488,
+      "no_score": -7.827008247375488,
+      "correct": false
+    },
+    {
+      "question": "is durham university part of the russell group",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.25773811340332,
+      "no_score": -10.96086311340332,
+      "correct": true
+    },
+    {
+      "question": "is the tv show the resident over for the season",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.788971900939941,
+      "no_score": -7.445221424102783,
+      "correct": false
+    },
+    {
+      "question": "does magnesium citrate have citric acid in it",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.612916946411133,
+      "no_score": -15.659791946411133,
+      "correct": true
+    },
+    {
+      "question": "does p o box come before street address",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.66551399230957,
+      "no_score": -7.89988899230957,
+      "correct": true
+    },
+    {
+      "question": "does a spark plug keep an engine running",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.222258567810059,
+      "no_score": -8.316008567810059,
+      "correct": true
+    },
+    {
+      "question": "is a cape and a cloak the same",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.835402488708496,
+      "no_score": -8.257277488708496,
+      "correct": false
+    },
+    {
+      "question": "does it cost money to renounce us citizenship",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.969669342041016,
+      "no_score": -10.954044342041016,
+      "correct": true
+    },
+    {
+      "question": "is a fire 7 the same as a kindle",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.22162914276123,
+      "no_score": -6.3310041427612305,
+      "correct": false
+    },
+    {
+      "question": "can you drink alcohol with your parents in wisconsin",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.007926940917969,
+      "no_score": -12.461051940917969,
+      "correct": true
+    },
+    {
+      "question": "do penguins have feathers arising from the epidermis",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.445545196533203,
+      "no_score": -7.664295196533203,
+      "correct": false
+    },
+    {
+      "question": "do you need to break in a car",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -7.791490077972412,
+      "no_score": -8.04149055480957,
+      "correct": false
+    },
+    {
+      "question": "is the enchanted forest in oregon still open",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.629654407501221,
+      "no_score": -13.317153930664062,
+      "correct": true
+    },
+    {
+      "question": "is there a golf course at the indy 500",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.233526706695557,
+      "no_score": -7.780401706695557,
+      "correct": true
+    },
+    {
+      "question": "does deadpool have a kid in the comics",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.587950229644775,
+      "no_score": -10.244199752807617,
+      "correct": true
+    },
+    {
+      "question": "do they still make benson & hedges cigarettes",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.030465602874756,
+      "no_score": -11.171091079711914,
+      "correct": true
+    },
+    {
+      "question": "is federal income tax the same as social security",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -19.557483673095703,
+      "no_score": -7.166857719421387,
+      "correct": true
+    },
+    {
+      "question": "is an engine speed sensor the same as a crankshaft sensor",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -17.22225570678711,
+      "no_score": -9.75350570678711,
+      "correct": false
+    },
+    {
+      "question": "is indiana jones temple of doom a prequel",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.621135711669922,
+      "no_score": -10.589885711669922,
+      "correct": true
+    },
+    {
+      "question": "is there any next part of avengers infinity war",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.493902206420898,
+      "no_score": -9.540777206420898,
+      "correct": true
+    },
+    {
+      "question": "is the toyota highlander on a truck frame",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.634796142578125,
+      "no_score": -7.384796142578125,
+      "correct": true
+    },
+    {
+      "question": "is it legal to do a cover of a song",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.285902976989746,
+      "no_score": -12.332777976989746,
+      "correct": true
+    },
+    {
+      "question": "can carbon form polar covalent bonds with hydrogen",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.63509464263916,
+      "no_score": -7.97884464263916,
+      "correct": true
+    },
+    {
+      "question": "is there a sequel to the movie the golden compass",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.278905868530273,
+      "no_score": -9.403905868530273,
+      "correct": true
+    },
+    {
+      "question": "is columbus day a national holiday in the united states",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.072913646697998,
+      "no_score": -10.54166316986084,
+      "correct": true
+    },
+    {
+      "question": "are new balance and nike the same company",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -19.210622787475586,
+      "no_score": -6.1793718338012695,
+      "correct": true
+    },
+    {
+      "question": "is there an interstate that goes coast to coast",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.255171298980713,
+      "no_score": -9.348920822143555,
+      "correct": true
+    },
+    {
+      "question": "is pureed tomatoes the same as tomato sauce",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.398696899414062,
+      "no_score": -8.836196899414062,
+      "correct": true
+    },
+    {
+      "question": "can there be a word without a vowel",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.458870887756348,
+      "no_score": -8.740120887756348,
+      "correct": false
+    },
+    {
+      "question": "does only the winner get money on tipping point",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.27318000793457,
+      "no_score": -14.10130500793457,
+      "correct": true
+    },
+    {
+      "question": "is there such a thing as a turkey vulture",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.003253936767578,
+      "no_score": -17.050128936767578,
+      "correct": true
+    },
+    {
+      "question": "has anyone hit a hole in one on a par 5",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.707770347595215,
+      "no_score": -12.129645347595215,
+      "correct": true
+    },
+    {
+      "question": "do the jets and giants share a stadium",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.192226886749268,
+      "no_score": -14.84847640991211,
+      "correct": true
+    },
+    {
+      "question": "is the us womens soccer team in the world cup",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -4.337489128112793,
+      "no_score": -4.603114128112793,
+      "correct": true
+    },
+    {
+      "question": "can an african team win the world cup",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.313886642456055,
+      "no_score": -9.657636642456055,
+      "correct": true
+    },
+    {
+      "question": "can a hammer be used as a weapon",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.303050994873047,
+      "no_score": -12.771800994873047,
+      "correct": true
+    },
+    {
+      "question": "do they still have fox hunts in england",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.473555564880371,
+      "no_score": -5.457930564880371,
+      "correct": true
+    },
+    {
+      "question": "can you wear short sleeve shirt with asu jacket",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.82163143157959,
+      "no_score": -7.587256908416748,
+      "correct": false
+    },
+    {
+      "question": "has wisconsin ever been in the little league world series",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -8.460304260253906,
+      "no_score": -9.319679260253906,
+      "correct": false
+    },
+    {
+      "question": "does damon and elena get together in season 3",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.189191818237305,
+      "no_score": -5.845442295074463,
+      "correct": true
+    },
+    {
+      "question": "is there a player in the nfl missing a hand",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.034989833831787,
+      "no_score": -10.253739356994629,
+      "correct": true
+    },
+    {
+      "question": "is the other boleyn girl part of a series",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.790023803710938,
+      "no_score": -6.0868988037109375,
+      "correct": false
+    },
+    {
+      "question": "is there a group called the five heartbeats",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -6.510654449462891,
+      "no_score": -10.10440444946289,
+      "correct": false
+    },
+    {
+      "question": "is mount everest a part of the himalayas",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.248298645019531,
+      "no_score": -14.076423645019531,
+      "correct": true
+    },
+    {
+      "question": "can an emt-basic start an iv",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.206596374511719,
+      "no_score": -8.815971374511719,
+      "correct": true
+    },
+    {
+      "question": "has no 1 court at wimbledon got a roof",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.721525192260742,
+      "no_score": -8.190275192260742,
+      "correct": true
+    },
+    {
+      "question": "has anyone come back from 3-0 in the nba finals",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.649245262145996,
+      "no_score": -5.992995262145996,
+      "correct": true
+    },
+    {
+      "question": "do radio waves travel at the speed of light",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.79862117767334,
+      "no_score": -14.09549617767334,
+      "correct": true
+    },
+    {
+      "question": "did anyone from the 1980 us hockey team play in the nhl",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.854098320007324,
+      "no_score": -9.760348320007324,
+      "correct": true
+    },
+    {
+      "question": "do all triangles have at least two acute angles",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.8271894454956055,
+      "no_score": -10.639689445495605,
+      "correct": true
+    },
+    {
+      "question": "is baylor and mary hardin baylor the same school",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.566749572753906,
+      "no_score": -7.004249095916748,
+      "correct": false
+    },
+    {
+      "question": "can you get the death penalty as a minor",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.008506774902344,
+      "no_score": -7.227256774902344,
+      "correct": true
+    },
+    {
+      "question": "did indian football team qualified for fifa 2018",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.987123489379883,
+      "no_score": -6.908998012542725,
+      "correct": true
+    },
+    {
+      "question": "are t rex and tyrannosaurus rex the same",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.5127787590026855,
+      "no_score": -12.731529235839844,
+      "correct": true
+    },
+    {
+      "question": "is the old panama canal still in use",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -6.246628761291504,
+      "no_score": -6.027878761291504,
+      "correct": false
+    },
+    {
+      "question": "do you need a pal to possess ammunition",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.847092628479004,
+      "no_score": -8.065842628479004,
+      "correct": false
+    },
+    {
+      "question": "do blue and pink cotton candy taste the same",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.689425468444824,
+      "no_score": -6.298800468444824,
+      "correct": true
+    },
+    {
+      "question": "did to kill a mockingbird win an academy award",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.965065002441406,
+      "no_score": -8.074440002441406,
+      "correct": false
+    },
+    {
+      "question": "is there such a thing as a floating island",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.9952616691589355,
+      "no_score": -15.323386192321777,
+      "correct": true
+    },
+    {
+      "question": "do female ferrets die if they don't mate",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.650731086730957,
+      "no_score": -15.291356086730957,
+      "correct": true
+    },
+    {
+      "question": "will all xbox 360 games work on xbox one",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.457459449768066,
+      "no_score": -8.254334449768066,
+      "correct": true
+    },
+    {
+      "question": "is there a right and left brachiocephalic artery",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.770589828491211,
+      "no_score": -8.989339828491211,
+      "correct": true
+    },
+    {
+      "question": "do the runners up on survivor win money",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.773504734039307,
+      "no_score": -12.726629257202148,
+      "correct": true
+    },
+    {
+      "question": "is there a sequel to love finds a home",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.553680419921875,
+      "no_score": -5.553679943084717,
+      "correct": true
+    },
+    {
+      "question": "will there be a second season of 11.22.63",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.120549201965332,
+      "no_score": -8.354924201965332,
+      "correct": true
+    },
+    {
+      "question": "are there nuclear power plants in the us",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.159146308898926,
+      "no_score": -13.174771308898926,
+      "correct": true
+    },
+    {
+      "question": "is there a tiebreaker in final set at wimbledon",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.114043235778809,
+      "no_score": -6.551543235778809,
+      "correct": true
+    },
+    {
+      "question": "were the twin towers the world trade center",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.86888599395752,
+      "no_score": -8.68138599395752,
+      "correct": false
+    },
+    {
+      "question": "did deion sanders ever win a world series",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -7.925446510314941,
+      "no_score": -15.909821510314941,
+      "correct": false
+    },
+    {
+      "question": "is a german shepard the same as an alsatian",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.346837997436523,
+      "no_score": -6.003088474273682,
+      "correct": false
+    },
+    {
+      "question": "does a frog jump out of boiling water",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.572193145751953,
+      "no_score": -6.915943145751953,
+      "correct": false
+    },
+    {
+      "question": "is it possible to create mass from energy",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.447327613830566,
+      "no_score": -11.572327613830566,
+      "correct": true
+    },
+    {
+      "question": "is there a movie with 0 on rotten tomatoes",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.806344032287598,
+      "no_score": -8.056344032287598,
+      "correct": false
+    },
+    {
+      "question": "is the jaguar s type rear wheel drive",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.341615200042725,
+      "no_score": -11.513489723205566,
+      "correct": true
+    },
+    {
+      "question": "is a tablespoon bigger than a dessert spoon",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.696805000305176,
+      "no_score": -9.509305000305176,
+      "correct": false
+    },
+    {
+      "question": "is this the last season of bunk'd",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.34214973449707,
+      "no_score": -5.3265252113342285,
+      "correct": false
+    },
+    {
+      "question": "does the president live in the white house",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.643779754638672,
+      "no_score": -12.393779754638672,
+      "correct": true
+    },
+    {
+      "question": "does the dorsal root ganglion carry sensory input",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.03805160522461,
+      "no_score": -13.81930160522461,
+      "correct": true
+    },
+    {
+      "question": "is anne with an e filmed on pei",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.416507720947266,
+      "no_score": -6.541507720947266,
+      "correct": false
+    },
+    {
+      "question": "is angular frequency and angular velocity the same",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.846108436584473,
+      "no_score": -9.564858436584473,
+      "correct": true
+    },
+    {
+      "question": "can someone die from a bullet shot in the air",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.587038993835449,
+      "no_score": -15.10266399383545,
+      "correct": true
+    },
+    {
+      "question": "is salt lake city the biggest city in utah",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.136980056762695,
+      "no_score": -9.074480056762695,
+      "correct": true
+    },
+    {
+      "question": "was chasing cars written for grey's anatomy",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.8945894241333,
+      "no_score": -8.2695894241333,
+      "correct": true
+    },
+    {
+      "question": "did the girl in the lost world die",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.489266395568848,
+      "no_score": -5.426766395568848,
+      "correct": true
+    },
+    {
+      "question": "can you have too much oxygen in your body",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.544121742248535,
+      "no_score": -15.919121742248535,
+      "correct": true
+    },
+    {
+      "question": "is northern ireland part of the great britain",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -6.227231025695801,
+      "no_score": -8.3366060256958,
+      "correct": false
+    },
+    {
+      "question": "has tampa ever been hit by a hurricane",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.486464977264404,
+      "no_score": -9.564589500427246,
+      "correct": true
+    },
+    {
+      "question": "can anyone give last rites in an emergency",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.665678977966309,
+      "no_score": -8.384428977966309,
+      "correct": true
+    },
+    {
+      "question": "was there a draft in the revolutionary war",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.418797492980957,
+      "no_score": -8.137547492980957,
+      "correct": false
+    },
+    {
+      "question": "can you wear your letterman after high school",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.407547950744629,
+      "no_score": -12.610672950744629,
+      "correct": true
+    },
+    {
+      "question": "do you pay tax on gambling winnings in australia",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.367189407348633,
+      "no_score": -8.304689407348633,
+      "correct": true
+    },
+    {
+      "question": "will there be a new spartacus season 5",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.038188934326172,
+      "no_score": -8.350688934326172,
+      "correct": true
+    },
+    {
+      "question": "is scar alive in the lion king 2",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -7.532900333404541,
+      "no_score": -5.189150333404541,
+      "correct": true
+    },
+    {
+      "question": "is the dog from little rascals still alive",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.931842803955078,
+      "no_score": -7.369342803955078,
+      "correct": true
+    },
+    {
+      "question": "is journey 2 the mysterious island a sequel",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.929988384246826,
+      "no_score": -14.726863861083984,
+      "correct": true
+    },
+    {
+      "question": "can you cut the stock off a shotgun",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.276554107666016,
+      "no_score": -7.307804107666016,
+      "correct": false
+    },
+    {
+      "question": "is all of new zealand in the same time zone",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.524263381958008,
+      "no_score": -8.118013381958008,
+      "correct": true
+    },
+    {
+      "question": "is powdered milk the same as milk powder",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.941398620605469,
+      "no_score": -8.707023620605469,
+      "correct": false
+    },
+    {
+      "question": "does the united states have a federal system of government",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.322221755981445,
+      "no_score": -16.775346755981445,
+      "correct": true
+    },
+    {
+      "question": "is a father in law considered a relative",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.050149917602539,
+      "no_score": -8.737649917602539,
+      "correct": true
+    },
+    {
+      "question": "is david from love it or list it a real realtor",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.2818284034729,
+      "no_score": -9.516202926635742,
+      "correct": true
+    },
+    {
+      "question": "have the capitals ever win the stanley cup",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.783980369567871,
+      "no_score": -10.174605369567871,
+      "correct": true
+    },
+    {
+      "question": "is the united states a part of the european union",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.230165481567383,
+      "no_score": -5.777040481567383,
+      "correct": true
+    },
+    {
+      "question": "is a title and registration the same thing",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.669469833374023,
+      "no_score": -6.481969356536865,
+      "correct": false
+    },
+    {
+      "question": "are st bernards and bernese mountain dogs related",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.634336471557617,
+      "no_score": -8.884336471557617,
+      "correct": true
+    },
+    {
+      "question": "is there any train between india and pakistan",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.718708515167236,
+      "no_score": -10.562458038330078,
+      "correct": true
+    },
+    {
+      "question": "are public limited companies in the private sector",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.005247116088867,
+      "no_score": -5.567747116088867,
+      "correct": true
+    },
+    {
+      "question": "is health care free in the united states",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -17.805007934570312,
+      "no_score": -7.148758888244629,
+      "correct": true
+    },
+    {
+      "question": "were there any survivors in the pompeii eruption",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.651601791381836,
+      "no_score": -8.807851791381836,
+      "correct": false
+    },
+    {
+      "question": "can one travel faster than the speed of light",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.272602081298828,
+      "no_score": -5.381977081298828,
+      "correct": true
+    },
+    {
+      "question": "is there going to be another golden compass movie",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.461478233337402,
+      "no_score": -8.508353233337402,
+      "correct": true
+    },
+    {
+      "question": "did ireland qualify for the 2018 world cup",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.108658790588379,
+      "no_score": -8.608658790588379,
+      "correct": true
+    },
+    {
+      "question": "can you sell a gun privately in florida",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.40900993347168,
+      "no_score": -10.03400993347168,
+      "correct": false
+    },
+    {
+      "question": "does the little girl die in man on fire",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.38345718383789,
+      "no_score": -6.070956707000732,
+      "correct": true
+    },
+    {
+      "question": "does latent heat of vaporization change with temperature",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.0592041015625,
+      "no_score": -10.8404541015625,
+      "correct": true
+    },
+    {
+      "question": "can a nas be used as a server",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.979844570159912,
+      "no_score": -12.85484504699707,
+      "correct": true
+    },
+    {
+      "question": "did my name is earl finish his list",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.913110733032227,
+      "no_score": -6.928735256195068,
+      "correct": true
+    },
+    {
+      "question": "do powerball matches have to be in order",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.386192321777344,
+      "no_score": -6.011192798614502,
+      "correct": true
+    },
+    {
+      "question": "is fate and the furious the last movie",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.617110252380371,
+      "no_score": -5.382735729217529,
+      "correct": true
+    },
+    {
+      "question": "does battlefield 1 have a single player campaign",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.415682792663574,
+      "no_score": -14.071932792663574,
+      "correct": true
+    },
+    {
+      "question": "was the sears tower the tallest building in the world",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.798239707946777,
+      "no_score": -9.266989707946777,
+      "correct": true
+    },
+    {
+      "question": "is the drinking age different in every state",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.21043586730957,
+      "no_score": -4.36668586730957,
+      "correct": true
+    },
+    {
+      "question": "is it possible to have no sense of smell",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.405315399169922,
+      "no_score": -13.077190399169922,
+      "correct": true
+    },
+    {
+      "question": "is the port mann bridge a toll bridge",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -4.942359924316406,
+      "no_score": -9.661109924316406,
+      "correct": false
+    },
+    {
+      "question": "can the fa cup final end in a tie",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -5.799980163574219,
+      "no_score": -7.393730163574219,
+      "correct": false
+    },
+    {
+      "question": "is denatured alcohol and acetone the same thing",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.93474578857422,
+      "no_score": -8.364433288574219,
+      "correct": true
+    },
+    {
+      "question": "is the dot product of two vectors a scalar",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.111787796020508,
+      "no_score": -10.814912796020508,
+      "correct": true
+    },
+    {
+      "question": "is there such thing as a dominant eye",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.100527286529541,
+      "no_score": -14.1630277633667,
+      "correct": true
+    },
+    {
+      "question": "is the isle of man part of the european economic area",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.978033065795898,
+      "no_score": -7.134283542633057,
+      "correct": true
+    },
+    {
+      "question": "is ncis new orleans over for the season",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.907435417175293,
+      "no_score": -7.266810417175293,
+      "correct": true
+    },
+    {
+      "question": "is navel and belly button the same thing",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.235435485839844,
+      "no_score": -11.344810485839844,
+      "correct": true
+    },
+    {
+      "question": "does smeagol die in lord of the rings",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.099713325500488,
+      "no_score": -7.224713325500488,
+      "correct": true
+    },
+    {
+      "question": "will there be a season 3 of here come the habibs",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.23492431640625,
+      "no_score": -7.516174793243408,
+      "correct": true
+    },
+    {
+      "question": "does majora's mask have a time limit",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.194595813751221,
+      "no_score": -12.803970336914062,
+      "correct": true
+    },
+    {
+      "question": "do numbers look the same in all languages",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.07547378540039,
+      "no_score": -6.934848308563232,
+      "correct": true
+    },
+    {
+      "question": "are the marvel tv shows in the mcu",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.868497848510742,
+      "no_score": -11.930997848510742,
+      "correct": true
+    },
+    {
+      "question": "is there a movie the handmaid's tale",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.814493179321289,
+      "no_score": -12.689493179321289,
+      "correct": true
+    },
+    {
+      "question": "is the shape of water movie based on a book",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.759506225585938,
+      "no_score": -9.072006225585938,
+      "correct": true
+    },
+    {
+      "question": "does 1 ball and 1 lucky star win euromillions",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.547184944152832,
+      "no_score": -7.484684944152832,
+      "correct": true
+    },
+    {
+      "question": "is hindi is our national language of india",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -13.807910919189453,
+      "no_score": -7.979785919189453,
+      "correct": false
+    },
+    {
+      "question": "are all eyeglasses made by the same company",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.800461769104004,
+      "no_score": -5.909837245941162,
+      "correct": true
+    },
+    {
+      "question": "is there going to be a season 3 for daredevil",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.848810195922852,
+      "no_score": -10.723810195922852,
+      "correct": false
+    },
+    {
+      "question": "can a tree have more than one trunk",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.802487373352051,
+      "no_score": -17.208736419677734,
+      "correct": true
+    },
+    {
+      "question": "does bailey die in a dog's purpose",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.077999114990234,
+      "no_score": -5.827999114990234,
+      "correct": false
+    },
+    {
+      "question": "is night of the hunter a film noir",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.697549819946289,
+      "no_score": -10.978799819946289,
+      "correct": true
+    },
+    {
+      "question": "is ivory coast and cote d ivoire the same",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.285562992095947,
+      "no_score": -13.191813468933105,
+      "correct": true
+    },
+    {
+      "question": "can root 2 be written as a fraction",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.692264556884766,
+      "no_score": -6.411014556884766,
+      "correct": false
+    },
+    {
+      "question": "is thread seal tape and teflon tape the same",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.579280853271484,
+      "no_score": -7.173031330108643,
+      "correct": false
+    },
+    {
+      "question": "is dragon fruit and pitaya the same thing",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.361589431762695,
+      "no_score": -8.439714431762695,
+      "correct": true
+    },
+    {
+      "question": "is it 5 portions of fruit and 5 of vegetables",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.796867370605469,
+      "no_score": -5.828117847442627,
+      "correct": true
+    },
+    {
+      "question": "did they cancel whose line is it anyway",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.985255718231201,
+      "no_score": -5.688380718231201,
+      "correct": false
+    },
+    {
+      "question": "did the game of thrones theme song change",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.267707824707031,
+      "no_score": -7.986457347869873,
+      "correct": true
+    },
+    {
+      "question": "is a bumble bee the same as a carpenter bee",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.84526252746582,
+      "no_score": -6.0483880043029785,
+      "correct": true
+    },
+    {
+      "question": "has czech republic ever won the world cup",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.485640525817871,
+      "no_score": -7.376265525817871,
+      "correct": true
+    },
+    {
+      "question": "is the routing number the same as transit number",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.75621509552002,
+      "no_score": -7.2093400955200195,
+      "correct": true
+    },
+    {
+      "question": "is new zealand on the continent of australia",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.530267715454102,
+      "no_score": -7.983392715454102,
+      "correct": true
+    },
+    {
+      "question": "is there going to be any more pirates of the caribbean films",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.057509422302246,
+      "no_score": -8.557509422302246,
+      "correct": true
+    },
+    {
+      "question": "is there an official release date for the last airbender 2",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.543266296386719,
+      "no_score": -6.293266773223877,
+      "correct": true
+    },
+    {
+      "question": "is there an age limit to compete in the olympics",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.748246192932129,
+      "no_score": -8.388871192932129,
+      "correct": true
+    },
+    {
+      "question": "is the indian motorcycle made in united states",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.000131607055664,
+      "no_score": -8.656381607055664,
+      "correct": false
+    },
+    {
+      "question": "is st andrews university in the russell group",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.294869422912598,
+      "no_score": -5.685494422912598,
+      "correct": true
+    },
+    {
+      "question": "was eye of the tiger written for rocky",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.650314331054688,
+      "no_score": -9.275314331054688,
+      "correct": true
+    },
+    {
+      "question": "does the us court of appeals have original jurisdiction",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.604202270507812,
+      "no_score": -7.0104522705078125,
+      "correct": true
+    },
+    {
+      "question": "do you win chess by taking the queen",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.800997734069824,
+      "no_score": -4.754122734069824,
+      "correct": true
+    },
+    {
+      "question": "does a fried egg have a runny yolk",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.268020629882812,
+      "no_score": -11.080520629882812,
+      "correct": true
+    },
+    {
+      "question": "did boo the world's cutest dog die",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.520866394042969,
+      "no_score": -6.067741394042969,
+      "correct": true
+    },
+    {
+      "question": "did they change laurie in that 70s show",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.669755935668945,
+      "no_score": -6.974443435668945,
+      "correct": false
+    },
+    {
+      "question": "can you boat from lake michigan to atlantic ocean",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.379571914672852,
+      "no_score": -7.363946437835693,
+      "correct": false
+    },
+    {
+      "question": "have scotland ever been in the world cup final",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.879340171813965,
+      "no_score": -8.441840171813965,
+      "correct": true
+    },
+    {
+      "question": "is there a military base in san diego",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.624840259552002,
+      "no_score": -13.65609073638916,
+      "correct": true
+    },
+    {
+      "question": "did england host the world cup in 1966",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.517413139343262,
+      "no_score": -11.861163139343262,
+      "correct": true
+    },
+    {
+      "question": "can you get more than one varsity letter",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.874896049499512,
+      "no_score": -9.484271049499512,
+      "correct": true
+    },
+    {
+      "question": "are there any states that do not have a seat belt law",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.980505466461182,
+      "no_score": -8.418004989624023,
+      "correct": true
+    },
+    {
+      "question": "do bees die if they lose their stinger",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.73885726928711,
+      "no_score": -8.89510726928711,
+      "correct": true
+    },
+    {
+      "question": "are there actual bodies in the tomb of the unknown soldier",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.135031700134277,
+      "no_score": -8.478781700134277,
+      "correct": false
+    },
+    {
+      "question": "is a pickle the same as a gherkin",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.818967819213867,
+      "no_score": -7.740843296051025,
+      "correct": false
+    },
+    {
+      "question": "is it possible to type 200 words per minute",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.61379623413086,
+      "no_score": -5.707545757293701,
+      "correct": false
+    },
+    {
+      "question": "is the rampage movie based on the game",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.0554351806640625,
+      "no_score": -10.571060180664062,
+      "correct": true
+    },
+    {
+      "question": "do alligators drown their prey and eat it later",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.121590614318848,
+      "no_score": -5.621591091156006,
+      "correct": false
+    },
+    {
+      "question": "has a t rex skull ever been found",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -6.315925598144531,
+      "no_score": -5.784675598144531,
+      "correct": false
+    },
+    {
+      "question": "are all the members of the band still alive",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.319746971130371,
+      "no_score": -6.725996971130371,
+      "correct": true
+    },
+    {
+      "question": "do you need a permit to carry a gun in nh",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.121524810791016,
+      "no_score": -9.512149810791016,
+      "correct": true
+    },
+    {
+      "question": "is antarctica the same as the south pole",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.607977867126465,
+      "no_score": -7.420477867126465,
+      "correct": true
+    },
+    {
+      "question": "do competitive inhibitors bind to the active site",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.592992782592773,
+      "no_score": -13.796117782592773,
+      "correct": true
+    },
+    {
+      "question": "has a woman ever played minor league baseball",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.815157890319824,
+      "no_score": -6.565157890319824,
+      "correct": false
+    },
+    {
+      "question": "is breaking and entering into a car a felony",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.294875144958496,
+      "no_score": -12.388625144958496,
+      "correct": true
+    },
+    {
+      "question": "is victoria plum the same as victorian plumbing",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -14.8078031539917,
+      "no_score": -7.932803153991699,
+      "correct": false
+    },
+    {
+      "question": "is tess carroll died in charlie st cloud",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.403645515441895,
+      "no_score": -6.8880205154418945,
+      "correct": true
+    },
+    {
+      "question": "does each state have their own national guard",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.7341890335083,
+      "no_score": -17.359188079833984,
+      "correct": true
+    },
+    {
+      "question": "does the sahara desert in northern africa help south americas amazon rainforest grow",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.649241924285889,
+      "no_score": -12.32111644744873,
+      "correct": true
+    },
+    {
+      "question": "is france the same timezone as the uk",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.054769515991211,
+      "no_score": -4.773519992828369,
+      "correct": true
+    },
+    {
+      "question": "can the heat of a hair dryer kill lice",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.426918983459473,
+      "no_score": -9.473793983459473,
+      "correct": true
+    },
+    {
+      "question": "is israel part of the european economic area",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.867666244506836,
+      "no_score": -8.273916244506836,
+      "correct": true
+    },
+    {
+      "question": "is the three little pigs a nursery rhyme",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.610112190246582,
+      "no_score": -5.610112190246582,
+      "correct": true
+    },
+    {
+      "question": "did murphy brown have a baby on the show",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.483094215393066,
+      "no_score": -10.467469215393066,
+      "correct": true
+    },
+    {
+      "question": "does maple syrup come straight from the tree",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.06720542907715,
+      "no_score": -7.864080905914307,
+      "correct": true
+    },
+    {
+      "question": "will there be a season 7 of puss in boots on netflix",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.99936294555664,
+      "no_score": -8.17123794555664,
+      "correct": true
+    },
+    {
+      "question": "does the animal cell have a cell membrane",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.008089065551758,
+      "no_score": -11.476839065551758,
+      "correct": true
+    },
+    {
+      "question": "are liquor stores open on memorial day oklahoma",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.209461212158203,
+      "no_score": -8.662586212158203,
+      "correct": true
+    },
+    {
+      "question": "was the parkers a spin off of moesha",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.3215179443359375,
+      "no_score": -10.493392944335938,
+      "correct": true
+    },
+    {
+      "question": "is air canada part of one world alliance",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -5.5194220542907715,
+      "no_score": -6.0819220542907715,
+      "correct": false
+    },
+    {
+      "question": "is nfs carbon a sequel to most wanted",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.640447616577148,
+      "no_score": -12.093572616577148,
+      "correct": true
+    },
+    {
+      "question": "can ingrown toenails come back after being removed",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -10.221476554870605,
+      "no_score": -13.846476554870605,
+      "correct": true
+    },
+    {
+      "question": "does david brooks still write for ny times",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.939831733703613,
+      "no_score": -9.924206733703613,
+      "correct": true
+    },
+    {
+      "question": "is a markup language designed to describe data",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.464593887329102,
+      "no_score": -6.558343887329102,
+      "correct": true
+    },
+    {
+      "question": "are ncaa and nba balls the same size",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -20.541736602783203,
+      "no_score": -9.197985649108887,
+      "correct": true
+    },
+    {
+      "question": "is it illegal to make covers of songs",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.21980094909668,
+      "no_score": -7.047926425933838,
+      "correct": true
+    },
+    {
+      "question": "is the book the outsiders based on a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.210801124572754,
+      "no_score": -7.929551124572754,
+      "correct": true
+    },
+    {
+      "question": "has washington capitals ever won the stanley cup",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.415863037109375,
+      "no_score": -11.290863037109375,
+      "correct": true
+    },
+    {
+      "question": "is the liver a part of the gi tract",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -4.352594375610352,
+      "no_score": -5.149469375610352,
+      "correct": false
+    },
+    {
+      "question": "does salt water taffy have salt in it",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.484711647033691,
+      "no_score": -19.414398193359375,
+      "correct": true
+    },
+    {
+      "question": "does the navy have a delayed entry program",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.184711456298828,
+      "no_score": -6.497211456298828,
+      "correct": false
+    },
+    {
+      "question": "do all ni numbers have a letter at the end",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.568659782409668,
+      "no_score": -9.178034782409668,
+      "correct": false
+    },
+    {
+      "question": "can you run on a dropped third strike in little league",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.488259315490723,
+      "no_score": -7.6757588386535645,
+      "correct": true
+    },
+    {
+      "question": "does penne alla vodka have dairy in it",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.610989570617676,
+      "no_score": -12.282864570617676,
+      "correct": true
+    },
+    {
+      "question": "is i can only imagine based on a true story",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.08997631072998,
+      "no_score": -8.80872631072998,
+      "correct": false
+    },
+    {
+      "question": "is season 4 of better call saul out",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.175507545471191,
+      "no_score": -10.769257545471191,
+      "correct": true
+    },
+    {
+      "question": "can an 18 year old sleep with a 15 year old",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.388124465942383,
+      "no_score": -10.044374465942383,
+      "correct": true
+    },
+    {
+      "question": "can you take a right turn on a red light",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.480357646942139,
+      "no_score": -8.980358123779297,
+      "correct": true
+    },
+    {
+      "question": "do straights have to be the same suit",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.3316068649292,
+      "no_score": -7.925356864929199,
+      "correct": true
+    },
+    {
+      "question": "is there a difference between 2 cycle and 2 stroke",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -8.487506866455078,
+      "no_score": -12.221881866455078,
+      "correct": false
+    },
+    {
+      "question": "does beau abbott die in a quiet place",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.5258307456970215,
+      "no_score": -7.1977057456970215,
+      "correct": false
+    },
+    {
+      "question": "has anyone won more than one congressional medal of honor",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -15.304646492004395,
+      "no_score": -9.554646492004395,
+      "correct": false
+    },
+    {
+      "question": "is the walking dead same as fear the walking dead",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.560022354125977,
+      "no_score": -8.466272354125977,
+      "correct": true
+    },
+    {
+      "question": "did mariah carey wrote all i want for christmas is you",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.785876750946045,
+      "no_score": -11.332752227783203,
+      "correct": true
+    },
+    {
+      "question": "do both male and female bighorn sheep have horns",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.155167579650879,
+      "no_score": -14.061417579650879,
+      "correct": true
+    },
+    {
+      "question": "is there a chinatown in st louis mo",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -6.617808818817139,
+      "no_score": -11.852184295654297,
+      "correct": false
+    },
+    {
+      "question": "is there a season 4 of bad education",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.467190742492676,
+      "no_score": -6.357815742492676,
+      "correct": true
+    },
+    {
+      "question": "can you pass the ball more than once in american football",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.116493225097656,
+      "no_score": -8.866493225097656,
+      "correct": false
+    },
+    {
+      "question": "was the tiger really on the boat in life of pi",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.365646362304688,
+      "no_score": -8.568771362304688,
+      "correct": false
+    },
+    {
+      "question": "is let there be light a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.998931884765625,
+      "no_score": -7.467681884765625,
+      "correct": true
+    },
+    {
+      "question": "is there a bird faster than a cheetah",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.67761516571045,
+      "no_score": -7.786990642547607,
+      "correct": false
+    },
+    {
+      "question": "do queen ants give birth to queen ants",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.762508392333984,
+      "no_score": -6.528132915496826,
+      "correct": false
+    },
+    {
+      "question": "do they celebrate father's day in the netherlands",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.860193252563477,
+      "no_score": -12.696130752563477,
+      "correct": true
+    },
+    {
+      "question": "does one sister chromatid have half the dna of a chromosome",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.137792587280273,
+      "no_score": -6.044043064117432,
+      "correct": false
+    },
+    {
+      "question": "was the lizzie mcguire movie filmed in rome",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.907191276550293,
+      "no_score": -6.907191276550293,
+      "correct": false
+    },
+    {
+      "question": "is metal gear rising related to metal gear solid",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.085750579833984,
+      "no_score": -15.382625579833984,
+      "correct": true
+    },
+    {
+      "question": "is the vice president the president of the senate",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.2855987548828125,
+      "no_score": -16.316848754882812,
+      "correct": true
+    },
+    {
+      "question": "is britain still a member of european union",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.971165657043457,
+      "no_score": -7.361790180206299,
+      "correct": false
+    },
+    {
+      "question": "is the human torch the same guy as captain america",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.96129322052002,
+      "no_score": -5.8362932205200195,
+      "correct": false
+    },
+    {
+      "question": "can a glass window break on its own",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.848989486694336,
+      "no_score": -9.098989486694336,
+      "correct": true
+    },
+    {
+      "question": "can you buy alcohol on sunday in wi",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.978110313415527,
+      "no_score": -10.837485313415527,
+      "correct": false
+    },
+    {
+      "question": "was the power of one a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.501327514648438,
+      "no_score": -9.079452514648438,
+      "correct": true
+    },
+    {
+      "question": "did they use a real gorilla in mighty joe young",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.141397476196289,
+      "no_score": -8.235147476196289,
+      "correct": true
+    },
+    {
+      "question": "is the barber of seville a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.017988204956055,
+      "no_score": -6.580488204956055,
+      "correct": true
+    },
+    {
+      "question": "can a real image be projected onto a screen",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.759878158569336,
+      "no_score": -10.947378158569336,
+      "correct": true
+    },
+    {
+      "question": "is the army under the department of defense",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.287961006164551,
+      "no_score": -17.225460052490234,
+      "correct": true
+    },
+    {
+      "question": "did the titanic sink on its maiden voyage",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.224851608276367,
+      "no_score": -14.974851608276367,
+      "correct": true
+    },
+    {
+      "question": "is st augustine the oldest city in florida",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.19790506362915,
+      "no_score": -8.385405540466309,
+      "correct": true
+    },
+    {
+      "question": "does the boy die in the book of henry",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.4793701171875,
+      "no_score": -7.6512451171875,
+      "correct": false
+    },
+    {
+      "question": "are there any games that are cross platform",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.681207656860352,
+      "no_score": -10.478082656860352,
+      "correct": true
+    },
+    {
+      "question": "is an agm battery a sealed lead acid battery",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.553618907928467,
+      "no_score": -17.498931884765625,
+      "correct": true
+    },
+    {
+      "question": "is the united states part of the commonwealth of nations",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.056795120239258,
+      "no_score": -7.2130446434021,
+      "correct": true
+    },
+    {
+      "question": "is there a state where the drinking age is 18",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.826930046081543,
+      "no_score": -5.514430046081543,
+      "correct": true
+    },
+    {
+      "question": "is outcome variable the same as dependent variable",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.827840328216553,
+      "no_score": -10.952840805053711,
+      "correct": true
+    },
+    {
+      "question": "can trucks go on the taconic state parkway",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.060224533081055,
+      "no_score": -7.122725009918213,
+      "correct": true
+    },
+    {
+      "question": "do you have to pay both ways on the george washington bridge",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.54176139831543,
+      "no_score": -6.38551139831543,
+      "correct": true
+    },
+    {
+      "question": "is there such thing as over drinking water",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.941412925720215,
+      "no_score": -14.925787925720215,
+      "correct": true
+    },
+    {
+      "question": "did the astros used to be in the national league",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.171553611755371,
+      "no_score": -16.249679565429688,
+      "correct": true
+    },
+    {
+      "question": "does the vegas golden knights have a captain",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.447993278503418,
+      "no_score": -8.994868278503418,
+      "correct": true
+    },
+    {
+      "question": "did michael and pam date on the office",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.541537284851074,
+      "no_score": -4.947787284851074,
+      "correct": true
+    },
+    {
+      "question": "did us ever win the world cup soccer",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -6.265323638916016,
+      "no_score": -7.312198638916016,
+      "correct": false
+    },
+    {
+      "question": "is blue cross blue shield a managed care organization",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.788846969604492,
+      "no_score": -6.320096969604492,
+      "correct": false
+    },
+    {
+      "question": "is there a disorder for being obsessed with someone",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.190184593200684,
+      "no_score": -11.408934593200684,
+      "correct": true
+    },
+    {
+      "question": "are there tolls on i-70 in kansas",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.52298641204834,
+      "no_score": -11.36673641204834,
+      "correct": true
+    },
+    {
+      "question": "can an act be a tort and a crime",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.716198921203613,
+      "no_score": -13.403698921203613,
+      "correct": true
+    },
+    {
+      "question": "do they still make new episodes of dora",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.8402738571167,
+      "no_score": -7.340273380279541,
+      "correct": true
+    },
+    {
+      "question": "does enameled cast iron leach iron into food",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.138931274414062,
+      "no_score": -7.6701812744140625,
+      "correct": false
+    },
+    {
+      "question": "do donna and eric end up getting married",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.704732894897461,
+      "no_score": -7.892232894897461,
+      "correct": true
+    },
+    {
+      "question": "is an administrative law judge a real judge",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.411066055297852,
+      "no_score": -11.270441055297852,
+      "correct": true
+    },
+    {
+      "question": "can you call fair catch on a kickoff",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -10.049699783325195,
+      "no_score": -10.252824783325195,
+      "correct": true
+    },
+    {
+      "question": "does the uk use a 24 hour clock",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.761092185974121,
+      "no_score": -16.464218139648438,
+      "correct": true
+    },
+    {
+      "question": "do supreme court justices have to be confirmed",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.45023775100708,
+      "no_score": -7.57523775100708,
+      "correct": true
+    },
+    {
+      "question": "does elena die for good in vampire diaries",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.874737739562988,
+      "no_score": -7.812237739562988,
+      "correct": true
+    },
+    {
+      "question": "is there a season 3 of indian summers",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.2161865234375,
+      "no_score": -6.4818115234375,
+      "correct": true
+    },
+    {
+      "question": "are there going to be any more i am number four movies",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.050141334533691,
+      "no_score": -8.847016334533691,
+      "correct": true
+    },
+    {
+      "question": "can the world cup final be decided on penalties",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.431813716888428,
+      "no_score": -9.16618824005127,
+      "correct": true
+    },
+    {
+      "question": "is australian sign language the same as american",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.861815452575684,
+      "no_score": -5.174315452575684,
+      "correct": true
+    },
+    {
+      "question": "is there a difference between doves and pigeons",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -12.374255180358887,
+      "no_score": -13.405505180358887,
+      "correct": false
+    },
+    {
+      "question": "is there a sequel to hunter x hunter",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.358713150024414,
+      "no_score": -13.311838150024414,
+      "correct": true
+    },
+    {
+      "question": "is there a season 2 of medici masters of florence",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.33620548248291,
+      "no_score": -13.45729923248291,
+      "correct": true
+    },
+    {
+      "question": "is sheet metal gauge the same as wire gauge",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.788326263427734,
+      "no_score": -8.803951263427734,
+      "correct": false
+    },
+    {
+      "question": "is amy's baking company in scottsdale still open",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.37130355834961,
+      "no_score": -7.058804512023926,
+      "correct": true
+    },
+    {
+      "question": "will there be a season 5 the 100",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.307215690612793,
+      "no_score": -7.869715690612793,
+      "correct": false
+    },
+    {
+      "question": "is the berlin wall the same as the berlin blockade",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.857763290405273,
+      "no_score": -7.514012813568115,
+      "correct": true
+    },
+    {
+      "question": "is there a belt above black in karate",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.638396263122559,
+      "no_score": -6.763396263122559,
+      "correct": true
+    },
+    {
+      "question": "did arizona die in season 8 of grey's anatomy",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.6256685256958,
+      "no_score": -8.2350435256958,
+      "correct": true
+    },
+    {
+      "question": "is there a border between england and scotland",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.810366630554199,
+      "no_score": -11.7634916305542,
+      "correct": true
+    },
+    {
+      "question": "is language the only criteria of classifying state in india",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.80964183807373,
+      "no_score": -4.0596418380737305,
+      "correct": true
+    },
+    {
+      "question": "is grey's anatomy filmed at a real hospital",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.602569580078125,
+      "no_score": -6.368194580078125,
+      "correct": false
+    },
+    {
+      "question": "can you put 700c tires on a 29er",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.3182878494262695,
+      "no_score": -11.84953784942627,
+      "correct": true
+    },
+    {
+      "question": "is it illegal for a minor to be in possession of alcohol",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.415904998779297,
+      "no_score": -14.822154998779297,
+      "correct": true
+    },
+    {
+      "question": "are ground coriander and cumin the same thing",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -18.35405921936035,
+      "no_score": -6.557184219360352,
+      "correct": true
+    },
+    {
+      "question": "do u get paid to be on survivor",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.041574478149414,
+      "no_score": -8.697824478149414,
+      "correct": false
+    },
+    {
+      "question": "are dachshunds and weiner dogs the same thing",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.092698097229004,
+      "no_score": -7.545823097229004,
+      "correct": false
+    },
+    {
+      "question": "do adjectives have to come before a noun",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.24555778503418,
+      "no_score": -6.7611823081970215,
+      "correct": true
+    },
+    {
+      "question": "is st kitts and nevis a us territory",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.321635246276855,
+      "no_score": -6.1341352462768555,
+      "correct": true
+    },
+    {
+      "question": "is cheaper by the dozen based on a true story",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.182573318481445,
+      "no_score": -9.151323318481445,
+      "correct": false
+    },
+    {
+      "question": "can you play soccer on a football field",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.944491863250732,
+      "no_score": -10.05386734008789,
+      "correct": true
+    },
+    {
+      "question": "do the internal intercostal muscles contract during inspiration",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -13.983356475830078,
+      "no_score": -7.811481475830078,
+      "correct": false
+    },
+    {
+      "question": "do you have to be born with perfect pitch",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.332536697387695,
+      "no_score": -5.645036697387695,
+      "correct": true
+    },
+    {
+      "question": "is an ace 2 3 4 5 a straight",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -6.796793460845947,
+      "no_score": -6.046793460845947,
+      "correct": false
+    },
+    {
+      "question": "is season 5 of the originals the series finale",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.226909160614014,
+      "no_score": -6.101909160614014,
+      "correct": true
+    },
+    {
+      "question": "has anyone won the grand slam in golf",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.433351516723633,
+      "no_score": -8.402101516723633,
+      "correct": false
+    },
+    {
+      "question": "can a filibuster stop a supreme court nominee",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.787717342376709,
+      "no_score": -7.756467342376709,
+      "correct": false
+    },
+    {
+      "question": "is city of industry in los angeles county",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -4.147988319396973,
+      "no_score": -12.069863319396973,
+      "correct": true
+    },
+    {
+      "question": "is song of solomon the same as song of songs",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.988358497619629,
+      "no_score": -8.816483497619629,
+      "correct": false
+    },
+    {
+      "question": "did the pirates of the caribbean ride come first",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.88014030456543,
+      "no_score": -6.5520148277282715,
+      "correct": false
+    },
+    {
+      "question": "is it true that ethiopia has 13 months",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.183608055114746,
+      "no_score": -6.902358055114746,
+      "correct": false
+    },
+    {
+      "question": "is the wizarding world of harry potter in islands of adventure",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.788998126983643,
+      "no_score": -14.913997650146484,
+      "correct": true
+    },
+    {
+      "question": "is there a season 7 of the sopranos",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.428232192993164,
+      "no_score": -6.771982192993164,
+      "correct": true
+    },
+    {
+      "question": "is a yard the same as a meter",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.337011337280273,
+      "no_score": -9.212011337280273,
+      "correct": true
+    },
+    {
+      "question": "does the sun orbit around the milky way",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.677132606506348,
+      "no_score": -14.802132606506348,
+      "correct": true
+    },
+    {
+      "question": "is the white cover on brie cheese edible",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.441988945007324,
+      "no_score": -15.488863945007324,
+      "correct": true
+    },
+    {
+      "question": "is a wheel and axle a simple machine",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.294436931610107,
+      "no_score": -9.075687408447266,
+      "correct": true
+    },
+    {
+      "question": "is there going to be a jack reacher 2",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.911065101623535,
+      "no_score": -6.723565101623535,
+      "correct": false
+    },
+    {
+      "question": "is 22 magnum and 22 wmr the same",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.603629112243652,
+      "no_score": -7.791128635406494,
+      "correct": false
+    },
+    {
+      "question": "is wrath of the titans a sequel to clash of the titans",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.313024044036865,
+      "no_score": -13.375524520874023,
+      "correct": true
+    },
+    {
+      "question": "is z nation a spinoff of the walking dead",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.780186653137207,
+      "no_score": -6.811436653137207,
+      "correct": true
+    },
+    {
+      "question": "is there a difference between muay thai and thai boxing",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.370485305786133,
+      "no_score": -6.448610782623291,
+      "correct": true
+    },
+    {
+      "question": "is the queen's birthday a public holiday in victoria",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.03428840637207,
+      "no_score": -8.09678840637207,
+      "correct": false
+    },
+    {
+      "question": "are fear the walking dead and the walking dead related",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.3155131340026855,
+      "no_score": -13.518637657165527,
+      "correct": true
+    },
+    {
+      "question": "can i get into canada with a military id",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -14.231534957885742,
+      "no_score": -10.075284957885742,
+      "correct": false
+    },
+    {
+      "question": "is there a congestion charge in london on sunday",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.121789932250977,
+      "no_score": -6.809289932250977,
+      "correct": true
+    },
+    {
+      "question": "did christine and the phantom have a son",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.156740188598633,
+      "no_score": -7.656740188598633,
+      "correct": true
+    },
+    {
+      "question": "is the speed of sound constant for all materials",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.622444152832031,
+      "no_score": -6.528693675994873,
+      "correct": true
+    },
+    {
+      "question": "is the president the only member of the executive branch",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -13.019965171813965,
+      "no_score": -6.488715171813965,
+      "correct": false
+    },
+    {
+      "question": "can you build up an immunity to arsenic",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.0319366455078125,
+      "no_score": -6.9381866455078125,
+      "correct": true
+    },
+    {
+      "question": "is the singer from blur in the gorillaz",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.788333892822266,
+      "no_score": -14.960208892822266,
+      "correct": true
+    },
+    {
+      "question": "was there helicopters in the second world war",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.717657566070557,
+      "no_score": -7.373907566070557,
+      "correct": true
+    },
+    {
+      "question": "is women's college world series double elimination",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.269178867340088,
+      "no_score": -9.86292839050293,
+      "correct": true
+    },
+    {
+      "question": "can you own a skunk in the uk",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.292061805725098,
+      "no_score": -7.479561805725098,
+      "correct": false
+    },
+    {
+      "question": "is there such a thing as brain freeze",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.716732978820801,
+      "no_score": -14.7323579788208,
+      "correct": true
+    },
+    {
+      "question": "did the queen have any brothers or sisters",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.340351104736328,
+      "no_score": -6.84035062789917,
+      "correct": false
+    },
+    {
+      "question": "was the movie insomnia based on a book",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.344503402709961,
+      "no_score": -8.657003402709961,
+      "correct": true
+    },
+    {
+      "question": "can you score off a throw in in soccer",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.067231178283691,
+      "no_score": -7.598480701446533,
+      "correct": true
+    },
+    {
+      "question": "was the king and i based on a true story",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.130555152893066,
+      "no_score": -7.755555152893066,
+      "correct": true
+    },
+    {
+      "question": "is the cast of mama mia the same",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.744967460632324,
+      "no_score": -5.416842937469482,
+      "correct": false
+    },
+    {
+      "question": "is father's day the same day every year",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.450682640075684,
+      "no_score": -7.669432640075684,
+      "correct": true
+    },
+    {
+      "question": "is there a season 9 of pretty little liars",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.172760963439941,
+      "no_score": -5.782135486602783,
+      "correct": true
+    },
+    {
+      "question": "are you required to complete the american community survey",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.002469062805176,
+      "no_score": -7.393094062805176,
+      "correct": true
+    },
+    {
+      "question": "is george washington university an ivy league school",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.439788818359375,
+      "no_score": -8.049163818359375,
+      "correct": true
+    },
+    {
+      "question": "can you take the money in who wants to be a millionaire",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.55923080444336,
+      "no_score": -9.41860580444336,
+      "correct": false
+    },
+    {
+      "question": "is the son of beast still at kings island",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.602550506591797,
+      "no_score": -6.540050029754639,
+      "correct": true
+    },
+    {
+      "question": "is chewing tobacco banned in major league baseball",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.126030921936035,
+      "no_score": -8.188530921936035,
+      "correct": true
+    },
+    {
+      "question": "did brendon urie wrote death of a bachelor",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.041191577911377,
+      "no_score": -14.306817054748535,
+      "correct": true
+    },
+    {
+      "question": "is there silver in a 1971 silver dollar",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.958427429199219,
+      "no_score": -7.239677429199219,
+      "correct": false
+    },
+    {
+      "question": "do you have to have a wicket keeper in cricket",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.978936195373535,
+      "no_score": -7.135186672210693,
+      "correct": true
+    },
+    {
+      "question": "is there a post credit scene in ifinity war",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -12.908632278442383,
+      "no_score": -8.627382278442383,
+      "correct": false
+    },
+    {
+      "question": "does any structure separate the abdominal cavity and pelvic cavity",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.765957832336426,
+      "no_score": -7.156582355499268,
+      "correct": true
+    },
+    {
+      "question": "is devil may cry 5 set after 2",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.636971473693848,
+      "no_score": -8.324471473693848,
+      "correct": false
+    },
+    {
+      "question": "was the color purple based on a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.545433044433594,
+      "no_score": -9.014183044433594,
+      "correct": true
+    },
+    {
+      "question": "is petroleum an example of a fossil fuel",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.592068195343018,
+      "no_score": -16.79519271850586,
+      "correct": true
+    },
+    {
+      "question": "does the monorail go to las vegas airport",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.988365173339844,
+      "no_score": -7.253990173339844,
+      "correct": true
+    },
+    {
+      "question": "is national and enterprise car rental the same company",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.242934226989746,
+      "no_score": -8.571059226989746,
+      "correct": true
+    },
+    {
+      "question": "was egypt a part of the ottoman empire",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.6851911544799805,
+      "no_score": -12.87269115447998,
+      "correct": true
+    },
+    {
+      "question": "has there ever been a movie rated nc-17",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.355038642883301,
+      "no_score": -13.9331636428833,
+      "correct": true
+    },
+    {
+      "question": "is san pedro laguna part of metro manila",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.774953842163086,
+      "no_score": -8.993703842163086,
+      "correct": true
+    },
+    {
+      "question": "is a boston terrier a small breed dog",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.855870246887207,
+      "no_score": -16.824621200561523,
+      "correct": true
+    },
+    {
+      "question": "did william the conqueror have a legitimate claim to the english throne",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.161532402038574,
+      "no_score": -8.989657402038574,
+      "correct": false
+    },
+    {
+      "question": "is the cortex of the cerebellum gray matter",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.653684139251709,
+      "no_score": -11.98180866241455,
+      "correct": true
+    },
+    {
+      "question": "did the titanic sank on its maiden voyage",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.07431697845459,
+      "no_score": -14.30869197845459,
+      "correct": true
+    },
+    {
+      "question": "is new england baptist hospital a teaching hospital",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.8038506507873535,
+      "no_score": -13.944476127624512,
+      "correct": true
+    },
+    {
+      "question": "are the mountains in utah part of the rockies",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.59228515625,
+      "no_score": -12.42041015625,
+      "correct": true
+    },
+    {
+      "question": "will there be another now you see me movie",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.549205780029297,
+      "no_score": -12.080455780029297,
+      "correct": true
+    },
+    {
+      "question": "has a school shooting happened in a private school",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.182196617126465,
+      "no_score": -14.807196617126465,
+      "correct": true
+    },
+    {
+      "question": "is there a difference in structure of the two atria",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.797307968139648,
+      "no_score": -8.422307968139648,
+      "correct": false
+    },
+    {
+      "question": "do you qualify for the world cup if you host it",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.533507347106934,
+      "no_score": -5.033507347106934,
+      "correct": false
+    },
+    {
+      "question": "can you open carry in nc with a concealed permit",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.34924030303955,
+      "no_score": -9.13049030303955,
+      "correct": false
+    },
+    {
+      "question": "is there a red light district in brussels",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.902799129486084,
+      "no_score": -10.519987106323242,
+      "correct": true
+    },
+    {
+      "question": "does density depend on the type of material",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.761622428894043,
+      "no_score": -12.324122428894043,
+      "correct": true
+    },
+    {
+      "question": "was integration the rule in the northern states",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.908899307250977,
+      "no_score": -8.658899307250977,
+      "correct": true
+    },
+    {
+      "question": "is 1 ounce the same as 1 fluid ounce",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -18.867351531982422,
+      "no_score": -8.492350578308105,
+      "correct": false
+    },
+    {
+      "question": "is there a season 4 of crazy ex girlfriend",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -3.9794836044311523,
+      "no_score": -9.588858604431152,
+      "correct": true
+    },
+    {
+      "question": "will there be a series 5 of brokenwood mysteries",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -10.011174201965332,
+      "no_score": -12.198674201965332,
+      "correct": true
+    },
+    {
+      "question": "will there be a second season of discovery",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.58509635925293,
+      "no_score": -12.19447135925293,
+      "correct": true
+    },
+    {
+      "question": "does the size of a rain gauge matter",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -9.316378593444824,
+      "no_score": -10.597628593444824,
+      "correct": true
+    },
+    {
+      "question": "is there a sequel to the movie i am four",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.062954902648926,
+      "no_score": -7.094204902648926,
+      "correct": true
+    },
+    {
+      "question": "is the guy from deception really a twin",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -7.919429779052734,
+      "no_score": -7.310054779052734,
+      "correct": true
+    },
+    {
+      "question": "are the make it or break it cast real gymnasts",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.462684631347656,
+      "no_score": -6.978309154510498,
+      "correct": true
+    },
+    {
+      "question": "is europe a part of the united states",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.51986312866211,
+      "no_score": -5.488613128662109,
+      "correct": true
+    },
+    {
+      "question": "can you score from a throw in in soccer",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.894402503967285,
+      "no_score": -7.691277503967285,
+      "correct": true
+    },
+    {
+      "question": "is new jersey a suburb of new york city",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.983084678649902,
+      "no_score": -5.983084678649902,
+      "correct": false
+    },
+    {
+      "question": "is profit and loss account same as income statement",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.739011764526367,
+      "no_score": -10.754636764526367,
+      "correct": true
+    },
+    {
+      "question": "is whole wheat rice the same as brown rice",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -15.323814392089844,
+      "no_score": -7.714439868927002,
+      "correct": false
+    },
+    {
+      "question": "can you have more than one wife in uk",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.503016471862793,
+      "no_score": -9.565516471862793,
+      "correct": true
+    },
+    {
+      "question": "is the new york post still in business",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.107483863830566,
+      "no_score": -11.560608863830566,
+      "correct": true
+    },
+    {
+      "question": "is puerto rico a protectorate of the us",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.134641647338867,
+      "no_score": -7.290891647338867,
+      "correct": true
+    },
+    {
+      "question": "are the netherlands and belgium the same country",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -17.523178100585938,
+      "no_score": -5.070052623748779,
+      "correct": true
+    },
+    {
+      "question": "does a california roll have fish in it",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -8.64400577545166,
+      "no_score": -14.10494327545166,
+      "correct": false
+    },
+    {
+      "question": "does the us own the statue of liberty",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.573312759399414,
+      "no_score": -9.401437759399414,
+      "correct": true
+    },
+    {
+      "question": "does the xbox 1 play xbox 360 games",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.743248462677002,
+      "no_score": -14.649497985839844,
+      "correct": true
+    },
+    {
+      "question": "is asylum a right in the united states",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.529549598693848,
+      "no_score": -8.404549598693848,
+      "correct": true
+    },
+    {
+      "question": "is revenge of the mummy a roller coaster",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.038834571838379,
+      "no_score": -11.757584571838379,
+      "correct": true
+    },
+    {
+      "question": "do the redskins run a 3-4 defense",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.714282989501953,
+      "no_score": -11.151782989501953,
+      "correct": true
+    },
+    {
+      "question": "do the miami dolphins have a real dolphin in their stadium",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.053139686584473,
+      "no_score": -6.037515163421631,
+      "correct": true
+    },
+    {
+      "question": "can you use xbox 360 games in the xbox one",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.838619232177734,
+      "no_score": -13.619869232177734,
+      "correct": true
+    },
+    {
+      "question": "is courage the cowardly dog still on tv",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -19.239707946777344,
+      "no_score": -7.4740824699401855,
+      "correct": true
+    },
+    {
+      "question": "will there be a season 4 of game shakers",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.723265647888184,
+      "no_score": -7.582641124725342,
+      "correct": true
+    },
+    {
+      "question": "is the movie a mountain between us a true story",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.477787017822266,
+      "no_score": -9.337162017822266,
+      "correct": true
+    },
+    {
+      "question": "do you have to be an all star to participate in the home run derby",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.966024398803711,
+      "no_score": -7.762899398803711,
+      "correct": true
+    },
+    {
+      "question": "is it possible to thunder and lightning while snowing",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.7922515869140625,
+      "no_score": -12.339126586914062,
+      "correct": true
+    },
+    {
+      "question": "did eric clapton play while my guitar gently weeps",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.0802583694458,
+      "no_score": -8.1896333694458,
+      "correct": true
+    },
+    {
+      "question": "is red velvet cake chocolate cake with red dye",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.667407035827637,
+      "no_score": -7.058032035827637,
+      "correct": false
+    },
+    {
+      "question": "do penalty shoot out goals count in golden boot",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.035481452941895,
+      "no_score": -8.316731452941895,
+      "correct": true
+    },
+    {
+      "question": "does lucas and peyton come back to one tree hill",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.001945495605469,
+      "no_score": -7.345695495605469,
+      "correct": false
+    },
+    {
+      "question": "is race 3 a continuation of race 2",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.633166313171387,
+      "no_score": -7.070666313171387,
+      "correct": true
+    },
+    {
+      "question": "are they still making new episodes of adventure time",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.155350685119629,
+      "no_score": -8.264725685119629,
+      "correct": true
+    },
+    {
+      "question": "is 50 to 1 based on a true story",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.203454971313477,
+      "no_score": -14.070642471313477,
+      "correct": true
+    },
+    {
+      "question": "can a soccer goalie pick up a throw in",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.112564086914062,
+      "no_score": -7.362564563751221,
+      "correct": true
+    },
+    {
+      "question": "is the barber of seville the same as sweeney todd",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -21.236358642578125,
+      "no_score": -9.767609596252441,
+      "correct": true
+    },
+    {
+      "question": "is peroxide and hydrogen peroxide the same thing",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.491256713867188,
+      "no_score": -7.803756237030029,
+      "correct": true
+    },
+    {
+      "question": "is flax oil and linseed oil the same",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.076103210449219,
+      "no_score": -15.638603210449219,
+      "correct": true
+    },
+    {
+      "question": "is banaue rice terraces 7 wonders of the world",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.59970235824585,
+      "no_score": -6.27157735824585,
+      "correct": true
+    },
+    {
+      "question": "is canada part of the commonwealth of england",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.392889022827148,
+      "no_score": -8.424139022827148,
+      "correct": true
+    },
+    {
+      "question": "is central bank of india a nationalised bank",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.08382511138916,
+      "no_score": -5.17757511138916,
+      "correct": false
+    },
+    {
+      "question": "will private eyes be renewed for season 3",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.231022834777832,
+      "no_score": -8.856022834777832,
+      "correct": false
+    },
+    {
+      "question": "are all xbox games compatible with xbox one",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -15.180560111999512,
+      "no_score": -8.696185111999512,
+      "correct": true
+    },
+    {
+      "question": "has the u s ever won a world cup",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -9.701920509338379,
+      "no_score": -7.608170509338379,
+      "correct": true
+    },
+    {
+      "question": "is there a such thing as a broken heart",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -7.2956037521362305,
+      "no_score": -11.62372875213623,
+      "correct": false
+    },
+    {
+      "question": "is there always a full moon on summer solstice",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.47937297821045,
+      "no_score": -7.823123455047607,
+      "correct": true
+    },
+    {
+      "question": "is there more than 9 seasons of heartland",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.845428943634033,
+      "no_score": -5.876678943634033,
+      "correct": false
+    },
+    {
+      "question": "did the brewers make it to the world series",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.3250932693481445,
+      "no_score": -10.075093269348145,
+      "correct": true
+    },
+    {
+      "question": "is there such a thing as a fainting goat",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.921317100524902,
+      "no_score": -12.999442100524902,
+      "correct": true
+    },
+    {
+      "question": "is there lobster in shrimp with lobster sauce",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.653072357177734,
+      "no_score": -8.918697357177734,
+      "correct": true
+    },
+    {
+      "question": "can lead dust be absorbed through the eyes",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.936084747314453,
+      "no_score": -7.623585224151611,
+      "correct": false
+    },
+    {
+      "question": "is powder sugar the same as confectioners sugar",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.358776569366455,
+      "no_score": -15.561901092529297,
+      "correct": true
+    },
+    {
+      "question": "is there a free period in high school",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.569097995758057,
+      "no_score": -11.780035018920898,
+      "correct": true
+    },
+    {
+      "question": "can you grow olives in the united states",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.961358547210693,
+      "no_score": -9.992609024047852,
+      "correct": true
+    },
+    {
+      "question": "do you need a membership for bi mart",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.528791904449463,
+      "no_score": -8.731916427612305,
+      "correct": true
+    },
+    {
+      "question": "have panama qualified for the world cup before",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.528162956237793,
+      "no_score": -6.950037956237793,
+      "correct": true
+    },
+    {
+      "question": "is jefferson airplane in the rock and roll hall of fame",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -4.887073040008545,
+      "no_score": -10.605822563171387,
+      "correct": true
+    },
+    {
+      "question": "is every step you take about a stalker",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.401036262512207,
+      "no_score": -7.713536262512207,
+      "correct": false
+    },
+    {
+      "question": "can protein pass through the blood brain barrier",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.235459327697754,
+      "no_score": -11.001084327697754,
+      "correct": true
+    },
+    {
+      "question": "are the pirates of the caribbean movies based on books",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.470279693603516,
+      "no_score": -8.204654693603516,
+      "correct": true
+    },
+    {
+      "question": "have belgium ever reached the world cup final",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -6.12169885635376,
+      "no_score": -5.60607385635376,
+      "correct": false
+    },
+    {
+      "question": "are there any states where you can marry your sibling",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -8.457393646240234,
+      "no_score": -7.738643169403076,
+      "correct": true
+    },
+    {
+      "question": "have the houston texans ever won a playoff game",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.402708053588867,
+      "no_score": -6.590208053588867,
+      "correct": true
+    },
+    {
+      "question": "are the new indian motorcycles made in america",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.512474060058594,
+      "no_score": -8.356224060058594,
+      "correct": false
+    },
+    {
+      "question": "is a pickle and a gherkin the same thing",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -7.507567405700684,
+      "no_score": -6.585692405700684,
+      "correct": false
+    },
+    {
+      "question": "is income per capita the same as gdp per capita",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -16.361696243286133,
+      "no_score": -8.033571243286133,
+      "correct": true
+    },
+    {
+      "question": "is there going to be another series of the apprentice",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.94369888305664,
+      "no_score": -9.49057388305664,
+      "correct": true
+    },
+    {
+      "question": "does it matter which dna strand is transcribed",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.628554821014404,
+      "no_score": -8.628555297851562,
+      "correct": true
+    },
+    {
+      "question": "can you eat the black things in bubble tea",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.525811195373535,
+      "no_score": -12.869561195373535,
+      "correct": true
+    },
+    {
+      "question": "is the width of your arms your height",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -15.408525466918945,
+      "no_score": -6.814775466918945,
+      "correct": false
+    },
+    {
+      "question": "is kabaneri of the iron fortress on crunchyroll",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.70497465133667,
+      "no_score": -12.814349174499512,
+      "correct": true
+    },
+    {
+      "question": "can a country have more than one type of government",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -4.827493190765381,
+      "no_score": -9.405618667602539,
+      "correct": true
+    },
+    {
+      "question": "does golden goal apply in the world cup 2018",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -14.231595039367676,
+      "no_score": -5.903470039367676,
+      "correct": true
+    },
+    {
+      "question": "is the national guard part of the coast guard",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.902050971984863,
+      "no_score": -6.230175971984863,
+      "correct": true
+    },
+    {
+      "question": "was turkey a part of the roman empire",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -8.659246444702148,
+      "no_score": -11.346746444702148,
+      "correct": true
+    },
+    {
+      "question": "is a certification of birth the same as a birth certificate",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -13.44520092010498,
+      "no_score": -8.69520092010498,
+      "correct": false
+    },
+    {
+      "question": "is in n out only located in california",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -13.085073471069336,
+      "no_score": -5.741322994232178,
+      "correct": true
+    },
+    {
+      "question": "is there a floating mass of garbage in the ocean",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.1340765953063965,
+      "no_score": -14.462202072143555,
+      "correct": true
+    },
+    {
+      "question": "does dark brown sugar have molasses in it",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.921187400817871,
+      "no_score": -18.218063354492188,
+      "correct": true
+    },
+    {
+      "question": "is it possible to be allergic to rain water",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -9.606974601745605,
+      "no_score": -5.7788496017456055,
+      "correct": false
+    },
+    {
+      "question": "are toys r us and babies r us the same company",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -11.995162963867188,
+      "no_score": -6.057662487030029,
+      "correct": false
+    },
+    {
+      "question": "was my heart will go on recorded in one take",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -13.71981143951416,
+      "no_score": -9.32918643951416,
+      "correct": false
+    },
+    {
+      "question": "is women's one a day fda approved",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.016136169433594,
+      "no_score": -7.3755106925964355,
+      "correct": false
+    },
+    {
+      "question": "did australia fight in the battle of the somme",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -5.658267498016357,
+      "no_score": -11.2051420211792,
+      "correct": true
+    },
+    {
+      "question": "has arkansas ever won a national championship in any sport",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.0153303146362305,
+      "no_score": -11.49970531463623,
+      "correct": true
+    },
+    {
+      "question": "do ex presidents fly on air force one",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -10.452098846435547,
+      "no_score": -10.952098846435547,
+      "correct": false
+    },
+    {
+      "question": "is call of duty modern warfare 2 multiplayer",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.300675868988037,
+      "no_score": -8.894426345825195,
+      "correct": true
+    },
+    {
+      "question": "is there such a thing as a miniature pig",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -6.237865447998047,
+      "no_score": -16.253490447998047,
+      "correct": false
+    },
+    {
+      "question": "do we still follow the articles of confederation",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.120011329650879,
+      "no_score": -5.057511806488037,
+      "correct": true
+    },
+    {
+      "question": "was there a 6th burrow in new york",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.463470458984375,
+      "no_score": -7.525969982147217,
+      "correct": true
+    },
+    {
+      "question": "does a bumble bee die after stinging someone",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -10.507806777954102,
+      "no_score": -8.179681777954102,
+      "correct": true
+    },
+    {
+      "question": "is hawaii 5-0 still on tv",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -7.713540077209473,
+      "no_score": -9.119790077209473,
+      "correct": true
+    },
+    {
+      "question": "does salt water taffy have salt water in it",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.9049072265625,
+      "no_score": -9.8658447265625,
+      "correct": true
+    },
+    {
+      "question": "do dairy cows have to have a baby to produce milk",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -8.390996932983398,
+      "no_score": -8.203496932983398,
+      "correct": false
+    },
+    {
+      "question": "is the us postal service part of the federal government",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.669181823730469,
+      "no_score": -13.137931823730469,
+      "correct": true
+    },
+    {
+      "question": "can you grow banana trees from a banana",
+      "gold": "no",
+      "prediction": "yes",
+      "yes_score": -7.55695915222168,
+      "no_score": -8.16633415222168,
+      "correct": false
+    },
+    {
+      "question": "is there a such thing as common law marriage",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.539013862609863,
+      "no_score": -11.476513862609863,
+      "correct": true
+    },
+    {
+      "question": "are all of the far cry games connected",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -12.44244384765625,
+      "no_score": -6.62994384765625,
+      "correct": true
+    },
+    {
+      "question": "do american citizens need a visa for georgia",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.596760749816895,
+      "no_score": -7.2686357498168945,
+      "correct": true
+    },
+    {
+      "question": "is picante sauce the same as taco sauce",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -20.516481399536133,
+      "no_score": -6.539918422698975,
+      "correct": true
+    },
+    {
+      "question": "has belgium ever been in world cup final",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -4.814574241638184,
+      "no_score": -7.892699241638184,
+      "correct": true
+    },
+    {
+      "question": "is love child based on a true story",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.763718605041504,
+      "no_score": -11.513718605041504,
+      "correct": true
+    },
+    {
+      "question": "does fitness(as used in biology) and survival have the same meaning",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -21.117448806762695,
+      "no_score": -8.461199760437012,
+      "correct": true
+    },
+    {
+      "question": "was when i see you again written for furious 7",
+      "gold": "yes",
+      "prediction": "no",
+      "yes_score": -10.427038192749023,
+      "no_score": -10.333288192749023,
+      "correct": false
+    },
+    {
+      "question": "is there gonna be a new halloween movie",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.37132453918457,
+      "no_score": -12.02757453918457,
+      "correct": true
+    },
+    {
+      "question": "is bayern munich the same as bayern munchen",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -6.807893753051758,
+      "no_score": -10.253206253051758,
+      "correct": true
+    },
+    {
+      "question": "does the florida constitution give a minimum age for legislators",
+      "gold": "yes",
+      "prediction": "yes",
+      "yes_score": -10.211225509643555,
+      "no_score": -10.383100509643555,
+      "correct": true
+    },
+    {
+      "question": "can a puerto rican resident vote for president",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -11.436007499694824,
+      "no_score": -9.670382499694824,
+      "correct": true
+    },
+    {
+      "question": "can you get a tattoo at any age",
+      "gold": "no",
+      "prediction": "no",
+      "yes_score": -17.26437759399414,
+      "no_score": -9.311251640319824,
+      "correct": true
+    }
+  ]
+}

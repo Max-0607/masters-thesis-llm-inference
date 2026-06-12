@@ -4,7 +4,7 @@ import math
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -14,23 +14,35 @@ from datasets import load_dataset
 from tqdm import tqdm
 from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
 
+from configs.superweights import SUPERWEIGHTS
 from quantization.awq.awq.quantize.pre_quant import apply_awq
 from quantization.awq.awq.quantize.quantizer import pseudo_quantize_model_weight
 
 
-SUPERWEIGHTS_OLMO1B = [
-    (1, 1764, 1710),
-    (1, 1764, 8041),
-]
+def get_superweights(model_key: str):
+    if model_key not in SUPERWEIGHTS:
+        raise ValueError(
+            f"No superweights found for model_key='{model_key}'. "
+            f"Available keys: {list(SUPERWEIGHTS.keys())}"
+        )
+
+    return [
+        (item["layer"], item["row"], item["col"])
+        for item in SUPERWEIGHTS[model_key]
+    ]
 
 
-def save_superweights(model):
+def get_down_proj_weight(model, layer: int):
+    return model.model.layers[layer].mlp.down_proj.weight
+
+
+def save_superweights(model, superweights):
     sw_values = {}
 
     print("Saving AWQ-transformed superweights before quantization")
 
-    for layer, row, col in SUPERWEIGHTS_OLMO1B:
-        weight = model.model.layers[layer].mlp.down_proj.weight
+    for layer, row, col in superweights:
+        weight = get_down_proj_weight(model, layer)
 
         with torch.no_grad():
             value = weight[row, col].detach().clone().cpu()
@@ -49,7 +61,7 @@ def restore_superweights(model, sw_values):
     print("Restoring scaled AWQ-transformed superweights after quantization")
 
     for (layer, row, col), value in sw_values.items():
-        weight = model.model.layers[layer].mlp.down_proj.weight
+        weight = get_down_proj_weight(model, layer)
 
         with torch.no_grad():
             old_value = weight[row, col].item()
@@ -62,13 +74,13 @@ def restore_superweights(model, sw_values):
         )
 
 
-def apply_uniform_superweight_scaling(model, alpha: float):
+def apply_uniform_superweight_scaling(model, superweights, alpha: float):
     print(f"Applying uniform superweight scaling with alpha={alpha}")
 
     scaling_info = {}
 
-    for rank, (layer, row, col) in enumerate(SUPERWEIGHTS_OLMO1B):
-        weight = model.model.layers[layer].mlp.down_proj.weight
+    for rank, (layer, row, col) in enumerate(superweights):
+        weight = get_down_proj_weight(model, layer)
 
         with torch.no_grad():
             old_value = weight[row, col].item()
@@ -82,26 +94,17 @@ def apply_uniform_superweight_scaling(model, alpha: float):
             "new_value": new_value,
         }
 
-        print(
-            f"[UNIFORM SCALE SW] rank={rank}, layer={layer}, row={row}, col={col}: "
-            f"scale={alpha:.4f}, {old_value:.6f} -> {new_value:.6f}"
-        )
-
     return scaling_info
 
 
-def apply_exponential_superweight_scaling(model, alpha0: float, lambd: float):
-    print(
-        f"Applying exponential superweight scaling "
-        f"with alpha0={alpha0}, lambda={lambd}"
-    )
+def apply_exponential_superweight_scaling(model, superweights, alpha0: float, lambd: float):
+    print(f"Applying exponential superweight scaling with alpha0={alpha0}, lambda={lambd}")
 
     scaling_info = {}
 
-    for rank, (layer, row, col) in enumerate(SUPERWEIGHTS_OLMO1B):
+    for rank, (layer, row, col) in enumerate(superweights):
         scale = alpha0 * math.exp(-lambd * rank)
-
-        weight = model.model.layers[layer].mlp.down_proj.weight
+        weight = get_down_proj_weight(model, layer)
 
         with torch.no_grad():
             old_value = weight[row, col].item()
@@ -115,17 +118,13 @@ def apply_exponential_superweight_scaling(model, alpha0: float, lambd: float):
             "new_value": new_value,
         }
 
-        print(
-            f"[EXP SCALE SW] rank={rank}, layer={layer}, row={row}, col={col}: "
-            f"scale={scale:.4f}, {old_value:.6f} -> {new_value:.6f}"
-        )
-
     return scaling_info
 
 
-def load_sw_awq_fake_olmo1b(
+def load_sw_awq_fake_model(
     model_path: str,
     awq_path: str,
+    superweights,
     scaling_mode: str = "uniform",
     sw_alpha: float = 1.0,
     sw_alpha0: float = 1.0,
@@ -164,22 +163,19 @@ def load_sw_awq_fake_olmo1b(
     apply_awq(model, awq_results)
 
     if scaling_mode == "uniform":
-        scaling_info = apply_uniform_superweight_scaling(model, sw_alpha)
+        scaling_info = apply_uniform_superweight_scaling(
+            model, superweights, sw_alpha
+        )
     elif scaling_mode == "exponential":
         scaling_info = apply_exponential_superweight_scaling(
-            model,
-            alpha0=sw_alpha0,
-            lambd=sw_lambda,
+            model, superweights, sw_alpha0, sw_lambda
         )
     else:
         raise ValueError(f"Unknown scaling_mode: {scaling_mode}")
 
-    sw_values = save_superweights(model)
+    sw_values = save_superweights(model, superweights)
 
-    print(
-        f"Applying pseudo weight quantization: "
-        f"w_bit={w_bit}, group_size={q_group_size}"
-    )
+    print(f"Applying pseudo weight quantization: w_bit={w_bit}, group_size={q_group_size}")
 
     pseudo_quantize_model_weight(
         model,
@@ -261,17 +257,10 @@ def get_sciq_choices(example: dict):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--model-path", default="models/olmo1b")
-
-    parser.add_argument(
-        "--awq-path",
-        default="quantization/awq/olmo1b/olmo1b-w4-g128.pt4",
-    )
-
-    parser.add_argument(
-        "--output-json",
-        default="results/olmo1b/exp_sw_awq_sciq/sciq.json",
-    )
+    parser.add_argument("--model-key", required=True)
+    parser.add_argument("--model-path", required=True)
+    parser.add_argument("--awq-path", required=True)
+    parser.add_argument("--output-json", required=True)
 
     parser.add_argument("--limit", type=int, default=500)
     parser.add_argument("--w-bit", type=int, default=4)
@@ -289,9 +278,15 @@ def main():
 
     args = parser.parse_args()
 
-    model, tokenizer, scaling_info = load_sw_awq_fake_olmo1b(
+    superweights = get_superweights(args.model_key)
+
+    print(f"Using model_key={args.model_key}")
+    print(f"Using superweights={superweights}")
+
+    model, tokenizer, scaling_info = load_sw_awq_fake_model(
         model_path=args.model_path,
         awq_path=args.awq_path,
+        superweights=superweights,
         scaling_mode=args.scaling_mode,
         sw_alpha=args.sw_alpha,
         sw_alpha0=args.sw_alpha0,
@@ -312,6 +307,7 @@ def main():
         ds,
         desc=(
             f"Evaluating SciQ SW-AWQ "
+            f"model={args.model_key}, "
             f"mode={args.scaling_mode}, "
             f"alpha={args.sw_alpha}, "
             f"alpha0={args.sw_alpha0}, "
@@ -354,14 +350,15 @@ def main():
     result = {
         "task": "sciq",
         "method": "superweight_awq",
-        "scaling_mode": args.scaling_mode,
+        "model_key": args.model_key,
         "model_path": args.model_path,
         "awq_path": args.awq_path,
+        "scaling_mode": args.scaling_mode,
         "sw_alpha": args.sw_alpha,
         "sw_alpha0": args.sw_alpha0,
         "sw_lambda": args.sw_lambda,
         "scaling_info": scaling_info,
-        "superweights": SUPERWEIGHTS_OLMO1B,
+        "superweights": superweights,
         "w_bit": args.w_bit,
         "q_group_size": args.q_group_size,
         "limit": args.limit,
@@ -382,6 +379,7 @@ def main():
             {
                 "task": "sciq",
                 "method": "superweight_awq",
+                "model_key": args.model_key,
                 "scaling_mode": args.scaling_mode,
                 "sw_alpha": args.sw_alpha,
                 "sw_alpha0": args.sw_alpha0,

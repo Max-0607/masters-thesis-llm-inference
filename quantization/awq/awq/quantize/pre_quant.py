@@ -51,6 +51,8 @@ def get_blocks(model):
         layers = model.llm.model.layers
     elif isinstance(model, OlmoForCausalLM):
         layers = model.model.layers
+    elif "Phi3ForCausalLM" in model.__class__.__name__:
+        layers = model.model.layers
     else:
         raise NotImplementedError(type(model))
     return layers
@@ -62,6 +64,10 @@ def move_embed(model, device):
         if hasattr(model.model, "rotary_emb") and model.model.rotary_emb is not None:
             model.model.rotary_emb = model.model.rotary_emb.to(device)
     elif isinstance(model, OlmoForCausalLM):
+        model.model.embed_tokens = model.model.embed_tokens.to(device)
+        if hasattr(model.model, "rotary_emb") and model.model.rotary_emb is not None:
+            model.model.rotary_emb = model.model.rotary_emb.to(device)
+    elif "Phi3ForCausalLM" in model.__class__.__name__:
         model.model.embed_tokens = model.model.embed_tokens.to(device)
         if hasattr(model.model, "rotary_emb") and model.model.rotary_emb is not None:
             model.model.rotary_emb = model.model.rotary_emb.to(device)

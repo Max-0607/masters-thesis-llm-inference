@@ -171,9 +171,19 @@ def build_model_and_enc(model_path, dtype):
                 config.tokenizer_name, trust_remote_code=True
             )
         else:
-            enc = AutoTokenizer.from_pretrained(
-                model_path, use_fast=False, trust_remote_code=True
-            )
+            if "olmo" in model_path.lower():
+                enc = AutoTokenizer.from_pretrained(
+                    model_path,
+                    use_fast=True,
+                    trust_remote_code=True,
+                    tokenizer_type="gpt_neox",
+                )
+            else:
+                enc = AutoTokenizer.from_pretrained(
+                    model_path,
+                    use_fast=True,
+                    trust_remote_code=True,
+                )
 
     if args.load_quant:
         print("Loading pre-computed quantized weights...")

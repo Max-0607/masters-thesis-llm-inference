@@ -214,6 +214,46 @@ def auto_scale_block(module, module_kwargs, w_bit, q_config, input_feat):
             )
         )
 
+    elif "Phi3DecoderLayer" in module.__class__.__name__:
+        # Phi-3 uses fused qkv projection
+        scales_list.append(
+            _auto_get_scale(
+                prev_op=module.input_layernorm,
+                layers=[module.self_attn.qkv_proj],
+                inp=input_feat["self_attn.qkv_proj"],
+                module2inspect=module.self_attn,
+                kwargs=module_kwargs,
+            )
+        )
+
+        # attention output
+        scales_list.append(
+            _auto_get_scale(
+                prev_op=module.self_attn.qkv_proj,
+                layers=[module.self_attn.o_proj],
+                inp=input_feat["self_attn.o_proj"],
+            )
+        )
+
+        # Phi-3 uses fused gate/up projection
+        scales_list.append(
+            _auto_get_scale(
+                prev_op=module.post_attention_layernorm,
+                layers=[module.mlp.gate_up_proj],
+                inp=input_feat["mlp.gate_up_proj"],
+                module2inspect=module.mlp,
+            )
+        )
+
+        # MLP down projection
+        scales_list.append(
+            _auto_get_scale(
+                prev_op=module.mlp.gate_up_proj,
+                layers=[module.mlp.down_proj],
+                inp=input_feat["mlp.down_proj"],
+            )
+        )
+
     elif isinstance(module, (LlamaDecoderLayer, MistralDecoderLayer, Qwen2DecoderLayer, OlmoDecoderLayer)):
         # attention input
         scales_list.append(
@@ -230,7 +270,6 @@ def auto_scale_block(module, module_kwargs, w_bit, q_config, input_feat):
             )
         )
         # attn out
-        # Please refer to https://github.com/mit-han-lab/llm-awq/pull/67#issue-1850622696
         if module.self_attn.v_proj.weight.shape == module.self_attn.o_proj.weight.shape:
             scales_list.append(
                 _auto_get_scale(
@@ -446,7 +485,7 @@ def apply_scale(module, scales_list, input_feat_dict=None):
         if isinstance(prev_op, nn.Linear):
             assert len(layers) == 1
             scale_fc_fc(prev_op, layers[0], scales)
-        elif isinstance(prev_op, (nn.LayerNorm, LlamaRMSNorm, MistralRMSNorm, Qwen2RMSNorm)):
+        elif isinstance(prev_op, (nn.LayerNorm, LlamaRMSNorm, MistralRMSNorm, Qwen2RMSNorm)) or "Phi3RMSNorm" in prev_op.__class__.__name__:
             scale_ln_fcs(prev_op, layers, scales)
 
         elif isinstance(prev_op, OlmoLayerNorm):
