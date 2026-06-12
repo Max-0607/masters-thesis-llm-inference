@@ -108,7 +108,7 @@ Yu et al. (2025)
 "The Super Weight in Large Language Models"
 
 Repository:
-https://github.com/microsoft/LLMSuperWeight
+https://github.com/mengxiayu/LLMSuperWeight
 
 ### AWQ
 
