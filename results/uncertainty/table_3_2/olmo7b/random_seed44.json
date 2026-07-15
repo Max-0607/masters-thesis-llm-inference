@@ -1,0 +1,75 @@
+{
+  "model_key": "olmo7b",
+  "model_path": "allenai/OLMo-7B-0724-hf",
+  "task": "hellaswag",
+  "evaluation_split": "validation",
+  "available_document_count": 10042,
+  "evaluated_document_count": 500,
+  "limit": 500,
+  "eval_seed": 44,
+  "ablation_mode": "random",
+  "random_seed": 44,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 269,
+      "col": 7467
+    },
+    {
+      "layer": 2,
+      "row": 269,
+      "col": 8275
+    },
+    {
+      "layer": 7,
+      "row": 269,
+      "col": 453
+    },
+    {
+      "layer": 24,
+      "row": 269,
+      "col": 2300
+    }
+  ],
+  "ablated_positions": [
+    {
+      "layer": 1,
+      "row": 3346,
+      "col": 8520,
+      "old_value": -0.004772186279296875
+    },
+    {
+      "layer": 2,
+      "row": 955,
+      "col": 2894,
+      "old_value": -0.0017652511596679688
+    },
+    {
+      "layer": 7,
+      "row": 3109,
+      "col": 3689,
+      "old_value": -0.001068115234375
+    },
+    {
+      "layer": 24,
+      "row": 2372,
+      "col": 476,
+      "old_value": 0.00254058837890625
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.59,
+        "acc_stderr": 0.022017482578127672,
+        "acc_norm": 0.76,
+        "acc_norm_stderr": 0.01911886665375975
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

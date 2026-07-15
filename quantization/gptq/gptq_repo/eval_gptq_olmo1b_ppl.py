@@ -94,7 +94,6 @@ def olmo_sequential(model, dataloader, dev, args):
     if position_ids is not None:
         position_ids = position_ids.to(dev)
 
-    position_embeddings = None
     if (
         hasattr(model.model, "rotary_emb")
         and model.model.rotary_emb is not None
@@ -102,10 +101,6 @@ def olmo_sequential(model, dataloader, dev, args):
     ):
         model.model.rotary_emb = model.model.rotary_emb.to(dev)
         position_ids = position_ids.to(dev)
-        position_embeddings = model.model.rotary_emb(
-            inps[0].unsqueeze(0).to(dev),
-            position_ids,
-        )
 
     print("Ready.")
 
@@ -153,7 +148,6 @@ def olmo_sequential(model, dataloader, dev, args):
                     inps[j].unsqueeze(0),
                     attention_mask=attention_mask,
                     position_ids=position_ids,
-                    position_embeddings=position_embeddings,
                 )[0]
 
             for h in handles:
@@ -176,7 +170,6 @@ def olmo_sequential(model, dataloader, dev, args):
                 inps[j].unsqueeze(0),
                 attention_mask=attention_mask,
                 position_ids=position_ids,
-                position_embeddings=position_embeddings,
             )[0]
 
         layers[i] = layer.cpu()

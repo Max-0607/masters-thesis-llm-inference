@@ -1,0 +1,5049 @@
+{
+  "benchmark": "boolq",
+  "model_key": "olmo-1b",
+  "model_id": "allenai/OLMo-1B-0724-hf",
+  "mode": "super",
+  "bits": 4,
+  "activation_bits": null,
+  "sw_scale": 1.0,
+  "restore_neighborhood": "scalar",
+  "quant_granularity": "tensor",
+  "block_rows": 128,
+  "block_cols": 128,
+  "clip_z": 6.0,
+  "normalize_by_length": false,
+  "num_protected_values": 2,
+  "protected_values": [
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 1710,
+      "row": 1764,
+      "col": 1710,
+      "is_center": true
+    },
+    {
+      "layer": 1,
+      "center_row": 1764,
+      "center_col": 8041,
+      "row": 1764,
+      "col": 8041,
+      "is_center": true
+    }
+  ],
+  "num_activation_hooks": 0,
+  "dtype": "float16",
+  "split": "validation",
+  "dataset_size": 3270,
+  "limit": 500,
+  "eval_seed": 46,
+  "selected_example_ids": [
+    1013,
+    22,
+    3249,
+    906,
+    1129,
+    920,
+    536,
+    220,
+    3209,
+    971,
+    1272,
+    354,
+    2367,
+    778,
+    2148,
+    1667,
+    2491,
+    1610,
+    2279,
+    2167,
+    1364,
+    2931,
+    2366,
+    1289,
+    821,
+    1191,
+    2996,
+    62,
+    751,
+    14,
+    1905,
+    2449,
+    3026,
+    2713,
+    2235,
+    416,
+    1477,
+    3015,
+    640,
+    3117,
+    1423,
+    2054,
+    781,
+    905,
+    873,
+    3127,
+    2496,
+    1064,
+    789,
+    785,
+    2497,
+    2392,
+    621,
+    1480,
+    1147,
+    2872,
+    581,
+    155,
+    2961,
+    471,
+    3039,
+    1512,
+    209,
+    1804,
+    1966,
+    1666,
+    3218,
+    2414,
+    1922,
+    1122,
+    2196,
+    2469,
+    919,
+    745,
+    2016,
+    2979,
+    1885,
+    2832,
+    758,
+    2517,
+    2401,
+    2236,
+    2025,
+    659,
+    3234,
+    2972,
+    1931,
+    1973,
+    1977,
+    2172,
+    1740,
+    921,
+    2116,
+    798,
+    1649,
+    923,
+    887,
+    2471,
+    362,
+    2076,
+    808,
+    2454,
+    203,
+    1647,
+    438,
+    2063,
+    2058,
+    34,
+    2543,
+    3119,
+    754,
+    3037,
+    2066,
+    1353,
+    1796,
+    2227,
+    304,
+    1063,
+    3000,
+    1048,
+    1676,
+    105,
+    1850,
+    2981,
+    2318,
+    912,
+    2970,
+    409,
+    1026,
+    2316,
+    1338,
+    764,
+    1969,
+    2207,
+    1039,
+    1238,
+    2836,
+    2588,
+    3183,
+    564,
+    1028,
+    1220,
+    1525,
+    904,
+    2892,
+    2396,
+    958,
+    2282,
+    1834,
+    607,
+    1496,
+    1907,
+    58,
+    2296,
+    402,
+    485,
+    1989,
+    1748,
+    2045,
+    462,
+    601,
+    1185,
+    897,
+    1334,
+    273,
+    1173,
+    1084,
+    1336,
+    1159,
+    604,
+    1082,
+    2984,
+    3156,
+    2699,
+    110,
+    2790,
+    3140,
+    2183,
+    320,
+    172,
+    1152,
+    2895,
+    1193,
+    801,
+    1910,
+    2833,
+    1967,
+    2954,
+    3033,
+    749,
+    3111,
+    3112,
+    189,
+    1301,
+    3080,
+    630,
+    2115,
+    2857,
+    509,
+    2384,
+    2728,
+    683,
+    2879,
+    2105,
+    72,
+    1689,
+    1803,
+    2505,
+    431,
+    1889,
+    2584,
+    146,
+    1006,
+    3261,
+    2499,
+    1812,
+    196,
+    3233,
+    684,
+    1405,
+    627,
+    2504,
+    935,
+    2720,
+    3036,
+    420,
+    1965,
+    455,
+    890,
+    2922,
+    2452,
+    460,
+    2776,
+    2948,
+    732,
+    779,
+    261,
+    100,
+    2910,
+    772,
+    981,
+    2632,
+    953,
+    1346,
+    1824,
+    280,
+    2537,
+    856,
+    343,
+    428,
+    500,
+    1097,
+    2426,
+    2484,
+    770,
+    493,
+    2808,
+    2998,
+    54,
+    1781,
+    2098,
+    523,
+    1164,
+    2807,
+    1182,
+    1470,
+    3054,
+    2869,
+    978,
+    435,
+    1665,
+    464,
+    2422,
+    2552,
+    1322,
+    843,
+    3216,
+    860,
+    2732,
+    1181,
+    2055,
+    2943,
+    3030,
+    2430,
+    1020,
+    332,
+    2450,
+    1953,
+    700,
+    1451,
+    329,
+    2128,
+    49,
+    2421,
+    2427,
+    1397,
+    1187,
+    2460,
+    3019,
+    2813,
+    2946,
+    356,
+    297,
+    1571,
+    1108,
+    268,
+    2622,
+    584,
+    1874,
+    2649,
+    2633,
+    863,
+    1980,
+    501,
+    795,
+    782,
+    2674,
+    311,
+    36,
+    538,
+    2320,
+    735,
+    2854,
+    3193,
+    1100,
+    3143,
+    3152,
+    79,
+    1707,
+    3017,
+    535,
+    957,
+    3087,
+    1945,
+    1068,
+    2555,
+    3097,
+    2512,
+    1934,
+    1149,
+    2372,
+    1207,
+    216,
+    1902,
+    2591,
+    2706,
+    2261,
+    2926,
+    1033,
+    3220,
+    1983,
+    667,
+    2893,
+    1616,
+    551,
+    21,
+    2008,
+    2419,
+    2769,
+    3235,
+    337,
+    3055,
+    477,
+    300,
+    1251,
+    1055,
+    2982,
+    2682,
+    2798,
+    510,
+    410,
+    257,
+    1503,
+    1004,
+    27,
+    1223,
+    1517,
+    646,
+    2863,
+    1485,
+    1092,
+    469,
+    2975,
+    2582,
+    372,
+    2347,
+    1554,
+    2303,
+    705,
+    2114,
+    1347,
+    3029,
+    611,
+    243,
+    2403,
+    2209,
+    2502,
+    896,
+    1386,
+    786,
+    2814,
+    597,
+    1046,
+    88,
+    2241,
+    697,
+    1492,
+    859,
+    752,
+    2694,
+    2818,
+    1725,
+    694,
+    624,
+    2494,
+    3251,
+    309,
+    254,
+    1335,
+    1780,
+    3134,
+    2173,
+    339,
+    804,
+    3147,
+    625,
+    1134,
+    1691,
+    3263,
+    3230,
+    2234,
+    2645,
+    986,
+    2358,
+    2021,
+    1773,
+    787,
+    2086,
+    3198,
+    1528,
+    2192,
+    1545,
+    2144,
+    1420,
+    2052,
+    3122,
+    2868,
+    1297,
+    2053,
+    2297,
+    2600,
+    1519,
+    1212,
+    1913,
+    1881,
+    1777,
+    750,
+    206,
+    1462,
+    1389,
+    2651,
+    407,
+    1888,
+    2258,
+    1899,
+    861,
+    490,
+    307,
+    199,
+    3081,
+    1379,
+    636,
+    1208,
+    2672,
+    685,
+    1916,
+    2087,
+    136,
+    1348,
+    2332,
+    2373,
+    2180,
+    571,
+    393,
+    2364,
+    2889,
+    1625,
+    3013,
+    379,
+    1445,
+    1133,
+    883,
+    177,
+    558,
+    848,
+    2119,
+    3085,
+    586,
+    865,
+    3262
+  ],
+  "max_length": 512,
+  "num_examples": 500,
+  "num_correct": 257,
+  "accuracy": 0.514,
+  "accuracy_stderr": 0.022351912669836556,
+  "predictions": [
+    {
+      "id": 1013,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.70797061920166,
+      "score_no": -9.35836124420166,
+      "margin": -0.349609375
+    },
+    {
+      "id": 22,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.456212997436523,
+      "score_no": -8.776525497436523,
+      "margin": 0.3203125
+    },
+    {
+      "id": 3249,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.389452934265137,
+      "score_no": -9.778124809265137,
+      "margin": -0.611328125
+    },
+    {
+      "id": 906,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.159775733947754,
+      "score_no": -9.677353858947754,
+      "margin": 0.517578125
+    },
+    {
+      "id": 1129,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.632321357727051,
+      "score_no": -7.979977607727051,
+      "margin": 0.34765625
+    },
+    {
+      "id": 920,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.526206970214844,
+      "score_no": -8.256675720214844,
+      "margin": -0.26953125
+    },
+    {
+      "id": 536,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.430276870727539,
+      "score_no": -8.828714370727539,
+      "margin": 0.3984375
+    },
+    {
+      "id": 220,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -10.141834259033203,
+      "score_no": -10.966053009033203,
+      "margin": 0.82421875
+    },
+    {
+      "id": 3209,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.043609619140625,
+      "score_no": -9.203765869140625,
+      "margin": 0.16015625
+    },
+    {
+      "id": 971,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.034055709838867,
+      "score_no": -9.202024459838867,
+      "margin": 0.16796875
+    },
+    {
+      "id": 1272,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.467801094055176,
+      "score_no": -9.680691719055176,
+      "margin": 0.212890625
+    },
+    {
+      "id": 354,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.769638061523438,
+      "score_no": -9.459091186523438,
+      "margin": 0.689453125
+    },
+    {
+      "id": 2367,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.158025741577148,
+      "score_no": -8.220525741577148,
+      "margin": -0.9375
+    },
+    {
+      "id": 778,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.251147270202637,
+      "score_no": -9.514819145202637,
+      "margin": 0.263671875
+    },
+    {
+      "id": 2148,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.970707893371582,
+      "score_no": -9.091801643371582,
+      "margin": -0.87890625
+    },
+    {
+      "id": 1667,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.35688304901123,
+      "score_no": -10.22602367401123,
+      "margin": 0.869140625
+    },
+    {
+      "id": 2491,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.805704116821289,
+      "score_no": -9.733438491821289,
+      "margin": 0.927734375
+    },
+    {
+      "id": 1610,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.647492408752441,
+      "score_no": -9.805695533752441,
+      "margin": 1.158203125
+    },
+    {
+      "id": 2279,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.327078819274902,
+      "score_no": -9.807547569274902,
+      "margin": 0.48046875
+    },
+    {
+      "id": 2167,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.982177734375,
+      "score_no": -8.782958984375,
+      "margin": -0.19921875
+    },
+    {
+      "id": 1364,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.315410614013672,
+      "score_no": -9.254863739013672,
+      "margin": -0.060546875
+    },
+    {
+      "id": 2931,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.056007385253906,
+      "score_no": -9.065773010253906,
+      "margin": 0.009765625
+    },
+    {
+      "id": 2366,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.524656295776367,
+      "score_no": -9.854734420776367,
+      "margin": 1.330078125
+    },
+    {
+      "id": 1289,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.10846996307373,
+      "score_no": -8.47565746307373,
+      "margin": -1.6328125
+    },
+    {
+      "id": 821,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.62632942199707,
+      "score_no": -9.81578254699707,
+      "margin": 0.189453125
+    },
+    {
+      "id": 1191,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.207906723022461,
+      "score_no": -9.555562973022461,
+      "margin": 0.34765625
+    },
+    {
+      "id": 2996,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.126111030578613,
+      "score_no": -9.001111030578613,
+      "margin": -0.125
+    },
+    {
+      "id": 62,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.811136245727539,
+      "score_no": -10.143167495727539,
+      "margin": 0.33203125
+    },
+    {
+      "id": 751,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.251226425170898,
+      "score_no": -9.934820175170898,
+      "margin": -0.31640625
+    },
+    {
+      "id": 14,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.898028373718262,
+      "score_no": -10.226153373718262,
+      "margin": 0.328125
+    },
+    {
+      "id": 1905,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -10.055063247680664,
+      "score_no": -10.340219497680664,
+      "margin": 0.28515625
+    },
+    {
+      "id": 2449,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.117816925048828,
+      "score_no": -10.078754425048828,
+      "margin": 0.9609375
+    },
+    {
+      "id": 3026,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.644566535949707,
+      "score_no": -9.626988410949707,
+      "margin": 0.982421875
+    },
+    {
+      "id": 2713,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.400524139404297,
+      "score_no": -10.070446014404297,
+      "margin": 0.669921875
+    },
+    {
+      "id": 2235,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.912284851074219,
+      "score_no": -7.773612976074219,
+      "margin": -3.138671875
+    },
+    {
+      "id": 416,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.844955444335938,
+      "score_no": -7.880112171173096,
+      "margin": -2.964843273162842
+    },
+    {
+      "id": 1477,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.007041931152344,
+      "score_no": -9.190635681152344,
+      "margin": 0.18359375
+    },
+    {
+      "id": 3015,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.335464477539062,
+      "score_no": -9.642105102539062,
+      "margin": 0.306640625
+    },
+    {
+      "id": 640,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.733392715454102,
+      "score_no": -9.323236465454102,
+      "margin": -1.41015625
+    },
+    {
+      "id": 3117,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.472002983093262,
+      "score_no": -8.249346733093262,
+      "margin": -0.22265625
+    },
+    {
+      "id": 1423,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.1618013381958,
+      "score_no": -9.8102388381958,
+      "margin": -0.3515625
+    },
+    {
+      "id": 2054,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.179299354553223,
+      "score_no": -9.230080604553223,
+      "margin": 0.05078125
+    },
+    {
+      "id": 781,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.477205276489258,
+      "score_no": -10.662752151489258,
+      "margin": 0.185546875
+    },
+    {
+      "id": 905,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.77585220336914,
+      "score_no": -9.40280532836914,
+      "margin": 0.626953125
+    },
+    {
+      "id": 873,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.349984645843506,
+      "score_no": -8.189828872680664,
+      "margin": 0.8398442268371582
+    },
+    {
+      "id": 3127,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.229958534240723,
+      "score_no": -11.208474159240723,
+      "margin": 0.978515625
+    },
+    {
+      "id": 2496,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.137351989746094,
+      "score_no": -10.152976989746094,
+      "margin": 0.015625
+    },
+    {
+      "id": 1064,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.694269180297852,
+      "score_no": -10.176691055297852,
+      "margin": 0.482421875
+    },
+    {
+      "id": 789,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -10.097654342651367,
+      "score_no": -10.365232467651367,
+      "margin": 0.267578125
+    },
+    {
+      "id": 785,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.096118927001953,
+      "score_no": -9.615650177001953,
+      "margin": 1.51953125
+    },
+    {
+      "id": 2497,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.822227478027344,
+      "score_no": -9.376914978027344,
+      "margin": 0.5546875
+    },
+    {
+      "id": 2392,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.421843528747559,
+      "score_no": -9.060515403747559,
+      "margin": -0.361328125
+    },
+    {
+      "id": 621,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.509908676147461,
+      "score_no": -8.881002426147461,
+      "margin": 0.37109375
+    },
+    {
+      "id": 1480,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.078128337860107,
+      "score_no": -8.74609661102295,
+      "margin": 1.6679682731628418
+    },
+    {
+      "id": 1147,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.30713939666748,
+      "score_no": -9.35987377166748,
+      "margin": 1.052734375
+    },
+    {
+      "id": 2872,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.155804634094238,
+      "score_no": -8.753460884094238,
+      "margin": -0.40234375
+    },
+    {
+      "id": 581,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.339896202087402,
+      "score_no": -9.896536827087402,
+      "margin": -0.443359375
+    },
+    {
+      "id": 155,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.81692886352539,
+      "score_no": -9.63333511352539,
+      "margin": 0.81640625
+    },
+    {
+      "id": 2961,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.396162033081055,
+      "score_no": -9.173505783081055,
+      "margin": 0.77734375
+    },
+    {
+      "id": 471,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.946035385131836,
+      "score_no": -9.190176010131836,
+      "margin": 0.244140625
+    },
+    {
+      "id": 3039,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.497475624084473,
+      "score_no": -8.802163124084473,
+      "margin": -0.6953125
+    },
+    {
+      "id": 1512,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.768431663513184,
+      "score_no": -7.830931663513184,
+      "margin": -2.9375
+    },
+    {
+      "id": 209,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.25261402130127,
+      "score_no": -9.20769214630127,
+      "margin": -0.044921875
+    },
+    {
+      "id": 1804,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.402522087097168,
+      "score_no": -9.480647087097168,
+      "margin": 0.078125
+    },
+    {
+      "id": 1966,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.471001625061035,
+      "score_no": -9.844048500061035,
+      "margin": -0.626953125
+    },
+    {
+      "id": 1666,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -11.169748306274414,
+      "score_no": -10.116037368774414,
+      "margin": -1.0537109375
+    },
+    {
+      "id": 3218,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.462512969970703,
+      "score_no": -9.817981719970703,
+      "margin": 0.35546875
+    },
+    {
+      "id": 2414,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.757594108581543,
+      "score_no": -9.581812858581543,
+      "margin": -0.17578125
+    },
+    {
+      "id": 1922,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.78737735748291,
+      "score_no": -10.02370548248291,
+      "margin": 0.236328125
+    },
+    {
+      "id": 1122,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.176248550415039,
+      "score_no": -9.543436050415039,
+      "margin": 0.3671875
+    },
+    {
+      "id": 2196,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.977011680603027,
+      "score_no": -9.635214805603027,
+      "margin": -1.341796875
+    },
+    {
+      "id": 2469,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.122909545898438,
+      "score_no": -9.074081420898438,
+      "margin": -1.048828125
+    },
+    {
+      "id": 919,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.261554718017578,
+      "score_no": -10.663898468017578,
+      "margin": 1.40234375
+    },
+    {
+      "id": 745,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.621209144592285,
+      "score_no": -8.562615394592285,
+      "margin": -0.05859375
+    },
+    {
+      "id": 2016,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.676502227783203,
+      "score_no": -9.067127227783203,
+      "margin": 0.390625
+    },
+    {
+      "id": 2979,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.295463562011719,
+      "score_no": -10.020072937011719,
+      "margin": -0.275390625
+    },
+    {
+      "id": 1885,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.887399673461914,
+      "score_no": -9.945993423461914,
+      "margin": 1.05859375
+    },
+    {
+      "id": 2832,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.642419815063477,
+      "score_no": -8.576013565063477,
+      "margin": -0.06640625
+    },
+    {
+      "id": 758,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.516006469726562,
+      "score_no": -9.816787719726562,
+      "margin": 0.30078125
+    },
+    {
+      "id": 2517,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.628925323486328,
+      "score_no": -9.603534698486328,
+      "margin": 0.974609375
+    },
+    {
+      "id": 2401,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.364869117736816,
+      "score_no": -7.610962867736816,
+      "margin": -1.75390625
+    },
+    {
+      "id": 2236,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.49658489227295,
+      "score_no": -9.67236614227295,
+      "margin": 0.17578125
+    },
+    {
+      "id": 2025,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.82269287109375,
+      "score_no": -10.16253662109375,
+      "margin": 0.33984375
+    },
+    {
+      "id": 659,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.826555252075195,
+      "score_no": -9.301164627075195,
+      "margin": -0.525390625
+    },
+    {
+      "id": 3234,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.242270469665527,
+      "score_no": -9.382895469665527,
+      "margin": -0.859375
+    },
+    {
+      "id": 2972,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.667553901672363,
+      "score_no": -8.894116401672363,
+      "margin": 0.2265625
+    },
+    {
+      "id": 1931,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.932580947875977,
+      "score_no": -10.352502822875977,
+      "margin": 0.419921875
+    },
+    {
+      "id": 1973,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.938416481018066,
+      "score_no": -9.184510231018066,
+      "margin": 0.24609375
+    },
+    {
+      "id": 1977,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.33437728881836,
+      "score_no": -9.25234603881836,
+      "margin": -0.08203125
+    },
+    {
+      "id": 2172,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.763462066650391,
+      "score_no": -9.30447769165039,
+      "margin": 1.541015625
+    },
+    {
+      "id": 1740,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.309649467468262,
+      "score_no": -8.161211967468262,
+      "margin": 0.8515625
+    },
+    {
+      "id": 921,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.773045539855957,
+      "score_no": -9.015233039855957,
+      "margin": 0.2421875
+    },
+    {
+      "id": 2116,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.251754760742188,
+      "score_no": -10.300582885742188,
+      "margin": 1.048828125
+    },
+    {
+      "id": 798,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.77289867401123,
+      "score_no": -10.31196117401123,
+      "margin": 0.5390625
+    },
+    {
+      "id": 1649,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.059929847717285,
+      "score_no": -8.003777503967285,
+      "margin": -3.05615234375
+    },
+    {
+      "id": 923,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.350078582763672,
+      "score_no": -9.920391082763672,
+      "margin": 0.5703125
+    },
+    {
+      "id": 887,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.727109909057617,
+      "score_no": -10.303281784057617,
+      "margin": 0.576171875
+    },
+    {
+      "id": 2471,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.755727767944336,
+      "score_no": -9.679555892944336,
+      "margin": 0.923828125
+    },
+    {
+      "id": 362,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.065764427185059,
+      "score_no": -7.983733177185059,
+      "margin": -0.08203125
+    },
+    {
+      "id": 2076,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.062917709350586,
+      "score_no": -9.777761459350586,
+      "margin": 0.71484375
+    },
+    {
+      "id": 808,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.605939865112305,
+      "score_no": -10.031721115112305,
+      "margin": 0.42578125
+    },
+    {
+      "id": 2454,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.603536605834961,
+      "score_no": -9.392599105834961,
+      "margin": -0.2109375
+    },
+    {
+      "id": 203,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.549274444580078,
+      "score_no": -9.001422882080078,
+      "margin": -1.5478515625
+    },
+    {
+      "id": 1647,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.49197006225586,
+      "score_no": -9.28103256225586,
+      "margin": 0.7890625
+    },
+    {
+      "id": 438,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.505895614624023,
+      "score_no": -9.871129989624023,
+      "margin": -0.634765625
+    },
+    {
+      "id": 2063,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.449722290039062,
+      "score_no": -8.877456665039062,
+      "margin": 0.427734375
+    },
+    {
+      "id": 2058,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.819792747497559,
+      "score_no": -8.769011497497559,
+      "margin": -0.05078125
+    },
+    {
+      "id": 34,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.259859085083008,
+      "score_no": -9.205171585083008,
+      "margin": 0.9453125
+    },
+    {
+      "id": 2543,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.263891220092773,
+      "score_no": -8.392797470092773,
+      "margin": 0.12890625
+    },
+    {
+      "id": 3119,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.195371627807617,
+      "score_no": -9.947324752807617,
+      "margin": 0.751953125
+    },
+    {
+      "id": 754,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.099005699157715,
+      "score_no": -8.669318199157715,
+      "margin": 0.5703125
+    },
+    {
+      "id": 3037,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.057068824768066,
+      "score_no": -7.822693824768066,
+      "margin": -3.234375
+    },
+    {
+      "id": 2066,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.471927642822266,
+      "score_no": -9.678958892822266,
+      "margin": 0.20703125
+    },
+    {
+      "id": 1353,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.713314056396484,
+      "score_no": -10.217220306396484,
+      "margin": -0.49609375
+    },
+    {
+      "id": 1796,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.142980575561523,
+      "score_no": -9.248449325561523,
+      "margin": -0.89453125
+    },
+    {
+      "id": 2227,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.763188362121582,
+      "score_no": -10.298344612121582,
+      "margin": 0.53515625
+    },
+    {
+      "id": 304,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.291274070739746,
+      "score_no": -9.263930320739746,
+      "margin": -0.02734375
+    },
+    {
+      "id": 1063,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.32679271697998,
+      "score_no": -9.57093334197998,
+      "margin": -0.755859375
+    },
+    {
+      "id": 3000,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.635320663452148,
+      "score_no": -9.092351913452148,
+      "margin": 0.45703125
+    },
+    {
+      "id": 1048,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.21346378326416,
+      "score_no": -9.07283878326416,
+      "margin": 0.859375
+    },
+    {
+      "id": 1676,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.187406539916992,
+      "score_no": -9.599515914916992,
+      "margin": -0.587890625
+    },
+    {
+      "id": 105,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.839091300964355,
+      "score_no": -9.428935050964355,
+      "margin": 0.58984375
+    },
+    {
+      "id": 1850,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.13636302947998,
+      "score_no": -10.07776927947998,
+      "margin": 0.94140625
+    },
+    {
+      "id": 2981,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.19095230102539,
+      "score_no": -8.18802261352539,
+      "margin": -3.0029296875
+    },
+    {
+      "id": 2318,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.638779640197754,
+      "score_no": -9.705185890197754,
+      "margin": -0.93359375
+    },
+    {
+      "id": 912,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.302769660949707,
+      "score_no": -8.873082160949707,
+      "margin": -0.4296875
+    },
+    {
+      "id": 2970,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.296707153320312,
+      "score_no": -8.013504028320312,
+      "margin": -1.283203125
+    },
+    {
+      "id": 409,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.43777847290039,
+      "score_no": -9.79520034790039,
+      "margin": 0.357421875
+    },
+    {
+      "id": 1026,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.44815444946289,
+      "score_no": -9.36221694946289,
+      "margin": -0.0859375
+    },
+    {
+      "id": 2316,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.336256980895996,
+      "score_no": -8.109694480895996,
+      "margin": -0.2265625
+    },
+    {
+      "id": 1338,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -6.715655326843262,
+      "score_no": -7.246905326843262,
+      "margin": 0.53125
+    },
+    {
+      "id": 764,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.59550666809082,
+      "score_no": -8.87870979309082,
+      "margin": -0.716796875
+    },
+    {
+      "id": 1969,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.40504264831543,
+      "score_no": -9.22730827331543,
+      "margin": -0.177734375
+    },
+    {
+      "id": 2207,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.459779739379883,
+      "score_no": -8.057435989379883,
+      "margin": -3.40234375
+    },
+    {
+      "id": 1039,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.032821655273438,
+      "score_no": -9.941024780273438,
+      "margin": -0.091796875
+    },
+    {
+      "id": 1238,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.157093048095703,
+      "score_no": -9.637561798095703,
+      "margin": 0.48046875
+    },
+    {
+      "id": 2836,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.497709274291992,
+      "score_no": -9.023099899291992,
+      "margin": -0.474609375
+    },
+    {
+      "id": 2588,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.861410140991211,
+      "score_no": -9.593832015991211,
+      "margin": -0.267578125
+    },
+    {
+      "id": 3183,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.672916412353516,
+      "score_no": -9.624088287353516,
+      "margin": -1.048828125
+    },
+    {
+      "id": 564,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.316572189331055,
+      "score_no": -8.945478439331055,
+      "margin": -0.37109375
+    },
+    {
+      "id": 1028,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.981098175048828,
+      "score_no": -9.221332550048828,
+      "margin": 1.240234375
+    },
+    {
+      "id": 1220,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.262711524963379,
+      "score_no": -10.616227149963379,
+      "margin": 1.353515625
+    },
+    {
+      "id": 1525,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.600340843200684,
+      "score_no": -9.522215843200684,
+      "margin": -0.078125
+    },
+    {
+      "id": 904,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.21828842163086,
+      "score_no": -9.68117904663086,
+      "margin": 0.462890625
+    },
+    {
+      "id": 2892,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.256217956542969,
+      "score_no": -9.254264831542969,
+      "margin": -0.001953125
+    },
+    {
+      "id": 2396,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.694493293762207,
+      "score_no": -9.956212043762207,
+      "margin": -0.73828125
+    },
+    {
+      "id": 958,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.839805603027344,
+      "score_no": -9.898399353027344,
+      "margin": 1.05859375
+    },
+    {
+      "id": 2282,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.817572593688965,
+      "score_no": -9.198431968688965,
+      "margin": -0.619140625
+    },
+    {
+      "id": 1834,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.838644027709961,
+      "score_no": -8.623800277709961,
+      "margin": -0.21484375
+    },
+    {
+      "id": 607,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.418675422668457,
+      "score_no": -8.295628547668457,
+      "margin": -3.123046875
+    },
+    {
+      "id": 1496,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.89085865020752,
+      "score_no": -8.48460865020752,
+      "margin": -0.40625
+    },
+    {
+      "id": 1907,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.408769607543945,
+      "score_no": -10.205644607543945,
+      "margin": -0.203125
+    },
+    {
+      "id": 58,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.428476333618164,
+      "score_no": -10.176523208618164,
+      "margin": -0.251953125
+    },
+    {
+      "id": 2296,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.779509544372559,
+      "score_no": -9.351775169372559,
+      "margin": -0.427734375
+    },
+    {
+      "id": 402,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.585578918457031,
+      "score_no": -10.103157043457031,
+      "margin": 0.517578125
+    },
+    {
+      "id": 485,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.388789176940918,
+      "score_no": -9.494257926940918,
+      "margin": 0.10546875
+    },
+    {
+      "id": 1989,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.036169052124023,
+      "score_no": -8.754919052124023,
+      "margin": -0.28125
+    },
+    {
+      "id": 1748,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.310163497924805,
+      "score_no": -10.017194747924805,
+      "margin": 0.70703125
+    },
+    {
+      "id": 2045,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.783290863037109,
+      "score_no": -8.99032211303711,
+      "margin": 1.20703125
+    },
+    {
+      "id": 462,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.083324432373047,
+      "score_no": -9.763011932373047,
+      "margin": -0.3203125
+    },
+    {
+      "id": 601,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.640603065490723,
+      "score_no": -7.882790565490723,
+      "margin": 0.2421875
+    },
+    {
+      "id": 1185,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.403139114379883,
+      "score_no": -8.407045364379883,
+      "margin": -0.99609375
+    },
+    {
+      "id": 897,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.330354690551758,
+      "score_no": -8.408479690551758,
+      "margin": -0.921875
+    },
+    {
+      "id": 1334,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.960723876953125,
+      "score_no": -9.986114501953125,
+      "margin": 0.025390625
+    },
+    {
+      "id": 273,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.697052001953125,
+      "score_no": -9.392364501953125,
+      "margin": -0.3046875
+    },
+    {
+      "id": 1173,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.312744140625,
+      "score_no": -9.881103515625,
+      "margin": -0.431640625
+    },
+    {
+      "id": 1084,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.04312801361084,
+      "score_no": -9.46109676361084,
+      "margin": 1.41796875
+    },
+    {
+      "id": 1336,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.029367446899414,
+      "score_no": -8.939523696899414,
+      "margin": -0.08984375
+    },
+    {
+      "id": 1159,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.104951858520508,
+      "score_no": -7.921358108520508,
+      "margin": -3.18359375
+    },
+    {
+      "id": 604,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.679904937744141,
+      "score_no": -8.40256118774414,
+      "margin": 0.72265625
+    },
+    {
+      "id": 1082,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.084339141845703,
+      "score_no": -10.019886016845703,
+      "margin": -0.064453125
+    },
+    {
+      "id": 2984,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.377887725830078,
+      "score_no": -9.875934600830078,
+      "margin": -0.501953125
+    },
+    {
+      "id": 3156,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.298158645629883,
+      "score_no": -9.966127395629883,
+      "margin": -0.33203125
+    },
+    {
+      "id": 2699,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.453344345092773,
+      "score_no": -8.367406845092773,
+      "margin": -0.0859375
+    },
+    {
+      "id": 110,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.707996368408203,
+      "score_no": -9.916980743408203,
+      "margin": 0.208984375
+    },
+    {
+      "id": 2790,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.684754371643066,
+      "score_no": -10.143738746643066,
+      "margin": -0.541015625
+    },
+    {
+      "id": 3140,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.285943984985352,
+      "score_no": -8.364068984985352,
+      "margin": 0.078125
+    },
+    {
+      "id": 2183,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.921401977539062,
+      "score_no": -9.253433227539062,
+      "margin": 0.33203125
+    },
+    {
+      "id": 320,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.31966495513916,
+      "score_no": -8.61263370513916,
+      "margin": 0.29296875
+    },
+    {
+      "id": 172,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.383940696716309,
+      "score_no": -9.087065696716309,
+      "margin": 0.703125
+    },
+    {
+      "id": 1152,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.051939964294434,
+      "score_no": -9.049986839294434,
+      "margin": -0.001953125
+    },
+    {
+      "id": 2895,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.723644256591797,
+      "score_no": -9.534191131591797,
+      "margin": 0.810546875
+    },
+    {
+      "id": 1193,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.673076629638672,
+      "score_no": -8.815654754638672,
+      "margin": 0.142578125
+    },
+    {
+      "id": 801,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.162847518920898,
+      "score_no": -9.440191268920898,
+      "margin": -0.72265625
+    },
+    {
+      "id": 1910,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.612380981445312,
+      "score_no": -9.567459106445312,
+      "margin": 0.955078125
+    },
+    {
+      "id": 2833,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.638790130615234,
+      "score_no": -9.580196380615234,
+      "margin": -0.05859375
+    },
+    {
+      "id": 1967,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.898863792419434,
+      "score_no": -9.262145042419434,
+      "margin": 0.36328125
+    },
+    {
+      "id": 2954,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.720675468444824,
+      "score_no": -9.904269218444824,
+      "margin": 0.18359375
+    },
+    {
+      "id": 3033,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.731933116912842,
+      "score_no": -8.66943359375,
+      "margin": 0.9375004768371582
+    },
+    {
+      "id": 749,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.284974098205566,
+      "score_no": -9.771302223205566,
+      "margin": 0.486328125
+    },
+    {
+      "id": 3111,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.641012191772461,
+      "score_no": -10.055074691772461,
+      "margin": -0.5859375
+    },
+    {
+      "id": 3112,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.828316688537598,
+      "score_no": -9.259957313537598,
+      "margin": 0.431640625
+    },
+    {
+      "id": 189,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.738546371459961,
+      "score_no": -9.806905746459961,
+      "margin": 1.068359375
+    },
+    {
+      "id": 1301,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.784311294555664,
+      "score_no": -8.768686294555664,
+      "margin": 0.984375
+    },
+    {
+      "id": 3080,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.214723587036133,
+      "score_no": -9.613161087036133,
+      "margin": 1.3984375
+    },
+    {
+      "id": 630,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.37905502319336,
+      "score_no": -10.25600814819336,
+      "margin": 0.876953125
+    },
+    {
+      "id": 2115,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.621513366699219,
+      "score_no": -10.082450866699219,
+      "margin": 0.4609375
+    },
+    {
+      "id": 2857,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.968326568603516,
+      "score_no": -10.214420318603516,
+      "margin": 1.24609375
+    },
+    {
+      "id": 509,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.366981506347656,
+      "score_no": -10.023231506347656,
+      "margin": -0.34375
+    },
+    {
+      "id": 2384,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.314772605895996,
+      "score_no": -9.976881980895996,
+      "margin": 0.662109375
+    },
+    {
+      "id": 2728,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.19107723236084,
+      "score_no": -8.96842098236084,
+      "margin": 0.77734375
+    },
+    {
+      "id": 683,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.781937599182129,
+      "score_no": -10.477250099182129,
+      "margin": 0.6953125
+    },
+    {
+      "id": 2879,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.035313606262207,
+      "score_no": -10.353672981262207,
+      "margin": 1.318359375
+    },
+    {
+      "id": 2105,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.74308967590332,
+      "score_no": -10.01066780090332,
+      "margin": -0.732421875
+    },
+    {
+      "id": 72,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.157550811767578,
+      "score_no": -9.874347686767578,
+      "margin": -0.283203125
+    },
+    {
+      "id": 1689,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.300666809082031,
+      "score_no": -9.742073059082031,
+      "margin": 0.44140625
+    },
+    {
+      "id": 1803,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.278238296508789,
+      "score_no": -10.161050796508789,
+      "margin": -0.1171875
+    },
+    {
+      "id": 2505,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.835148811340332,
+      "score_no": -9.329289436340332,
+      "margin": 0.494140625
+    },
+    {
+      "id": 431,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.902673721313477,
+      "score_no": -8.691736221313477,
+      "margin": -0.2109375
+    },
+    {
+      "id": 1889,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.722681999206543,
+      "score_no": -10.283228874206543,
+      "margin": -0.439453125
+    },
+    {
+      "id": 2584,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.920562744140625,
+      "score_no": -9.336578369140625,
+      "margin": -0.583984375
+    },
+    {
+      "id": 146,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.407268524169922,
+      "score_no": -9.141643524169922,
+      "margin": -0.265625
+    },
+    {
+      "id": 1006,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.393634796142578,
+      "score_no": -10.626056671142578,
+      "margin": 1.232421875
+    },
+    {
+      "id": 3261,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.135149002075195,
+      "score_no": -9.549211502075195,
+      "margin": 0.4140625
+    },
+    {
+      "id": 2499,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.385960578918457,
+      "score_no": -9.225804328918457,
+      "margin": 0.83984375
+    },
+    {
+      "id": 1812,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.247418403625488,
+      "score_no": -10.005230903625488,
+      "margin": 1.7578125
+    },
+    {
+      "id": 196,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.938350677490234,
+      "score_no": -8.950069427490234,
+      "margin": 0.01171875
+    },
+    {
+      "id": 3233,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.608502388000488,
+      "score_no": -9.567486763000488,
+      "margin": -0.041015625
+    },
+    {
+      "id": 684,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.261320114135742,
+      "score_no": -9.841398239135742,
+      "margin": 0.580078125
+    },
+    {
+      "id": 1405,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.023075103759766,
+      "score_no": -9.173465728759766,
+      "margin": 1.150390625
+    },
+    {
+      "id": 627,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.351530075073242,
+      "score_no": -9.648405075073242,
+      "margin": -0.703125
+    },
+    {
+      "id": 2504,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.791905879974365,
+      "score_no": -8.377843856811523,
+      "margin": 0.5859379768371582
+    },
+    {
+      "id": 935,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.342020034790039,
+      "score_no": -9.769754409790039,
+      "margin": 0.427734375
+    },
+    {
+      "id": 2720,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.69367504119873,
+      "score_no": -8.26008129119873,
+      "margin": -0.43359375
+    },
+    {
+      "id": 3036,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.234840393066406,
+      "score_no": -9.990699768066406,
+      "margin": 0.755859375
+    },
+    {
+      "id": 420,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.847930908203125,
+      "score_no": -7.847930908203125,
+      "margin": -3.0
+    },
+    {
+      "id": 1965,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.69211196899414,
+      "score_no": -9.10422134399414,
+      "margin": 0.412109375
+    },
+    {
+      "id": 455,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.568777084350586,
+      "score_no": -9.076589584350586,
+      "margin": 0.5078125
+    },
+    {
+      "id": 890,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.20474624633789,
+      "score_no": -8.70083999633789,
+      "margin": 0.49609375
+    },
+    {
+      "id": 2922,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.909591674804688,
+      "score_no": -9.899826049804688,
+      "margin": -1.009765625
+    },
+    {
+      "id": 2452,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.341635704040527,
+      "score_no": -9.197104454040527,
+      "margin": -0.14453125
+    },
+    {
+      "id": 460,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.362070083618164,
+      "score_no": -10.473398208618164,
+      "margin": 0.111328125
+    },
+    {
+      "id": 2776,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.712484359741211,
+      "score_no": -9.325765609741211,
+      "margin": 0.61328125
+    },
+    {
+      "id": 2948,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.231690406799316,
+      "score_no": -9.399659156799316,
+      "margin": -1.83203125
+    },
+    {
+      "id": 732,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.723520278930664,
+      "score_no": -9.393442153930664,
+      "margin": 0.669921875
+    },
+    {
+      "id": 779,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.482587814331055,
+      "score_no": -9.869306564331055,
+      "margin": 0.38671875
+    },
+    {
+      "id": 261,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.560081481933594,
+      "score_no": -9.310081481933594,
+      "margin": -0.25
+    },
+    {
+      "id": 100,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.709481239318848,
+      "score_no": -9.533699989318848,
+      "margin": -0.17578125
+    },
+    {
+      "id": 2910,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.625452041625977,
+      "score_no": -9.242639541625977,
+      "margin": -0.3828125
+    },
+    {
+      "id": 772,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.607084274291992,
+      "score_no": -8.525053024291992,
+      "margin": -0.08203125
+    },
+    {
+      "id": 981,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.686614990234375,
+      "score_no": -9.069427490234375,
+      "margin": 1.3828125
+    },
+    {
+      "id": 2632,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.967373847961426,
+      "score_no": -9.734951972961426,
+      "margin": 0.767578125
+    },
+    {
+      "id": 953,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.009111404418945,
+      "score_no": -9.763017654418945,
+      "margin": -0.24609375
+    },
+    {
+      "id": 1346,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.775066375732422,
+      "score_no": -9.509441375732422,
+      "margin": -0.265625
+    },
+    {
+      "id": 1824,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.525627136230469,
+      "score_no": -10.861564636230469,
+      "margin": 1.3359375
+    },
+    {
+      "id": 280,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.940767288208008,
+      "score_no": -9.022798538208008,
+      "margin": 1.08203125
+    },
+    {
+      "id": 2537,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.941295623779297,
+      "score_no": -9.886608123779297,
+      "margin": 0.9453125
+    },
+    {
+      "id": 856,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.887611389160156,
+      "score_no": -8.704017639160156,
+      "margin": 0.81640625
+    },
+    {
+      "id": 343,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.641641616821289,
+      "score_no": -9.426797866821289,
+      "margin": -0.21484375
+    },
+    {
+      "id": 428,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.286843299865723,
+      "score_no": -8.948952674865723,
+      "margin": -0.337890625
+    },
+    {
+      "id": 500,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.704113006591797,
+      "score_no": -9.446300506591797,
+      "margin": 0.7421875
+    },
+    {
+      "id": 1097,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.010214805603027,
+      "score_no": -9.176230430603027,
+      "margin": 0.166015625
+    },
+    {
+      "id": 2426,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.303420066833496,
+      "score_no": -8.487013816833496,
+      "margin": 1.18359375
+    },
+    {
+      "id": 2484,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.599023818969727,
+      "score_no": -8.825586318969727,
+      "margin": -1.7734375
+    },
+    {
+      "id": 770,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.156060218811035,
+      "score_no": -9.534966468811035,
+      "margin": 0.37890625
+    },
+    {
+      "id": 493,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.971030235290527,
+      "score_no": -10.217123985290527,
+      "margin": 1.24609375
+    },
+    {
+      "id": 2808,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.63631534576416,
+      "score_no": -10.56014347076416,
+      "margin": -0.076171875
+    },
+    {
+      "id": 2998,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.285078048706055,
+      "score_no": -9.288984298706055,
+      "margin": 0.00390625
+    },
+    {
+      "id": 54,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.286260604858398,
+      "score_no": -9.614385604858398,
+      "margin": 0.328125
+    },
+    {
+      "id": 1781,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.502399444580078,
+      "score_no": -9.906696319580078,
+      "margin": 0.404296875
+    },
+    {
+      "id": 2098,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.951884269714355,
+      "score_no": -9.397196769714355,
+      "margin": 0.4453125
+    },
+    {
+      "id": 523,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.123934745788574,
+      "score_no": -8.934481620788574,
+      "margin": -0.189453125
+    },
+    {
+      "id": 1164,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.796273231506348,
+      "score_no": -9.263070106506348,
+      "margin": 0.466796875
+    },
+    {
+      "id": 2807,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.878171920776367,
+      "score_no": -8.643796920776367,
+      "margin": -1.234375
+    },
+    {
+      "id": 1182,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.517309188842773,
+      "score_no": -10.023168563842773,
+      "margin": 0.505859375
+    },
+    {
+      "id": 1470,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.786439895629883,
+      "score_no": -8.638002395629883,
+      "margin": -0.1484375
+    },
+    {
+      "id": 3054,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.338305473327637,
+      "score_no": -9.619555473327637,
+      "margin": 1.28125
+    },
+    {
+      "id": 2869,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -10.034278869628906,
+      "score_no": -10.649513244628906,
+      "margin": 0.615234375
+    },
+    {
+      "id": 978,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.969869613647461,
+      "score_no": -9.071432113647461,
+      "margin": -0.8984375
+    },
+    {
+      "id": 435,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.447575569152832,
+      "score_no": -9.619450569152832,
+      "margin": 0.171875
+    },
+    {
+      "id": 1665,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.355212211608887,
+      "score_no": -9.724352836608887,
+      "margin": -0.630859375
+    },
+    {
+      "id": 464,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.83119010925293,
+      "score_no": -9.83704948425293,
+      "margin": -0.994140625
+    },
+    {
+      "id": 2422,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.679309844970703,
+      "score_no": -9.905872344970703,
+      "margin": 0.2265625
+    },
+    {
+      "id": 2552,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.20250129699707,
+      "score_no": -7.90953254699707,
+      "margin": -0.29296875
+    },
+    {
+      "id": 1322,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.800447463989258,
+      "score_no": -9.142244338989258,
+      "margin": -0.658203125
+    },
+    {
+      "id": 843,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.47851848602295,
+      "score_no": -9.56640911102295,
+      "margin": 1.087890625
+    },
+    {
+      "id": 3216,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.91623592376709,
+      "score_no": -9.79123592376709,
+      "margin": -0.125
+    },
+    {
+      "id": 860,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.831413269042969,
+      "score_no": -9.554069519042969,
+      "margin": -0.27734375
+    },
+    {
+      "id": 2732,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.773770332336426,
+      "score_no": -10.410489082336426,
+      "margin": 0.63671875
+    },
+    {
+      "id": 1181,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.529553413391113,
+      "score_no": -9.515881538391113,
+      "margin": -0.013671875
+    },
+    {
+      "id": 2055,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.134090423583984,
+      "score_no": -9.192684173583984,
+      "margin": 0.05859375
+    },
+    {
+      "id": 2943,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.606575012207031,
+      "score_no": -9.395637512207031,
+      "margin": 0.7890625
+    },
+    {
+      "id": 3030,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.097123146057129,
+      "score_no": -9.280716896057129,
+      "margin": 0.18359375
+    },
+    {
+      "id": 2430,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.659126281738281,
+      "score_no": -7.8349080085754395,
+      "margin": -0.8242182731628418
+    },
+    {
+      "id": 1020,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.397486686706543,
+      "score_no": -9.729517936706543,
+      "margin": 0.33203125
+    },
+    {
+      "id": 332,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.803460121154785,
+      "score_no": -9.899163246154785,
+      "margin": -0.904296875
+    },
+    {
+      "id": 2450,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.257828712463379,
+      "score_no": -9.609391212463379,
+      "margin": -0.6484375
+    },
+    {
+      "id": 1953,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.423434257507324,
+      "score_no": -9.673434257507324,
+      "margin": 0.25
+    },
+    {
+      "id": 700,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.940077781677246,
+      "score_no": -9.901015281677246,
+      "margin": -0.0390625
+    },
+    {
+      "id": 1451,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.23278522491455,
+      "score_no": -9.98083209991455,
+      "margin": -0.251953125
+    },
+    {
+      "id": 329,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.37698745727539,
+      "score_no": -10.17190933227539,
+      "margin": -0.205078125
+    },
+    {
+      "id": 2128,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.089874267578125,
+      "score_no": -9.097686767578125,
+      "margin": 0.0078125
+    },
+    {
+      "id": 49,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.750374794006348,
+      "score_no": -9.422249794006348,
+      "margin": -0.328125
+    },
+    {
+      "id": 2421,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.976807594299316,
+      "score_no": -9.211182594299316,
+      "margin": 0.234375
+    },
+    {
+      "id": 2427,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.767619132995605,
+      "score_no": -10.236369132995605,
+      "margin": 0.46875
+    },
+    {
+      "id": 1397,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.77532958984375,
+      "score_no": -9.82220458984375,
+      "margin": 0.046875
+    },
+    {
+      "id": 1187,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.952827453613281,
+      "score_no": -7.8346638679504395,
+      "margin": -3.118163585662842
+    },
+    {
+      "id": 2460,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.308181762695312,
+      "score_no": -9.505447387695312,
+      "margin": 0.197265625
+    },
+    {
+      "id": 3019,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.049734115600586,
+      "score_no": -9.030202865600586,
+      "margin": 0.98046875
+    },
+    {
+      "id": 2813,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.222177505493164,
+      "score_no": -9.468271255493164,
+      "margin": 0.24609375
+    },
+    {
+      "id": 2946,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.155492782592773,
+      "score_no": -9.821508407592773,
+      "margin": -0.333984375
+    },
+    {
+      "id": 356,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.171842575073242,
+      "score_no": -9.087858200073242,
+      "margin": -1.083984375
+    },
+    {
+      "id": 297,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.51761245727539,
+      "score_no": -9.24026870727539,
+      "margin": 0.72265625
+    },
+    {
+      "id": 1571,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.315442085266113,
+      "score_no": -8.584973335266113,
+      "margin": 0.26953125
+    },
+    {
+      "id": 1108,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.716195106506348,
+      "score_no": -9.522835731506348,
+      "margin": -0.193359375
+    },
+    {
+      "id": 268,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.640780448913574,
+      "score_no": -9.279452323913574,
+      "margin": 0.638671875
+    },
+    {
+      "id": 2622,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.32082748413086,
+      "score_no": -10.18996810913086,
+      "margin": 0.869140625
+    },
+    {
+      "id": 584,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.415533065795898,
+      "score_no": -10.337408065795898,
+      "margin": 0.921875
+    },
+    {
+      "id": 1874,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.74896240234375,
+      "score_no": -9.69622802734375,
+      "margin": -0.052734375
+    },
+    {
+      "id": 2649,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.277457237243652,
+      "score_no": -10.195425987243652,
+      "margin": 0.91796875
+    },
+    {
+      "id": 2633,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.986703872680664,
+      "score_no": -7.800180912017822,
+      "margin": -3.186522960662842
+    },
+    {
+      "id": 863,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.698665618896484,
+      "score_no": -9.946712493896484,
+      "margin": 1.248046875
+    },
+    {
+      "id": 1980,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.716185569763184,
+      "score_no": -9.364623069763184,
+      "margin": 0.6484375
+    },
+    {
+      "id": 501,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.704269409179688,
+      "score_no": -9.282394409179688,
+      "margin": -0.421875
+    },
+    {
+      "id": 795,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.223245620727539,
+      "score_no": -10.371683120727539,
+      "margin": 0.1484375
+    },
+    {
+      "id": 782,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.553425312042236,
+      "score_no": -8.479206085205078,
+      "margin": 0.9257807731628418
+    },
+    {
+      "id": 2674,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.177635192871094,
+      "score_no": -8.943260192871094,
+      "margin": -0.234375
+    },
+    {
+      "id": 311,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.544382095336914,
+      "score_no": -8.318796157836914,
+      "margin": -2.2255859375
+    },
+    {
+      "id": 36,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.314779281616211,
+      "score_no": -9.467123031616211,
+      "margin": 0.15234375
+    },
+    {
+      "id": 538,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.915647506713867,
+      "score_no": -10.517210006713867,
+      "margin": 1.6015625
+    },
+    {
+      "id": 2320,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.55665922164917,
+      "score_no": -8.697284698486328,
+      "margin": 1.1406254768371582
+    },
+    {
+      "id": 735,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.517931938171387,
+      "score_no": -9.894885063171387,
+      "margin": 0.376953125
+    },
+    {
+      "id": 2854,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.799988746643066,
+      "score_no": -9.579285621643066,
+      "margin": 0.779296875
+    },
+    {
+      "id": 3193,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.070240020751953,
+      "score_no": -9.423755645751953,
+      "margin": 0.353515625
+    },
+    {
+      "id": 1100,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.526863098144531,
+      "score_no": -10.362800598144531,
+      "margin": 0.8359375
+    },
+    {
+      "id": 3143,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.071046829223633,
+      "score_no": -9.061281204223633,
+      "margin": -1.009765625
+    },
+    {
+      "id": 3152,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.25623893737793,
+      "score_no": -9.23084831237793,
+      "margin": -1.025390625
+    },
+    {
+      "id": 79,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.764766693115234,
+      "score_no": -9.622188568115234,
+      "margin": -0.142578125
+    },
+    {
+      "id": 1707,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.088043212890625,
+      "score_no": -8.822418212890625,
+      "margin": -0.265625
+    },
+    {
+      "id": 3017,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.184165000915527,
+      "score_no": -7.852133750915527,
+      "margin": -0.33203125
+    },
+    {
+      "id": 535,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.411443710327148,
+      "score_no": -9.251287460327148,
+      "margin": 0.83984375
+    },
+    {
+      "id": 957,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.370173454284668,
+      "score_no": -10.323298454284668,
+      "margin": 0.953125
+    },
+    {
+      "id": 3087,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.02192497253418,
+      "score_no": -9.77583122253418,
+      "margin": 0.75390625
+    },
+    {
+      "id": 1945,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.180815696716309,
+      "score_no": -9.374175071716309,
+      "margin": 0.193359375
+    },
+    {
+      "id": 1068,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.462423324584961,
+      "score_no": -10.638204574584961,
+      "margin": 1.17578125
+    },
+    {
+      "id": 2555,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.575018882751465,
+      "score_no": -10.274237632751465,
+      "margin": 0.69921875
+    },
+    {
+      "id": 3097,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.9244384765625,
+      "score_no": -9.5103759765625,
+      "margin": -0.4140625
+    },
+    {
+      "id": 2512,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.150277137756348,
+      "score_no": -7.931527137756348,
+      "margin": 0.78125
+    },
+    {
+      "id": 1934,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.473344802856445,
+      "score_no": -8.983110427856445,
+      "margin": 0.509765625
+    },
+    {
+      "id": 1149,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.623468399047852,
+      "score_no": -7.639093399047852,
+      "margin": -0.984375
+    },
+    {
+      "id": 2372,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.527547836303711,
+      "score_no": -9.386922836303711,
+      "margin": -0.140625
+    },
+    {
+      "id": 1207,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.309639930725098,
+      "score_no": -8.235421180725098,
+      "margin": 0.92578125
+    },
+    {
+      "id": 216,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.52150821685791,
+      "score_no": -10.08400821685791,
+      "margin": 0.5625
+    },
+    {
+      "id": 1902,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.289772987365723,
+      "score_no": -10.231179237365723,
+      "margin": 0.94140625
+    },
+    {
+      "id": 2591,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.972440719604492,
+      "score_no": -8.831815719604492,
+      "margin": 0.859375
+    },
+    {
+      "id": 2706,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.6649751663208,
+      "score_no": -11.0282564163208,
+      "margin": 0.36328125
+    },
+    {
+      "id": 2261,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.611855983734131,
+      "score_no": -9.750528335571289,
+      "margin": 2.138672351837158
+    },
+    {
+      "id": 2926,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.115139961242676,
+      "score_no": -9.267483711242676,
+      "margin": 0.15234375
+    },
+    {
+      "id": 1033,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.41391658782959,
+      "score_no": -9.08579158782959,
+      "margin": -0.328125
+    },
+    {
+      "id": 3220,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.875547409057617,
+      "score_no": -9.467344284057617,
+      "margin": 0.591796875
+    },
+    {
+      "id": 1983,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.104888916015625,
+      "score_no": -9.843170166015625,
+      "margin": -0.26171875
+    },
+    {
+      "id": 667,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.788795471191406,
+      "score_no": -10.103248596191406,
+      "margin": 0.314453125
+    },
+    {
+      "id": 2893,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.779685974121094,
+      "score_no": -10.795310974121094,
+      "margin": 1.015625
+    },
+    {
+      "id": 1616,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.833301544189453,
+      "score_no": -10.505176544189453,
+      "margin": -0.328125
+    },
+    {
+      "id": 551,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.149214744567871,
+      "score_no": -9.772261619567871,
+      "margin": -0.376953125
+    },
+    {
+      "id": 21,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.41158390045166,
+      "score_no": -9.64595890045166,
+      "margin": 0.234375
+    },
+    {
+      "id": 2008,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.262032508850098,
+      "score_no": -9.402657508850098,
+      "margin": 0.140625
+    },
+    {
+      "id": 2419,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.251462936401367,
+      "score_no": -7.756346225738525,
+      "margin": -3.495116710662842
+    },
+    {
+      "id": 2769,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.107782363891602,
+      "score_no": -9.943719863891602,
+      "margin": -0.1640625
+    },
+    {
+      "id": 3235,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.076956748962402,
+      "score_no": -8.545706748962402,
+      "margin": 0.46875
+    },
+    {
+      "id": 337,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.564364433288574,
+      "score_no": -9.788973808288574,
+      "margin": 1.224609375
+    },
+    {
+      "id": 3055,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.072996139526367,
+      "score_no": -9.465574264526367,
+      "margin": 0.392578125
+    },
+    {
+      "id": 477,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.10570240020752,
+      "score_no": -9.12132740020752,
+      "margin": 0.015625
+    },
+    {
+      "id": 300,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.97317123413086,
+      "score_no": -9.21926498413086,
+      "margin": 0.24609375
+    },
+    {
+      "id": 1251,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.316023826599121,
+      "score_no": -9.499617576599121,
+      "margin": 0.18359375
+    },
+    {
+      "id": 1055,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.716297149658203,
+      "score_no": -9.800281524658203,
+      "margin": 0.083984375
+    },
+    {
+      "id": 2982,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.438785552978516,
+      "score_no": -9.036441802978516,
+      "margin": 0.59765625
+    },
+    {
+      "id": 2682,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -6.626382827758789,
+      "score_no": -6.868570327758789,
+      "margin": 0.2421875
+    },
+    {
+      "id": 2798,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.935168266296387,
+      "score_no": -9.937121391296387,
+      "margin": 1.001953125
+    },
+    {
+      "id": 510,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.72437858581543,
+      "score_no": -9.90211296081543,
+      "margin": 0.177734375
+    },
+    {
+      "id": 410,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.77196979522705,
+      "score_no": -10.43212604522705,
+      "margin": 0.66015625
+    },
+    {
+      "id": 257,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.287485122680664,
+      "score_no": -9.084360122680664,
+      "margin": 0.796875
+    },
+    {
+      "id": 1503,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.706815719604492,
+      "score_no": -9.374784469604492,
+      "margin": 0.66796875
+    },
+    {
+      "id": 1004,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.953003883361816,
+      "score_no": -8.755738258361816,
+      "margin": -0.197265625
+    },
+    {
+      "id": 27,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.30592155456543,
+      "score_no": -9.58326530456543,
+      "margin": -0.72265625
+    },
+    {
+      "id": 1223,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.625967025756836,
+      "score_no": -10.415029525756836,
+      "margin": -0.2109375
+    },
+    {
+      "id": 1517,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -10.032960891723633,
+      "score_no": -10.259523391723633,
+      "margin": 0.2265625
+    },
+    {
+      "id": 646,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.140945434570312,
+      "score_no": -9.230789184570312,
+      "margin": 0.08984375
+    },
+    {
+      "id": 2863,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.31714153289795,
+      "score_no": -10.19995403289795,
+      "margin": -0.1171875
+    },
+    {
+      "id": 1485,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.169672012329102,
+      "score_no": -8.767328262329102,
+      "margin": 0.59765625
+    },
+    {
+      "id": 1092,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.264156341552734,
+      "score_no": -9.771968841552734,
+      "margin": -0.4921875
+    },
+    {
+      "id": 469,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.938671112060547,
+      "score_no": -9.350780487060547,
+      "margin": -0.587890625
+    },
+    {
+      "id": 2975,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.299402236938477,
+      "score_no": -9.115808486938477,
+      "margin": 0.81640625
+    },
+    {
+      "id": 2582,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.772476196289062,
+      "score_no": -10.547866821289062,
+      "margin": -0.224609375
+    },
+    {
+      "id": 372,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.882814407348633,
+      "score_no": -9.416017532348633,
+      "margin": 0.533203125
+    },
+    {
+      "id": 2347,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.199385643005371,
+      "score_no": -8.418135643005371,
+      "margin": -0.78125
+    },
+    {
+      "id": 1554,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.074178695678711,
+      "score_no": -9.763631820678711,
+      "margin": 0.689453125
+    },
+    {
+      "id": 2303,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.000715255737305,
+      "score_no": -8.983137130737305,
+      "margin": -1.017578125
+    },
+    {
+      "id": 705,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.74750280380249,
+      "score_no": -9.017034530639648,
+      "margin": 1.2695317268371582
+    },
+    {
+      "id": 2114,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.21568489074707,
+      "score_no": -9.63170051574707,
+      "margin": 1.416015625
+    },
+    {
+      "id": 1347,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.611660957336426,
+      "score_no": -9.678067207336426,
+      "margin": 1.06640625
+    },
+    {
+      "id": 3029,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.239498138427734,
+      "score_no": -8.415279388427734,
+      "margin": 1.17578125
+    },
+    {
+      "id": 611,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.929381370544434,
+      "score_no": -10.093443870544434,
+      "margin": 0.1640625
+    },
+    {
+      "id": 243,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.488152503967285,
+      "score_no": -8.968621253967285,
+      "margin": 1.48046875
+    },
+    {
+      "id": 2403,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.862311363220215,
+      "score_no": -10.221686363220215,
+      "margin": 0.359375
+    },
+    {
+      "id": 2209,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.71641731262207,
+      "score_no": -9.70079231262207,
+      "margin": -0.015625
+    },
+    {
+      "id": 2502,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.549837112426758,
+      "score_no": -9.874055862426758,
+      "margin": 0.32421875
+    },
+    {
+      "id": 896,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.446805953979492,
+      "score_no": -8.521024703979492,
+      "margin": -0.92578125
+    },
+    {
+      "id": 1386,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.610754013061523,
+      "score_no": -10.013097763061523,
+      "margin": 0.40234375
+    },
+    {
+      "id": 786,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.426088333129883,
+      "score_no": -8.308900833129883,
+      "margin": 0.8828125
+    },
+    {
+      "id": 2814,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.982211112976074,
+      "score_no": -10.409945487976074,
+      "margin": 0.427734375
+    },
+    {
+      "id": 597,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.979277610778809,
+      "score_no": -10.307402610778809,
+      "margin": 1.328125
+    },
+    {
+      "id": 1046,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.989206314086914,
+      "score_no": -10.149362564086914,
+      "margin": 0.16015625
+    },
+    {
+      "id": 88,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.667192459106445,
+      "score_no": -9.659379959106445,
+      "margin": -0.0078125
+    },
+    {
+      "id": 2241,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.33218002319336,
+      "score_no": -9.87905502319336,
+      "margin": 0.546875
+    },
+    {
+      "id": 697,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.613039016723633,
+      "score_no": -9.454835891723633,
+      "margin": -0.158203125
+    },
+    {
+      "id": 1492,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.528850555419922,
+      "score_no": -9.509319305419922,
+      "margin": -0.01953125
+    },
+    {
+      "id": 859,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.540604591369629,
+      "score_no": -9.774979591369629,
+      "margin": 0.234375
+    },
+    {
+      "id": 752,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.11541748046875,
+      "score_no": -8.79119873046875,
+      "margin": 0.67578125
+    },
+    {
+      "id": 2694,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.782745361328125,
+      "score_no": -9.331573486328125,
+      "margin": 0.548828125
+    },
+    {
+      "id": 2818,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -8.873560905456543,
+      "score_no": -8.764185905456543,
+      "margin": -0.109375
+    },
+    {
+      "id": 1725,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.661895751953125,
+      "score_no": -9.888458251953125,
+      "margin": 0.2265625
+    },
+    {
+      "id": 694,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.194808959960938,
+      "score_no": -10.042465209960938,
+      "margin": -0.15234375
+    },
+    {
+      "id": 624,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.628279685974121,
+      "score_no": -10.104842185974121,
+      "margin": 0.4765625
+    },
+    {
+      "id": 2494,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.815581321716309,
+      "score_no": -9.465971946716309,
+      "margin": -1.349609375
+    },
+    {
+      "id": 3251,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.895716667175293,
+      "score_no": -10.298060417175293,
+      "margin": 0.40234375
+    },
+    {
+      "id": 309,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.641453742980957,
+      "score_no": -9.461766242980957,
+      "margin": 0.8203125
+    },
+    {
+      "id": 254,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.254307746887207,
+      "score_no": -10.086338996887207,
+      "margin": 0.83203125
+    },
+    {
+      "id": 1335,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.048853874206543,
+      "score_no": -10.961939811706543,
+      "margin": -0.0869140625
+    },
+    {
+      "id": 1780,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.850249290466309,
+      "score_no": -9.760405540466309,
+      "margin": -0.08984375
+    },
+    {
+      "id": 3134,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -7.690441131591797,
+      "score_no": -5.745128631591797,
+      "margin": -1.9453125
+    },
+    {
+      "id": 2173,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.482895851135254,
+      "score_no": -9.545395851135254,
+      "margin": 1.0625
+    },
+    {
+      "id": 339,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.564970016479492,
+      "score_no": -10.545438766479492,
+      "margin": 0.98046875
+    },
+    {
+      "id": 804,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.403460502624512,
+      "score_no": -9.157366752624512,
+      "margin": 1.75390625
+    },
+    {
+      "id": 3147,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.376836776733398,
+      "score_no": -7.620000839233398,
+      "margin": -3.7568359375
+    },
+    {
+      "id": 625,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.80062484741211,
+      "score_no": -10.18343734741211,
+      "margin": 0.3828125
+    },
+    {
+      "id": 1134,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.610248565673828,
+      "score_no": -11.293842315673828,
+      "margin": 1.68359375
+    },
+    {
+      "id": 1691,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.991484642028809,
+      "score_no": -10.757109642028809,
+      "margin": 0.765625
+    },
+    {
+      "id": 3263,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.13128662109375,
+      "score_no": -9.82464599609375,
+      "margin": -0.306640625
+    },
+    {
+      "id": 3230,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.037156105041504,
+      "score_no": -10.392624855041504,
+      "margin": 0.35546875
+    },
+    {
+      "id": 2234,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.533086776733398,
+      "score_no": -9.386602401733398,
+      "margin": -1.146484375
+    },
+    {
+      "id": 2645,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.386363983154297,
+      "score_no": -9.073863983154297,
+      "margin": 0.6875
+    },
+    {
+      "id": 986,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.715086936950684,
+      "score_no": -9.545165061950684,
+      "margin": 0.830078125
+    },
+    {
+      "id": 2358,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.790180206298828,
+      "score_no": -9.214008331298828,
+      "margin": 0.423828125
+    },
+    {
+      "id": 2021,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.714031219482422,
+      "score_no": -10.212078094482422,
+      "margin": 0.498046875
+    },
+    {
+      "id": 1773,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.93991756439209,
+      "score_no": -9.55905818939209,
+      "margin": 0.619140625
+    },
+    {
+      "id": 787,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.02283000946045,
+      "score_no": -9.70447063446045,
+      "margin": 0.681640625
+    },
+    {
+      "id": 2086,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.608484268188477,
+      "score_no": -9.169031143188477,
+      "margin": -1.439453125
+    },
+    {
+      "id": 3198,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.276618003845215,
+      "score_no": -9.573493003845215,
+      "margin": 0.296875
+    },
+    {
+      "id": 1528,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.03262710571289,
+      "score_no": -8.35684585571289,
+      "margin": -0.67578125
+    },
+    {
+      "id": 2192,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.273725509643555,
+      "score_no": -9.666303634643555,
+      "margin": 0.392578125
+    },
+    {
+      "id": 1545,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.006650924682617,
+      "score_no": -9.850400924682617,
+      "margin": 0.84375
+    },
+    {
+      "id": 2144,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.707783699035645,
+      "score_no": -8.885518074035645,
+      "margin": -0.822265625
+    },
+    {
+      "id": 1420,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.595598220825195,
+      "score_no": -10.044816970825195,
+      "margin": 0.44921875
+    },
+    {
+      "id": 2052,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.365395545959473,
+      "score_no": -10.090004920959473,
+      "margin": -0.275390625
+    },
+    {
+      "id": 3122,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.836318492889404,
+      "score_no": -9.156630516052246,
+      "margin": 1.3203120231628418
+    },
+    {
+      "id": 2868,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.192026138305664,
+      "score_no": -10.068979263305664,
+      "margin": 0.876953125
+    },
+    {
+      "id": 1297,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -10.105989456176758,
+      "score_no": -9.818880081176758,
+      "margin": -0.287109375
+    },
+    {
+      "id": 2053,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.748495101928711,
+      "score_no": -9.918416976928711,
+      "margin": 0.169921875
+    },
+    {
+      "id": 2297,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.492104530334473,
+      "score_no": -9.173745155334473,
+      "margin": 0.681640625
+    },
+    {
+      "id": 2600,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.723333358764648,
+      "score_no": -9.469427108764648,
+      "margin": -0.25390625
+    },
+    {
+      "id": 1519,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.738566398620605,
+      "score_no": -9.527628898620605,
+      "margin": -0.2109375
+    },
+    {
+      "id": 1212,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -7.955560684204102,
+      "score_no": -8.686029434204102,
+      "margin": 0.73046875
+    },
+    {
+      "id": 1913,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.402341842651367,
+      "score_no": -9.605466842651367,
+      "margin": 0.203125
+    },
+    {
+      "id": 1881,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.234994888305664,
+      "score_no": -9.539682388305664,
+      "margin": 1.3046875
+    },
+    {
+      "id": 1777,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.988160133361816,
+      "score_no": -9.796753883361816,
+      "margin": 0.80859375
+    },
+    {
+      "id": 750,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.505386352539062,
+      "score_no": -9.560073852539062,
+      "margin": 0.0546875
+    },
+    {
+      "id": 206,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.248929977416992,
+      "score_no": -9.651273727416992,
+      "margin": 0.40234375
+    },
+    {
+      "id": 1462,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.111847877502441,
+      "score_no": -10.098176002502441,
+      "margin": 0.986328125
+    },
+    {
+      "id": 1389,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.819289207458496,
+      "score_no": -9.573195457458496,
+      "margin": 0.75390625
+    },
+    {
+      "id": 2651,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -8.953780174255371,
+      "score_no": -8.750655174255371,
+      "margin": -0.203125
+    },
+    {
+      "id": 407,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.6015043258667,
+      "score_no": -9.4628324508667,
+      "margin": 0.861328125
+    },
+    {
+      "id": 1888,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.274954795837402,
+      "score_no": -9.503470420837402,
+      "margin": 0.228515625
+    },
+    {
+      "id": 2258,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.526701927185059,
+      "score_no": -9.489592552185059,
+      "margin": -0.037109375
+    },
+    {
+      "id": 1899,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.654052734375,
+      "score_no": -10.152099609375,
+      "margin": -0.501953125
+    },
+    {
+      "id": 861,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.9027099609375,
+      "score_no": -10.0238037109375,
+      "margin": 1.12109375
+    },
+    {
+      "id": 490,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.348576545715332,
+      "score_no": -8.612248420715332,
+      "margin": -0.736328125
+    },
+    {
+      "id": 307,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.531253814697266,
+      "score_no": -9.273441314697266,
+      "margin": 0.7421875
+    },
+    {
+      "id": 199,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.727563858032227,
+      "score_no": -9.942407608032227,
+      "margin": 0.21484375
+    },
+    {
+      "id": 3081,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.994505882263184,
+      "score_no": -10.428099632263184,
+      "margin": 0.43359375
+    },
+    {
+      "id": 1379,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.396661758422852,
+      "score_no": -9.312677383422852,
+      "margin": 0.916015625
+    },
+    {
+      "id": 636,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.243886947631836,
+      "score_no": -10.349355697631836,
+      "margin": 0.10546875
+    },
+    {
+      "id": 1208,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.297093391418457,
+      "score_no": -9.947484016418457,
+      "margin": 0.650390625
+    },
+    {
+      "id": 2672,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.884380340576172,
+      "score_no": -10.261333465576172,
+      "margin": 0.376953125
+    },
+    {
+      "id": 685,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.41942024230957,
+      "score_no": -8.76707649230957,
+      "margin": -2.65234375
+    },
+    {
+      "id": 1916,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.45593547821045,
+      "score_no": -9.60437297821045,
+      "margin": 1.1484375
+    },
+    {
+      "id": 2087,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.821086883544922,
+      "score_no": -9.391399383544922,
+      "margin": -0.4296875
+    },
+    {
+      "id": 136,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.6370210647583,
+      "score_no": -10.0628023147583,
+      "margin": 0.42578125
+    },
+    {
+      "id": 1348,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.843080520629883,
+      "score_no": -10.024721145629883,
+      "margin": 0.181640625
+    },
+    {
+      "id": 2332,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -11.384825706481934,
+      "score_no": -7.932677268981934,
+      "margin": -3.4521484375
+    },
+    {
+      "id": 2373,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.920982360839844,
+      "score_no": -9.452232360839844,
+      "margin": -0.46875
+    },
+    {
+      "id": 2180,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.75981330871582,
+      "score_no": -9.83012580871582,
+      "margin": 1.0703125
+    },
+    {
+      "id": 571,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.149336814880371,
+      "score_no": -10.266524314880371,
+      "margin": 1.1171875
+    },
+    {
+      "id": 393,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -9.032798767089844,
+      "score_no": -9.005455017089844,
+      "margin": -0.02734375
+    },
+    {
+      "id": 2364,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.438002586364746,
+      "score_no": -9.617690086364746,
+      "margin": 1.1796875
+    },
+    {
+      "id": 2889,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.292180061340332,
+      "score_no": -9.299992561340332,
+      "margin": 0.0078125
+    },
+    {
+      "id": 1625,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.592787742614746,
+      "score_no": -8.737318992614746,
+      "margin": 0.14453125
+    },
+    {
+      "id": 3013,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -8.494865417480469,
+      "score_no": -9.949943542480469,
+      "margin": 1.455078125
+    },
+    {
+      "id": 379,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.89469051361084,
+      "score_no": -9.72281551361084,
+      "margin": -0.171875
+    },
+    {
+      "id": 1445,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -9.562954902648926,
+      "score_no": -10.344204902648926,
+      "margin": 0.78125
+    },
+    {
+      "id": 1133,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -10.75686264038086,
+      "score_no": -10.95608139038086,
+      "margin": 0.19921875
+    },
+    {
+      "id": 883,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.545671463012695,
+      "score_no": -9.707780838012695,
+      "margin": 0.162109375
+    },
+    {
+      "id": 177,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.353513717651367,
+      "score_no": -9.144529342651367,
+      "margin": 0.791015625
+    },
+    {
+      "id": 558,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -7.29828405380249,
+      "score_no": -9.114690780639648,
+      "margin": 1.8164067268371582
+    },
+    {
+      "id": 848,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.205623626708984,
+      "score_no": -9.428279876708984,
+      "margin": 0.22265625
+    },
+    {
+      "id": 2119,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.443989753723145,
+      "score_no": -9.836567878723145,
+      "margin": -0.607421875
+    },
+    {
+      "id": 3085,
+      "prediction": "no",
+      "gold": "no",
+      "correct": true,
+      "score_yes": -10.156074523925781,
+      "score_no": -10.099433898925781,
+      "margin": -0.056640625
+    },
+    {
+      "id": 586,
+      "prediction": "yes",
+      "gold": "yes",
+      "correct": true,
+      "score_yes": -8.067522048950195,
+      "score_no": -8.688615798950195,
+      "margin": 0.62109375
+    },
+    {
+      "id": 865,
+      "prediction": "no",
+      "gold": "yes",
+      "correct": false,
+      "score_yes": -9.816987991333008,
+      "score_no": -9.766206741333008,
+      "margin": -0.05078125
+    },
+    {
+      "id": 3262,
+      "prediction": "yes",
+      "gold": "no",
+      "correct": false,
+      "score_yes": -9.490564346313477,
+      "score_no": -10.058923721313477,
+      "margin": 0.568359375
+    }
+  ]
+}

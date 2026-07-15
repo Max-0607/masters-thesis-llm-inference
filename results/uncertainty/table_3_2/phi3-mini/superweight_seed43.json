@@ -1,0 +1,97 @@
+{
+  "model_key": "phi3-mini",
+  "model_path": "microsoft/Phi-3-mini-4k-instruct",
+  "task": "hellaswag",
+  "evaluation_split": "validation",
+  "available_document_count": 10042,
+  "evaluated_document_count": 500,
+  "limit": 500,
+  "eval_seed": 43,
+  "ablation_mode": "superweights",
+  "random_seed": null,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 2,
+      "row": 525,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1693,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1113,
+      "col": 808
+    },
+    {
+      "layer": 4,
+      "row": 525,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1113,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1693,
+      "col": 2723
+    }
+  ],
+  "ablated_positions": [
+    {
+      "layer": 2,
+      "row": 525,
+      "col": 808,
+      "old_value": -2.921875
+    },
+    {
+      "layer": 2,
+      "row": 1693,
+      "col": 808,
+      "old_value": 1.71875
+    },
+    {
+      "layer": 2,
+      "row": 1113,
+      "col": 808,
+      "old_value": -1.734375
+    },
+    {
+      "layer": 4,
+      "row": 525,
+      "col": 2723,
+      "old_value": -2.578125
+    },
+    {
+      "layer": 4,
+      "row": 1113,
+      "col": 2723,
+      "old_value": -1.671875
+    },
+    {
+      "layer": 4,
+      "row": 1693,
+      "col": 2723,
+      "old_value": 1.609375
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.26,
+        "acc_stderr": 0.019635965529725512,
+        "acc_norm": 0.308,
+        "acc_norm_stderr": 0.0206670329874661
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

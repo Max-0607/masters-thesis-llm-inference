@@ -1,0 +1,60 @@
+{
+  "model_key": "phi3-mini",
+  "model_path": "microsoft/Phi-3-mini-4k-instruct",
+  "task": "hellaswag",
+  "evaluation_split": "validation",
+  "available_document_count": 10042,
+  "evaluated_document_count": 500,
+  "limit": 500,
+  "eval_seed": 42,
+  "ablation_mode": "none",
+  "random_seed": null,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 2,
+      "row": 525,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1693,
+      "col": 808
+    },
+    {
+      "layer": 2,
+      "row": 1113,
+      "col": 808
+    },
+    {
+      "layer": 4,
+      "row": 525,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1113,
+      "col": 2723
+    },
+    {
+      "layer": 4,
+      "row": 1693,
+      "col": 2723
+    }
+  ],
+  "ablated_positions": [],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.582,
+        "acc_stderr": 0.022080014812228137,
+        "acc_norm": 0.752,
+        "acc_norm_stderr": 0.019332342821239103
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

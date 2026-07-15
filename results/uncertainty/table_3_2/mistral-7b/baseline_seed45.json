@@ -1,0 +1,35 @@
+{
+  "model_key": "mistral-7b",
+  "model_path": "mistralai/Mistral-7B-v0.1",
+  "task": "hellaswag",
+  "evaluation_split": "validation",
+  "available_document_count": 10042,
+  "evaluated_document_count": 500,
+  "limit": 500,
+  "eval_seed": 45,
+  "ablation_mode": "none",
+  "random_seed": null,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 1,
+      "row": 2070,
+      "col": 7310
+    }
+  ],
+  "ablated_positions": [],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.584,
+        "acc_stderr": 0.02206494331392886,
+        "acc_norm": 0.816,
+        "acc_norm_stderr": 0.01734617478175285
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "model_key": "llama-7b",
+  "model_path": "huggyllama/llama-7b",
+  "task": "hellaswag",
+  "evaluation_split": "validation",
+  "available_document_count": 10042,
+  "evaluated_document_count": 500,
+  "limit": 500,
+  "eval_seed": 43,
+  "ablation_mode": "random",
+  "random_seed": 43,
+  "layer_path": "model.layers",
+  "down_proj_path": "mlp.down_proj",
+  "superweights": [
+    {
+      "layer": 2,
+      "row": 3968,
+      "col": 7003
+    }
+  ],
+  "ablated_positions": [
+    {
+      "layer": 2,
+      "row": 315,
+      "col": 4687,
+      "old_value": 0.01445770263671875
+    }
+  ],
+  "results": {
+    "results": {
+      "hellaswag": {
+        "acc": 0.574,
+        "acc_stderr": 0.022136577335085634,
+        "acc_norm": 0.72,
+        "acc_norm_stderr": 0.020099950647503226
+      }
+    },
+    "versions": {
+      "hellaswag": 0
+    }
+  }
+}
