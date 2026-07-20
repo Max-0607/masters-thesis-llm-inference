@@ -1,0 +1,376 @@
+{
+  "benchmark": "flores",
+  "model_key": "olmo-1b",
+  "model_id": "allenai/OLMo-1B-0724-hf",
+  "mode": "fp16",
+  "bits": 4,
+  "dtype": "float16",
+  "src_lang": "en",
+  "tgt_lang": "fr",
+  "split": "devtest",
+  "limit": 50,
+  "eval_seed": 45,
+  "sampling_method": "bootstrap_with_replacement",
+  "reference_json": null,
+  "pool_size": 50,
+  "bootstrap_sample_size": 50,
+  "num_unique_selected_examples": 34,
+  "selected_example_ids": [
+    13,
+    24,
+    4,
+    16,
+    3,
+    0,
+    14,
+    5,
+    15,
+    37,
+    1,
+    31,
+    6,
+    39,
+    36,
+    10,
+    42,
+    35,
+    3,
+    20,
+    35,
+    46,
+    8,
+    12,
+    38,
+    48,
+    4,
+    4,
+    37,
+    15,
+    19,
+    43,
+    37,
+    33,
+    43,
+    36,
+    40,
+    32,
+    29,
+    2,
+    45,
+    45,
+    17,
+    31,
+    0,
+    24,
+    31,
+    14,
+    20,
+    41
+  ],
+  "num_examples": 50,
+  "chrf": null,
+  "loss": 0.7653378981351853,
+  "ppl": 2.1497206385416363,
+  "predictions": [
+    {
+      "id": 13,
+      "src": "USA Gymnastics supports the United States Olympic Committee's letter and accepts the absolute need of the Olympic family to promote a safe environment for all of our athletes.",
+      "gold": "La Fédération américaine de gymnastique soutient la lettre du Comité olympique des États-Unis et accepte la nécessité absolue de la famille olympique de promouvoir un environnement sûr pour tous nos athlètes.",
+      "loss": 0.24558669328689575
+    },
+    {
+      "id": 24,
+      "src": "Late on Sunday, the United States President Donald Trump, in a statement delivered via the press secretary, announced US troops would be leaving Syria.",
+      "gold": "Tard dimanche, le président des États-Unis Donald Trump, dans une déclaration faite par l'intermédiaire du secrétaire de presse, a annoncé que les troupes américaines allaient se retirer de la Syrie.",
+      "loss": 0.7065840363502502
+    },
+    {
+      "id": 4,
+      "src": "Danius said, \"Right now we are doing nothing. I have called and sent emails to his closest collaborator and received very friendly replies. For now, that is certainly enough.\"",
+      "gold": "Danius a déclaré : « En ce moment, nous ne faisons rien. J'ai appelé et envoyé des courriels à son plus proche collaborateur et j'ai reçu des réponses très amicales. Pour l'instant, c'est certainement suffisant. »",
+      "loss": 0.4143482744693756
+    },
+    {
+      "id": 16,
+      "src": "USA Gymnastics and the USOC have the same goal — making the sport of gymnastics, and others, as safe as possible for athletes to follow their dreams in a safe, positive and empowered environment.",
+      "gold": "USA Gymnastics et l'USOC ont le même objectif : rendre la gymnastique, ainsi que d'autres sports, aussi sûrs que possible pour que les athlètes puissent poursuivre leurs rêves dans un environnement sûr, positif et responsabilisant.",
+      "loss": 0.6008768677711487
+    },
+    {
+      "id": 3,
+      "src": "On Monday, Sara Danius, permanent secretary of the Nobel Committee for Literature at the Swedish Academy, publicly announced during a radio program on Sveriges Radio in Sweden the committee, unable to reach Bob Dylan directly about winning the 2016 Nobel Prize in Literature, had abandoned its efforts to reach him.",
+      "gold": "Lundi, lors d'une émission de radio sur Sveriges Radio, en Suède, Sara Danius, secrétaire permanente du Comité Nobel de Littérature de l'Académie Suédoise, a annoncé publiquement que le comité, incapable de joindre directement Bob Dylan au sujet du prix Nobel de littérature 2016, avait renoncé à le contacter.",
+      "loss": 0.8854485154151917
+    },
+    {
+      "id": 0,
+      "src": "\"We now have 4-month-old mice that are non-diabetic that used to be diabetic,\" he added.",
+      "gold": "« Nous avons à présent des souris de 4 mois qui ne sont pas diabétiques alors qu'elles l'étaient auparavant », a-t-il ajouté.",
+      "loss": 0.7134312391281128
+    },
+    {
+      "id": 14,
+      "src": "We agree with the USOC's statement that the interests of our athletes and clubs, and their sport, may be better served by moving forward with meaningful change within our organization, rather than decertification.",
+      "gold": "Nous sommes d'accord avec la déclaration de l'USOC (Comité olympique des États-Unis) selon laquelle les intérêts de nos athlètes et de nos clubs, ainsi que de leur sport, pourraient être mieux servis. Cela peut être fait en allant de l'avant et en procédant plutôt à des changements significatifs au sein de notre organisation, qu'à la révocation d'accréditation.",
+      "loss": 0.9079254865646362
+    },
+    {
+      "id": 5,
+      "src": "Previously, Ring's CEO, Jamie Siminoff, remarked the company started when his doorbell wasn't audible from his shop in his garage.",
+      "gold": "Auparavant, le PDG de Ring, Jamie Siminoff, a fait remarquer qu'il a lancé l'entreprise lorsque la sonnette de sa porte d'entrée n'était pas audible depuis son magasin dans son garage.",
+      "loss": 0.8915387392044067
+    },
+    {
+      "id": 15,
+      "src": "USA Gymnastics supports an independent investigation that may shine light on how abuse of the proportion described so courageously by the survivors of Larry Nassar could have gone undetected for so long and embraces any necessary and appropriate changes.",
+      "gold": "USA Gymnastics soutient une enquête indépendante qui pourrait faire la lumière sur la façon dont l’abus de la proportion décrite si courageusement par les survivants de Larry Nassar a pu passer inaperçu pendant si longtemps et adopte tout changement nécessaire et approprié.",
+      "loss": 0.5397372841835022
+    },
+    {
+      "id": 37,
+      "src": "The luminosity and rotation are used together to determine a star's Rossby number, which is related to plasma flow.",
+      "gold": "La luminosité et la rotation sont utilisées conjointement afin de déterminer le nombre de Rossby d'une étoile, qui est lié au flux de plasma.",
+      "loss": 0.438552588224411
+    },
+    {
+      "id": 1,
+      "src": "Dr. Ehud Ur, professor of medicine at Dalhousie University in Halifax, Nova Scotia and chair of the clinical and scientific division of the Canadian Diabetes Association cautioned that the research is still in its early days.",
+      "gold": "Le Dr Ehud Ur, professeur de médecine à l'Université Dalhousie de Halifax (Nouvelle-Écosse) et président de la division clinique et scientifique de l'Association canadienne du diabète, a averti que la recherche en était encore à ses débuts.",
+      "loss": 0.41039469838142395
+    },
+    {
+      "id": 31,
+      "src": "The feathers' structure suggests that they were not used in flight but rather for temperature regulation or display. The researchers suggested that, even though this is the tail of a young dinosaur, the sample shows adult plumage and not a chick's down.",
+      "gold": "La structure des plumes suggère qu’elles n’étaient pas utilisées en vol mais plutôt pour la régulation ou l’affichage de la température. Les chercheurs ont suggéré que, même s’il s’agit de la queue d’un jeune dinosaure, l’échantillon montre un plumage d’adulte et non le duvet d’un poussin.",
+      "loss": 0.6558753848075867
+    },
+    {
+      "id": 6,
+      "src": "He built a WiFi door bell, he said.",
+      "gold": "Il dit avoir conçu une sonnette de porte Wi-Fi.",
+      "loss": 2.32305908203125
+    },
+    {
+      "id": 39,
+      "src": "During his trip, Iwasaki ran into trouble on many occasions.",
+      "gold": "Au cours de son voyage, Iwasaki a eu des problèmes à de nombreuses occasions.",
+      "loss": 0.9310798048973083
+    },
+    {
+      "id": 36,
+      "src": "They found the Sun operated on the same basic principles as other stars: The activity of all stars in the system was found to be driven by their luminosity, their rotation, and nothing else.",
+      "gold": "Ils ont constaté que le Soleil fonctionnait selon les mêmes principes de base que les autres étoiles. L'activité de toutes les étoiles du système est déterminée par leur luminosité, leur rotation et rien d'autre.",
+      "loss": 0.43407997488975525
+    },
+    {
+      "id": 10,
+      "src": "While one experimental vaccine appears able to reduce Ebola mortality, up until now, no drugs have been clearly demonstrated suitable for treating existing infection.",
+      "gold": "Même si un vaccin expérimental semble jusqu'ici capable de réduire le taux de mortalité d'Ebola, aucun remède n'a encore été suffisamment efficace pour traiter l'infection existante.",
+      "loss": 1.0175955295562744
+    },
+    {
+      "id": 42,
+      "src": "This will allow it to be backwards compatible with 802.11a, 802.11b and 802.11g, provided that the base station has dual radios.",
+      "gold": "Ceci autorisera la rétro-compatibilité avec les itérations 802.11a, b et g, sous réserve que la station possède deux radios.",
+      "loss": 1.5992013216018677
+    },
+    {
+      "id": 35,
+      "src": "Police said they suspect an alleged Daesh (ISIL) militant of responsibility for the attack.",
+      "gold": "La police a déclaré soupçonner un militant présumé de Daesh (ÉI) comme le suspect à l'origine de cette attaque.",
+      "loss": 1.7685593366622925
+    },
+    {
+      "id": 3,
+      "src": "On Monday, Sara Danius, permanent secretary of the Nobel Committee for Literature at the Swedish Academy, publicly announced during a radio program on Sveriges Radio in Sweden the committee, unable to reach Bob Dylan directly about winning the 2016 Nobel Prize in Literature, had abandoned its efforts to reach him.",
+      "gold": "Lundi, lors d'une émission de radio sur Sveriges Radio, en Suède, Sara Danius, secrétaire permanente du Comité Nobel de Littérature de l'Académie Suédoise, a annoncé publiquement que le comité, incapable de joindre directement Bob Dylan au sujet du prix Nobel de littérature 2016, avait renoncé à le contacter.",
+      "loss": 0.8854485154151917
+    },
+    {
+      "id": 20,
+      "src": "The movie, featuring Ryan Gosling and Emma Stone, received nominations in all major categories.",
+      "gold": "Le film, avec Ryan Gosling et Emma Stone, a reçu des nominations dans toutes les grandes catégories.",
+      "loss": 0.47113367915153503
+    },
+    {
+      "id": 35,
+      "src": "Police said they suspect an alleged Daesh (ISIL) militant of responsibility for the attack.",
+      "gold": "La police a déclaré soupçonner un militant présumé de Daesh (ÉI) comme le suspect à l'origine de cette attaque.",
+      "loss": 1.7685593366622925
+    },
+    {
+      "id": 46,
+      "src": "\"We will endeavour to cut carbon dioxide emissions per unit of GDP by a notable margin by 2020 from the 2005 level,\" Hu said.",
+      "gold": "« Nous nous efforcerons de réduire les émissions de dioxyde de carbone par unité de PIB de manière significative d'ici 2020 par rapport au niveau de 2005 », a déclaré M. Hu.",
+      "loss": 0.5290854573249817
+    },
+    {
+      "id": 8,
+      "src": "In late 2017, Siminoff appeared on shopping television channel QVC.",
+      "gold": "Fin 2017, Siminoff est apparu sur la chaîne de télé-achat QVC.",
+      "loss": 1.0192515850067139
+    },
+    {
+      "id": 12,
+      "src": "In the PALM trial, ZMapp served as a control, meaning scientists used it as a baseline and compared the three other treatments to it.",
+      "gold": "Dans l'essai PALM, le ZMapp a servi de témoin, ce qui signifie que les scientifiques l'ont utilisé comme base de référence et lui ont comparé les trois autres traitements.",
+      "loss": 0.4832594394683838
+    },
+    {
+      "id": 38,
+      "src": "The smaller the Rossby number, the less active the star with respect to magnetic reversals.",
+      "gold": "En ce qui concerne les inversions magnétiques, plus le nombre de Rossby est petit, moins l’étoile est active .",
+      "loss": 1.572464942932129
+    },
+    {
+      "id": 48,
+      "src": "Hu encouraged developing countries \"to avoid the old path of polluting first and cleaning up later.\"",
+      "gold": "Hu a encouragé les pays en voie de développement « à éviter l'ancienne méthode qui consistait à polluer d'abord et à nettoyer ensuite ».",
+      "loss": 0.7111914753913879
+    },
+    {
+      "id": 4,
+      "src": "Danius said, \"Right now we are doing nothing. I have called and sent emails to his closest collaborator and received very friendly replies. For now, that is certainly enough.\"",
+      "gold": "Danius a déclaré : « En ce moment, nous ne faisons rien. J'ai appelé et envoyé des courriels à son plus proche collaborateur et j'ai reçu des réponses très amicales. Pour l'instant, c'est certainement suffisant. »",
+      "loss": 0.4143482744693756
+    },
+    {
+      "id": 4,
+      "src": "Danius said, \"Right now we are doing nothing. I have called and sent emails to his closest collaborator and received very friendly replies. For now, that is certainly enough.\"",
+      "gold": "Danius a déclaré : « En ce moment, nous ne faisons rien. J'ai appelé et envoyé des courriels à son plus proche collaborateur et j'ai reçu des réponses très amicales. Pour l'instant, c'est certainement suffisant. »",
+      "loss": 0.4143482744693756
+    },
+    {
+      "id": 37,
+      "src": "The luminosity and rotation are used together to determine a star's Rossby number, which is related to plasma flow.",
+      "gold": "La luminosité et la rotation sont utilisées conjointement afin de déterminer le nombre de Rossby d'une étoile, qui est lié au flux de plasma.",
+      "loss": 0.438552588224411
+    },
+    {
+      "id": 15,
+      "src": "USA Gymnastics supports an independent investigation that may shine light on how abuse of the proportion described so courageously by the survivors of Larry Nassar could have gone undetected for so long and embraces any necessary and appropriate changes.",
+      "gold": "USA Gymnastics soutient une enquête indépendante qui pourrait faire la lumière sur la façon dont l’abus de la proportion décrite si courageusement par les survivants de Larry Nassar a pu passer inaperçu pendant si longtemps et adopte tout changement nécessaire et approprié.",
+      "loss": 0.5397372841835022
+    },
+    {
+      "id": 19,
+      "src": "As NSA, he assisted Carter in diplomatically handling world affairs, such as the Camp David Accords, 1978; normalizing US–China relations thought the late 1970s; the Iranian Revolution, which led to the Iran hostage crisis, 1979; and the Soviet invasion in Afghanistan, 1979.",
+      "gold": "Pendant son temps au sein de la NSA, il a aidé Carter à résoudre diplomatiquement des questions internationales telles que les accords de Camp David, en 1978, la normalisation des relations entre les États-Unis et la Chine à la fin des années 1970, la révolution iranienne et ses conséquences comme la prise d'otages en Iran, en 1979, et l'invasion des forces soviétiques en Afghanistan, en 1979.",
+      "loss": 0.9725520014762878
+    },
+    {
+      "id": 43,
+      "src": "The speeds of 802.11n are substantially faster than that of its predecessors with a maximum theoretical throughput of 600Mbit/s.",
+      "gold": "Les vitesses de la norme Wi-Fi 802.11n sont sensiblement plus rapides que celles de ses prédécesseurs, avec un débit théorique maximum de 600 Mbit/s.",
+      "loss": 0.7599575519561768
+    },
+    {
+      "id": 37,
+      "src": "The luminosity and rotation are used together to determine a star's Rossby number, which is related to plasma flow.",
+      "gold": "La luminosité et la rotation sont utilisées conjointement afin de déterminer le nombre de Rossby d'une étoile, qui est lié au flux de plasma.",
+      "loss": 0.438552588224411
+    },
+    {
+      "id": 33,
+      "src": "A car bomb detonated at police headquarters in Gaziantep, Turkey yesterday morning killed two police officers and injured more than twenty other people.",
+      "gold": "Une voiture piégée a explosé au siège de la police à Gaziantep, en Turquie, hier matin, tuant deux officiers de police et blessant plus de vingt autres personnes.",
+      "loss": 0.6254678964614868
+    },
+    {
+      "id": 43,
+      "src": "The speeds of 802.11n are substantially faster than that of its predecessors with a maximum theoretical throughput of 600Mbit/s.",
+      "gold": "Les vitesses de la norme Wi-Fi 802.11n sont sensiblement plus rapides que celles de ses prédécesseurs, avec un débit théorique maximum de 600 Mbit/s.",
+      "loss": 0.7599575519561768
+    },
+    {
+      "id": 36,
+      "src": "They found the Sun operated on the same basic principles as other stars: The activity of all stars in the system was found to be driven by their luminosity, their rotation, and nothing else.",
+      "gold": "Ils ont constaté que le Soleil fonctionnait selon les mêmes principes de base que les autres étoiles. L'activité de toutes les étoiles du système est déterminée par leur luminosité, leur rotation et rien d'autre.",
+      "loss": 0.43407997488975525
+    },
+    {
+      "id": 40,
+      "src": "He was robbed by pirates, attacked in Tibet by a rabid dog, escaped marriage in Nepal and was arrested in India.",
+      "gold": "Il a été volé par des pirates, attaqué au Tibet par un chien enragé, a échappé à un mariage au Népal et a été arrêté en Inde.",
+      "loss": 0.52522873878479
+    },
+    {
+      "id": 32,
+      "src": "The researchers suggested that, even though this is the tail of a young dinosaur, the sample shows adult plumage and not a chick's down.",
+      "gold": "Les scientifiques précisent qu'il s'agit certes de la queue d'un dinosaure juvénile, mais l'échantillon révèle un plumage appartenant à un individu adulte, et non à un jeune.",
+      "loss": 1.203287959098816
+    },
+    {
+      "id": 29,
+      "src": "The find also grants insight into the evolution of feathers in birds.",
+      "gold": "Cette découverte permet également de mieux comprendre l'évolution des plumes chez les oiseaux.",
+      "loss": 0.5720323920249939
+    },
+    {
+      "id": 2,
+      "src": "Like some other experts, he is skeptical about whether diabetes can be cured, noting that these findings have no relevance to people who already have Type 1 diabetes.",
+      "gold": "À l'instar d'autres experts, il se montre sceptique quant à la possibilité de guérir le diabète, faisant remarquer que ces résultats ne sont pas applicables aux personnes qui souffrent déjà de diabète de type 1.",
+      "loss": 0.6346330642700195
+    },
+    {
+      "id": 45,
+      "src": "When asked for comment, Miller said, \"Mike talks a lot during the hearing...I was getting ready so I wasn't really hearing what he was saying.\"",
+      "gold": "Lorsqu'on lui a demandé de commenter, Miller a déclaré : « Mike parle beaucoup pendant l'audience… Je me préparais, donc je n'ai pas vraiment entendu ce qu'il disait ».",
+      "loss": 0.7486247420310974
+    },
+    {
+      "id": 45,
+      "src": "When asked for comment, Miller said, \"Mike talks a lot during the hearing...I was getting ready so I wasn't really hearing what he was saying.\"",
+      "gold": "Lorsqu'on lui a demandé de commenter, Miller a déclaré : « Mike parle beaucoup pendant l'audience… Je me préparais, donc je n'ai pas vraiment entendu ce qu'il disait ».",
+      "loss": 0.7486247420310974
+    },
+    {
+      "id": 17,
+      "src": "Throughout 1960s, Brzezinski worked for John F. Kennedy as his advisor and then the Lyndon B. Johnson administration.",
+      "gold": "Tout au long des années 1960, Brzezinski a travaillé pour John F. Kennedy en tant que conseiller, puis pour l'administration de Lyndon B. Johnson.",
+      "loss": 0.6710898876190186
+    },
+    {
+      "id": 31,
+      "src": "The feathers' structure suggests that they were not used in flight but rather for temperature regulation or display. The researchers suggested that, even though this is the tail of a young dinosaur, the sample shows adult plumage and not a chick's down.",
+      "gold": "La structure des plumes suggère qu’elles n’étaient pas utilisées en vol mais plutôt pour la régulation ou l’affichage de la température. Les chercheurs ont suggéré que, même s’il s’agit de la queue d’un jeune dinosaure, l’échantillon montre un plumage d’adulte et non le duvet d’un poussin.",
+      "loss": 0.6558753848075867
+    },
+    {
+      "id": 0,
+      "src": "\"We now have 4-month-old mice that are non-diabetic that used to be diabetic,\" he added.",
+      "gold": "« Nous avons à présent des souris de 4 mois qui ne sont pas diabétiques alors qu'elles l'étaient auparavant », a-t-il ajouté.",
+      "loss": 0.7134312391281128
+    },
+    {
+      "id": 24,
+      "src": "Late on Sunday, the United States President Donald Trump, in a statement delivered via the press secretary, announced US troops would be leaving Syria.",
+      "gold": "Tard dimanche, le président des États-Unis Donald Trump, dans une déclaration faite par l'intermédiaire du secrétaire de presse, a annoncé que les troupes américaines allaient se retirer de la Syrie.",
+      "loss": 0.7065840363502502
+    },
+    {
+      "id": 31,
+      "src": "The feathers' structure suggests that they were not used in flight but rather for temperature regulation or display. The researchers suggested that, even though this is the tail of a young dinosaur, the sample shows adult plumage and not a chick's down.",
+      "gold": "La structure des plumes suggère qu’elles n’étaient pas utilisées en vol mais plutôt pour la régulation ou l’affichage de la température. Les chercheurs ont suggéré que, même s’il s’agit de la queue d’un jeune dinosaure, l’échantillon montre un plumage d’adulte et non le duvet d’un poussin.",
+      "loss": 0.6558753848075867
+    },
+    {
+      "id": 14,
+      "src": "We agree with the USOC's statement that the interests of our athletes and clubs, and their sport, may be better served by moving forward with meaningful change within our organization, rather than decertification.",
+      "gold": "Nous sommes d'accord avec la déclaration de l'USOC (Comité olympique des États-Unis) selon laquelle les intérêts de nos athlètes et de nos clubs, ainsi que de leur sport, pourraient être mieux servis. Cela peut être fait en allant de l'avant et en procédant plutôt à des changements significatifs au sein de notre organisation, qu'à la révocation d'accréditation.",
+      "loss": 0.9079254865646362
+    },
+    {
+      "id": 20,
+      "src": "The movie, featuring Ryan Gosling and Emma Stone, received nominations in all major categories.",
+      "gold": "Le film, avec Ryan Gosling et Emma Stone, a reçu des nominations dans toutes les grandes catégories.",
+      "loss": 0.47113367915153503
+    },
+    {
+      "id": 41,
+      "src": "The 802.11n standard operates on both the 2.4Ghz and 5.0Ghz frequencies.",
+      "gold": "La norme 802.11n fonctionne à la fois sur les fréquences 2,4 GHz et 5,0 GHz.",
+      "loss": 0.33072489500045776
+    }
+  ]
+}

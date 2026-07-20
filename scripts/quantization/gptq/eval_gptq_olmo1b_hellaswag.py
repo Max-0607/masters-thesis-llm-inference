@@ -27,7 +27,7 @@ from quantization.gptq.gptq_repo.eval_gptq_olmo1b_ppl import (
 
 
 def set_all_seeds(seed: int) -> None:
-    """Set Python and PyTorch seeds."""
+    """Set Python and PyTorch random seeds."""
     random.seed(seed)
     torch.manual_seed(seed)
 
@@ -46,7 +46,7 @@ def set_all_seeds(seed: int) -> None:
 
 
 def make_json_safe(obj: Any) -> Any:
-    """Replace non-finite floats so the result can be stored as JSON."""
+    """Replace non-finite float values before JSON serialization."""
     if isinstance(obj, float):
         return obj if math.isfinite(obj) else None
 
@@ -85,15 +85,37 @@ def calculate_accuracy_stderr(
 # =============================================================================
 
 
-def preprocess_hellaswag_text(text: str) -> str:
+def load_hellaswag_dataset(split: str):
     """
-    Apply the same basic HellaSwag preprocessing as in the original script.
+    Load HellaSwag with a fallback dataset identifier.
     """
-    return (
-        text
-        .replace(" [title]", ". ")
-        .replace("[title]", "")
-        .strip()
+    loading_attempts = [
+        ("hellaswag", None),
+        ("Rowan/hellaswag", None),
+    ]
+
+    last_error: Optional[Exception] = None
+
+    for dataset_name, dataset_config in loading_attempts:
+        try:
+            if dataset_config is None:
+                return load_dataset(
+                    dataset_name,
+                    split=split,
+                )
+
+            return load_dataset(
+                dataset_name,
+                dataset_config,
+                split=split,
+            )
+
+        except Exception as error:
+            last_error = error
+
+    raise RuntimeError(
+        "Could not load the HellaSwag dataset. "
+        f"Last error: {last_error}"
     )
 
 
@@ -105,12 +127,11 @@ def load_hellaswag_examples(
     """
     Load a reproducibly sampled HellaSwag subset.
 
-    Original dataset indices are added before shuffling. Therefore, identical
-    split, limit, and eval_seed values select the same examples across FP16,
-    Naive W4, Super W4, GPTQ, and AWQ.
+    Original dataset indices are added before shuffling. Therefore, the same
+    split, limit, and eval_seed select the same examples across FP16, Naive W4,
+    Super W4, GPTQ, and AWQ.
     """
-    dataset = load_dataset(
-        "hellaswag",
+    dataset = load_hellaswag_dataset(
         split=split,
     )
 
@@ -119,6 +140,11 @@ def load_hellaswag_examples(
     if total_available == 0:
         raise RuntimeError(
             f"HellaSwag split {split!r} is empty."
+        )
+
+    if limit is not None and limit <= 0:
+        raise ValueError(
+            "--limit must be greater than zero."
         )
 
     dataset = dataset.add_column(
@@ -130,55 +156,56 @@ def load_hellaswag_examples(
         seed=eval_seed,
     )
 
-    if limit is not None:
-        if limit <= 0:
-            raise ValueError(
-                "--limit must be greater than zero."
-            )
-
-        effective_limit = min(
-            limit,
-            len(dataset),
-        )
-
-        dataset = dataset.select(
-            range(effective_limit)
-        )
-
     examples: List[Dict] = []
 
     for row in dataset:
-        ctx_a = preprocess_hellaswag_text(
-            row["ctx_a"]
+        try:
+            label = int(row["label"])
+        except (KeyError, TypeError, ValueError):
+            continue
+
+        endings = row.get(
+            "endings",
+            None,
         )
 
-        ctx_b = preprocess_hellaswag_text(
-            row["ctx_b"]
-        )
+        if endings is None:
+            continue
 
-        prompt = (
-            f"{ctx_a} {ctx_b}".strip()
-            if ctx_b
-            else ctx_a
-        )
+        endings = list(endings)
 
-        endings = [
-            " " + ending.strip()
-            for ending in row["endings"]
-        ]
+        if len(endings) != 4:
+            continue
+
+        if label not in {0, 1, 2, 3}:
+            continue
 
         examples.append(
             {
                 "id": int(row["_original_index"]),
-                "prompt": prompt,
-                "endings": endings,
-                "label": int(row["label"]),
-                "activity_label": row.get(
-                    "activity_label",
-                    None,
+                "dataset_id": row.get(
+                    "ind",
+                    str(row["_original_index"]),
                 ),
+                "ctx": str(
+                    row.get("ctx", "")
+                ),
+                "ctx_a": str(
+                    row.get("ctx_a", "")
+                ),
+                "ctx_b": str(
+                    row.get("ctx_b", "")
+                ),
+                "activity_label": str(
+                    row.get("activity_label", "")
+                ),
+                "endings": endings,
+                "label": label,
             }
         )
+
+        if limit is not None and len(examples) >= limit:
+            break
 
     if not examples:
         raise RuntimeError(
@@ -186,6 +213,34 @@ def load_hellaswag_examples(
         )
 
     return examples, total_available
+
+
+def build_prompt(example: Dict) -> str:
+    """
+    Construct the HellaSwag context.
+
+    The complete `ctx` field is preferred. The combination of `ctx_a` and
+    `ctx_b` is only used as a fallback.
+    """
+    ctx = str(
+        example.get("ctx", "")
+    ).strip()
+
+    if ctx:
+        return ctx
+
+    ctx_a = str(
+        example.get("ctx_a", "")
+    ).strip()
+
+    ctx_b = str(
+        example.get("ctx_b", "")
+    ).strip()
+
+    if ctx_b:
+        return f"{ctx_a} {ctx_b}".strip()
+
+    return ctx_a
 
 
 # =============================================================================
@@ -202,17 +257,21 @@ def score_choice(
     device,
     max_length: int = 512,
     normalize_by_length: bool = True,
-) -> Dict[str, float | int]:
+) -> Dict[str, float | int | bool]:
     """
     Calculate the conditional log-likelihood of one HellaSwag ending.
 
-    If the complete sequence is too long, tokens are removed from the left.
-    This preserves the candidate ending and the most recent prompt context.
+    If the complete sequence exceeds max_length, tokens are removed from the
+    left side. This preserves the complete candidate ending and the most recent
+    part of the context.
     """
-    full_text = prompt + choice
+    prompt = prompt.strip()
+    choice = choice.strip()
+
+    full_text = f"{prompt} {choice}".strip()
 
     effective_max_length = min(
-        max_length,
+        int(max_length),
         int(model.seqlen),
     )
 
@@ -236,7 +295,12 @@ def score_choice(
         full_ids.shape[1]
     )
 
-    if original_full_length <= original_prompt_length:
+    original_choice_length = (
+        original_full_length
+        - original_prompt_length
+    )
+
+    if original_choice_length <= 0:
         return {
             "score": float("-inf"),
             "sum_log_likelihood": float("-inf"),
@@ -244,6 +308,7 @@ def score_choice(
             "prompt_tokens": original_prompt_length,
             "full_tokens": original_full_length,
             "truncated_tokens": 0,
+            "was_truncated": False,
         }
 
     truncated_tokens = max(
@@ -262,7 +327,9 @@ def score_choice(
         0,
     )
 
-    input_ids = full_ids.to(device)
+    input_ids = full_ids.to(
+        device
+    )
 
     if input_ids.shape[1] <= 1:
         return {
@@ -272,6 +339,7 @@ def score_choice(
             "prompt_tokens": original_prompt_length,
             "full_tokens": original_full_length,
             "truncated_tokens": truncated_tokens,
+            "was_truncated": truncated_tokens > 0,
         }
 
     attention_mask = torch.ones_like(
@@ -303,11 +371,11 @@ def score_choice(
     )
 
     token_log_probabilities = log_probabilities.gather(
-        -1,
-        target_ids.unsqueeze(-1),
+        dim=-1,
+        index=target_ids.unsqueeze(-1),
     ).squeeze(-1)
 
-    # Logit position prompt_length - 1 predicts the first ending token.
+    # The logit at prompt_length - 1 predicts the first ending token.
     choice_start = max(
         retained_prompt_length - 1,
         0,
@@ -318,7 +386,11 @@ def score_choice(
         choice_start:,
     ]
 
-    if choice_log_probabilities.numel() == 0:
+    num_choice_tokens = int(
+        choice_log_probabilities.numel()
+    )
+
+    if num_choice_tokens == 0:
         return {
             "score": float("-inf"),
             "sum_log_likelihood": float("-inf"),
@@ -326,14 +398,11 @@ def score_choice(
             "prompt_tokens": original_prompt_length,
             "full_tokens": original_full_length,
             "truncated_tokens": truncated_tokens,
+            "was_truncated": truncated_tokens > 0,
         }
 
     sum_log_likelihood = float(
         choice_log_probabilities.sum().item()
-    )
-
-    num_choice_tokens = int(
-        choice_log_probabilities.numel()
     )
 
     score = sum_log_likelihood
@@ -348,6 +417,7 @@ def score_choice(
         "prompt_tokens": original_prompt_length,
         "full_tokens": original_full_length,
         "truncated_tokens": truncated_tokens,
+        "was_truncated": truncated_tokens > 0,
     }
 
 
@@ -363,18 +433,22 @@ def evaluate_hellaswag(
     model.eval()
 
     num_correct = 0
-    predictions = []
+    predictions: List[Dict] = []
     total_examples = len(examples)
 
     for example_number, example in enumerate(
         examples,
         start=1,
     ):
+        prompt = build_prompt(
+            example
+        )
+
         choice_results = [
             score_choice(
                 model=model,
                 tokenizer=tokenizer,
-                prompt=example["prompt"],
+                prompt=prompt,
                 choice=choice,
                 device=device,
                 max_length=max_length,
@@ -395,33 +469,53 @@ def evaluate_hellaswag(
             ).argmax().item()
         )
 
-        gold = int(example["label"])
-        correct = int(prediction == gold)
+        gold = int(
+            example["label"]
+        )
+
+        correct = int(
+            prediction == gold
+        )
 
         num_correct += correct
 
         predictions.append(
             {
                 "id": int(example["id"]),
+                "dataset_id": example.get(
+                    "dataset_id"
+                ),
+                "activity_label": example.get(
+                    "activity_label"
+                ),
                 "prediction": prediction,
                 "gold": gold,
                 "correct": bool(correct),
                 "scores": scores,
                 "sum_log_likelihoods": [
-                    float(result["sum_log_likelihood"])
+                    float(
+                        result["sum_log_likelihood"]
+                    )
                     for result in choice_results
                 ],
                 "choice_token_counts": [
-                    int(result["num_choice_tokens"])
+                    int(
+                        result["num_choice_tokens"]
+                    )
                     for result in choice_results
                 ],
                 "truncated_tokens": [
-                    int(result["truncated_tokens"])
+                    int(
+                        result["truncated_tokens"]
+                    )
                     for result in choice_results
                 ],
-                "activity_label": example.get(
-                    "activity_label"
-                ),
+                "was_truncated": [
+                    bool(
+                        result["was_truncated"]
+                    )
+                    for result in choice_results
+                ],
             }
         )
 
@@ -446,7 +540,9 @@ def evaluate_hellaswag(
             "No HellaSwag examples were evaluated."
         )
 
-    accuracy = num_correct / total_examples
+    accuracy = (
+        num_correct / total_examples
+    )
 
     accuracy_stderr = calculate_accuracy_stderr(
         accuracy=accuracy,
@@ -496,9 +592,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
         type=int,
         default=42,
         help=(
-            "Seed used to shuffle HellaSwag before applying --limit. "
-            "Use the same value as for FP16, Naive W4, Super W4, "
-            "and AWQ."
+            "Seed used only to shuffle the HellaSwag evaluation set. "
+            "Use the same seed as for FP16, Naive W4, Super W4, and AWQ."
         ),
     )
 
@@ -507,7 +602,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         type=int,
         default=0,
         help=(
-            "Seed used to select the GPTQ WikiText-2 calibration data. "
+            "Seed used to select the GPTQ WikiText-2 calibration samples. "
             "Keep this fixed across all evaluation seeds."
         ),
     )
@@ -553,9 +648,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
         action=argparse.BooleanOptionalAction,
         default=True,
         help=(
-            "Normalize each ending log-likelihood by its token count. "
-            "Enabled by default to reproduce the original HellaSwag "
-            "evaluation setting."
+            "Normalize each candidate log-likelihood by its number of "
+            "continuation tokens. Enabled by default."
         ),
     )
 
@@ -605,8 +699,7 @@ def main() -> None:
             "--max-length must be greater than one."
         )
 
-    # GPTQ quantization is controlled only by the calibration seed.
-    # This seed remains fixed for all evaluation runs.
+    # The GPTQ model must remain identical across evaluation seeds.
     set_all_seeds(
         args.calibration_seed
     )
@@ -677,7 +770,7 @@ def main() -> None:
     model.eval()
 
     print(
-        "Loading WikiText-2 calibration data...",
+        "Loading fixed WikiText-2 calibration data...",
         flush=True,
     )
 
@@ -718,10 +811,13 @@ def main() -> None:
         flush=True,
     )
 
-    model = model.to(DEV)
+    model = model.to(
+        DEV
+    )
+
     model.eval()
 
-    # Only the evaluation sample changes between seeds.
+    # Only the evaluation sample changes here.
     set_all_seeds(
         args.eval_seed
     )
@@ -781,6 +877,11 @@ def main() -> None:
         "model": "olmo-1b",
         "model_id": args.model_id,
         "method": "gptq_runtime",
+        "metric": (
+            "accuracy_normalized"
+            if args.normalize_by_length
+            else "accuracy"
+        ),
         "bits": args.wbits,
         "groupsize": args.groupsize,
         "nsamples": args.nsamples,
@@ -819,6 +920,7 @@ def main() -> None:
     print("=" * 78, flush=True)
     print(f"Evaluation seed:   {args.eval_seed}", flush=True)
     print(f"Calibration seed:  {args.calibration_seed}", flush=True)
+    print(f"Metric:            {result['metric']}", flush=True)
     print(f"Examples:          {metrics['num_examples']}", flush=True)
     print(f"Correct:           {metrics['num_correct']}", flush=True)
     print(f"Accuracy:          {metrics['accuracy']:.4f}", flush=True)
