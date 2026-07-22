@@ -154,7 +154,7 @@ def show_table(data, title):
 
 
 st.title("Master Thesis Dashboard")
-st.markdown("## Superweights and Quantization in Large Language Models")
+st.markdown("## Super Weights and Quantization in Large Language Models")
 st.write(
     "Interactive overview of the central plots, tables, and empirical results used in the thesis."
 )
@@ -163,7 +163,7 @@ page = st.sidebar.radio(
     "Navigation",
     [
         "Overview",
-        "Chapter 3: Superweights",
+        "Chapter 3: Super Weights",
         "Chapter 5: Quantization",
         "Automatic Plot Browser"
     ]
@@ -177,7 +177,7 @@ if page == "Overview":
     st.markdown("""
     This dashboard accompanies the Master's thesis
 
-    **"An Empirical Study of Superweights and Quantization in Large Language Models"**
+    **"An Empirical Study of Super Weights and Quantization in Large Language Models"**
 
     and provides an interactive overview of the main experiments and findings.
     """)
@@ -198,7 +198,7 @@ if page == "Overview":
         st.subheader("Research Goal")
 
         st.markdown("""
-Investigate whether a small number of **superweights** dominate the behaviour of
+Investigate whether a small number of **super weights** dominate the behaviour of
 large language models and study how this property interacts with modern
 quantization techniques.
 
@@ -211,10 +211,10 @@ The experiments cover five open-source language models ranging from
         st.subheader("Main Findings")
 
         st.markdown("""
-- Superweights cause large activation spikes.
-- Removing only a few superweights leads to major performance degradation.
+- Super weights cause large activation spikes.
+- Removing only a few super weights leads to major performance degradation.
 - Much of the lost functionality can be recovered through redistribution training.
-- Protecting superweights substantially improves low-bit quantization.
+- Protecting super weights substantially improves low-bit quantization.
 """)
 
     st.divider()
@@ -222,15 +222,15 @@ The experiments cover five open-source language models ranging from
     st.subheader("Dashboard Structure")
 
     st.markdown("""
-### Chapter 3 — Superweight Analysis
+### Chapter 3 — Super Weight Analysis
 
-Explore how superweights emerge, how they affect downstream performance,
+Explore how super weights emerge, how they affect downstream performance,
 and how their functionality can be redistributed across the model.
 
 Included experiments:
 
 - Activation analysis
-- Top superweight candidates
+- Top super weight candidates
 - Ablation studies
 - Category-level effects
 - Scaling experiments
@@ -240,7 +240,7 @@ Included experiments:
 
 ### Chapter 5 — Quantization
 
-Investigate the interaction between superweights and model quantization.
+Investigate the interaction between super weights and model quantization.
 
 Included experiments:
 
@@ -249,7 +249,7 @@ Included experiments:
 - Quantization across model sizes
 - FLORES multilingual evaluation
 - Super-W8 scaling
-- Protected Superweights (SW-AWQ)
+- Protected Super Weights (SW-AWQ)
 """)
 
     st.info(
@@ -258,14 +258,14 @@ Included experiments:
     )
 
 
-elif page == "Chapter 3: Superweights":
-    st.header("Chapter 3: Superweight Analysis")
+elif page == "Chapter 3: Super Weights":
+    st.header("Chapter 3: Super Weight Analysis")
 
     section = st.sidebar.radio(
-        "Superweight Section",
+        "Super Weight Section",
         [
             "Activation Analysis",
-            "Top Superweight Candidates",
+            "Top Super Weight Candidates",
             "Task-Level Ablation",
             "HellaSwag Ablation",
             "Category-Level Effects",
@@ -278,7 +278,7 @@ elif page == "Chapter 3: Superweights":
         st.markdown("""
         This section compares the original maximum input and output activations of the
         MLP down-projection across layers for the five evaluated models. These plots
-        are used to identify activation spikes that indicate potential superweight locations.
+        are used to identify activation spikes that indicate potential super weight locations.
         """)
 
         activation_plots = find_activation_minmax_plots()
@@ -289,9 +289,9 @@ elif page == "Chapter 3: Superweights":
             columns=2
         )
 
-    elif section == "Top Superweight Candidates":
+    elif section == "Top Super Weight Candidates":
         st.markdown("""
-        This section summarizes the top global superweight candidates identified
+        This section summarizes the top global super weight candidates identified
         through activation-spike analysis in OLMo-1B.
         """)
 
@@ -304,7 +304,7 @@ elif page == "Chapter 3: Superweights":
             "Score": [125208.75, 122797.00, 4180.21, 2977.94, 2698.82, 242.06, 108.02, 33.43, 24.82, 20.73]
         }
 
-        df = show_table(data, "Top-10 global superweight candidates")
+        df = show_table(data, "Top-10 global super weight candidates")
         st.bar_chart(df.set_index("Col")["Score"])
 
     elif section == "Task-Level Ablation":
@@ -417,7 +417,7 @@ elif page == "Chapter 3: Superweights":
 
     elif section == "Category-Level Effects":
         st.markdown("""
-        This section shows how superweight removal changes the model's output
+        This section shows how super weight removal changes the model's output
         probability distribution across token categories.
         """)
 
@@ -430,10 +430,10 @@ elif page == "Chapter 3: Superweights":
     elif section == "Scaling":
         st.markdown("""
         This section shows task-specific performance changes under scaling of a
-        single identified superweight.
+        single identified super weight.
         """)
 
-        st.subheader("Task-specific performance change under scaling of a single superweight")
+        st.subheader("Task-specific performance change under scaling of a single super weight")
 
         plot_path = ROOT / "outputs/plots/olmo_sw1_scaling_delta_heatmap.png"
         

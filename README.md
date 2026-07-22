@@ -1,41 +1,41 @@
-# Superweights and Quantization in Large Language Models
+# Super Weights and Quantization in Large Language Models
 
-This repository contains the complete implementation, experimental pipeline, and evaluation results accompanying the Master's Thesis
+This repository contains the implementation, experimental pipeline, and evaluation results accompanying the Master's thesis
 
-> **An Empirical Study of Superweights and Their Role in Quantization of Large Language Models**  
+> **An Empirical Study of Super Weights and Their Role in the Quantization of Large Language Models**
+>
 > Maximilian Knell  
 > University of Mannheim, 2026
 
-The repository reproduces all experiments presented in the thesis, including superweight analysis, knowledge redistribution, and superweight-aware quantization across multiple large language models.
+The repository covers the experiments presented in the thesis, including super weight identification and ablation, knowledge redistribution, and super weight-aware quantization across multiple large language models.
 
 ---
 
-# Thesis Overview
+## Thesis Overview
 
-Large Language Models contain billions of parameters, yet recent work has shown that only a very small subset—called **superweights**—has a disproportionate influence on model behavior.
+Large language models contain billions of parameters, yet recent research has shown that a very small subset of individual parameters—referred to as **super weights**—can have a disproportionate influence on model behavior.
 
 This thesis investigates
 
-- identification of superweights via activation spikes
-- impact of superweight ablation on downstream performance
-- redistribution of superweight functionality through retraining
-- interaction between superweights and quantization
-- extensions of Superweight-Aware Quantization
-- combinations with AWQ and GPTQ
+- the identification of super weights through activation spikes;
+- the effect of super weight ablation on downstream performance;
+- the redistribution of super weight functionality through retraining;
+- the interaction between super weights and quantization;
+- extensions of Super Weight-Aware Quantization;
+- and combinations of super weight protection with AWQ and GPTQ.
 
-The implementation reproduces all experiments and figures presented in the thesis.
+The repository provides the code, intermediate outputs, final evaluation results, and figures used for these analyses.
 
 ---
 
-# Repository Structure
+## Repository Structure
 
-```
+```text
 masters-thesis-llm-inference/
-
 ├── src/                    Core implementation
-├── scripts/                Scripts for reproducing experiments
+├── scripts/                Experiment and evaluation scripts
 ├── outputs/                Intermediate outputs and generated plots
-├── results/                Final experimental results
+├── results/                Numerical experimental results
 ├── quantization/           Adapted AWQ and GPTQ implementations
 ├── dashboard/              Streamlit visualization dashboard
 └── README.md
@@ -43,277 +43,332 @@ masters-thesis-llm-inference/
 
 ---
 
-# Experimental Outputs
+## Experimental Results
 
-The repository is organized according to the chapters of the thesis.
+The experimental outputs are organized according to the corresponding chapters and tables of the thesis.
 
-## Chapter 3 — Superweight Analysis
+The repository distinguishes between two types of numerical results:
 
-### Activation Analysis
-
-```
-outputs/activation_analysis/
-```
-
-Contains the activation analysis for all evaluated language models.
-
-Includes
-
-- maximum input activations
-- maximum output activations
-- activation spike plots
-- redistribution activation plots
-
-Corresponds to
-
-- Figure 3.2
-- Figures 3.6–3.7
-- Appendix A.4
+- `results/superweights/` and `results/quantization/` contain the original single-run experiments, exploratory analyses, supplementary evaluations, and hyperparameter studies.
+- `results/uncertainty/` contains the final multi-seed results reported for Tables 3.2, 3.8, and 5.1–5.5.
 
 ---
 
-### Global Superweight Candidate Scan
+## Chapter 3 — Super Weight Analysis
 
+### Activation Analysis
+
+```text
+outputs/activation_analysis/
 ```
+
+Contains activation analyses for the evaluated language models, including
+
+- maximum input activations;
+- maximum output activations;
+- activation spike plots;
+- and activation plots before and after knowledge redistribution.
+
+These outputs correspond to
+
+- Figure 3.2;
+- Figures 3.6–3.7;
+- and Appendix A.4.
+
+---
+
+### Global Super Weight Candidate Scan
+
+```text
 outputs/category-scan/
 ```
 
-Contains the activation-based search for candidate superweights.
+Contains the activation-based search for super weight candidates, including
 
-Includes
+- ranked super weight candidates;
+- activation scores;
+- layer indices;
+- and parameter coordinates.
 
-- top-ranked superweight candidates
-- activation scores
-- layer indices
-- coordinates
-
-Corresponds to
-
-- Table 3.1
+These outputs correspond to Table 3.1.
 
 ---
 
 ### Generated Figures
 
-```
+```text
 outputs/plots/
 ```
 
-Contains all generated figures used throughout the thesis.
+Contains generated figures used throughout the thesis, including
 
-Including
-
-- Figure 3.3 — Task-Level Performance Drop under Top-k Superweight Ablation
-- Figure 3.4 — Category-Level Shift in Token Probabilities
-- Figure 3.5 — Task-Specific Performance under Superweight Scaling
+- Figure 3.3 — Task-Level Performance Drop under Top-k Super Weight Ablation;
+- Figure 3.4 — Category-Level Shift in Token Probabilities;
+- and Figure 3.5 — Task-Specific Performance under Super Weight Scaling.
 
 ---
 
-### Superweight Evaluation
+### Super Weight Evaluation
 
-```
+```text
 results/superweights/
 ```
 
-Contains all numerical evaluation results for
+Contains the original and supplementary evaluation results for
 
-- superweight ablation
-- random ablation
-- redistribution
-- restored models
-- benchmark evaluations
+- super weight ablation;
+- random weight ablation;
+- knowledge redistribution;
+- restored models;
+- and downstream benchmark evaluations.
 
-Corresponds to
+The final five-seed results reported in Tables 3.2 and 3.8 are stored separately in
 
-- Table 3.2
-- Table 3.3
+```text
+results/uncertainty/table_3_2/
+results/uncertainty/table_3_8/
+```
 
 ---
 
 ### Category Analysis
 
-```
+```text
 results/category_analysis/
 ```
 
 Contains
 
-- token probability shifts
-- linguistic category statistics
-- detailed token-level analysis
+- token-probability shifts;
+- linguistic-category statistics;
+- and detailed token-level analyses.
 
-Corresponds to
+These outputs correspond to
 
-- Figure 3.4
-- Appendix A.5
+- Figure 3.4;
+- and Appendix A.5.
 
 ---
 
-# Chapter 5 — Quantization
+## Chapter 5 — Quantization
 
-All quantization experiments are located in
+The original quantization experiments, supplementary evaluations, and hyperparameter studies are located in
 
-```
+```text
 results/quantization/
 ```
 
-Each model contains identical experiment categories.
+For Tables 5.1–5.5, the final results reported in the thesis are based on five evaluation seeds and are stored in the corresponding subdirectories of
+
+```text
+results/uncertainty/
+```
+
+The original experiment directories remain available for traceability and supplementary analysis.
 
 ---
 
-## Activation Bit-Width
+### Activation Bit-Width
 
-Example
+Original experiment outputs:
 
-```
+```text
 results/quantization/llama7b/activation_bit-width/
 ```
 
-Contains
+Final five-seed results reported in Table 5.1:
 
-- FP16
-- W16A8
-- W16A4
+```text
+results/uncertainty/table_5_1/
+```
 
-perplexity results.
+Contains perplexity evaluations for
 
-Corresponds to
-
-- Table 5.1
+- FP16;
+- W16A8;
+- and W16A4.
 
 ---
 
-## Downstream Tasks
+### Downstream Task Evaluation
 
-Example
+Original experiment outputs:
 
-```
+```text
 results/quantization/llama7b/tasks/
 ```
 
-Contains benchmark evaluations on
+Final five-seed results reported in Table 5.2:
 
-- BoolQ
-- HellaSwag
-- PIQA
-- WinoGrande
-- XCOPA
-- SciQ
+```text
+results/uncertainty/table_5_2/
+```
 
-Corresponds to
+Contains downstream evaluations on tasks such as
 
-- Table 5.2
-- Table 5.5
+- BoolQ;
+- HellaSwag;
+- PIQA;
+- WinoGrande;
+- XCOPA;
+- and SciQ.
 
 ---
 
-## Multilingual Evaluation
+### Multilingual Evaluation
 
-```
+Original experiment outputs:
+
+```text
 results/quantization/llama7b/language/flores/
 ```
 
-Contains multilingual FLORES translation experiments.
+Final five-seed results reported in Table 5.3:
 
-Corresponds to
+```text
+results/uncertainty/table_5_3/
+```
 
-- Table 5.3
+Contains multilingual perplexity evaluations based on FLORES language pairs.
 
 ---
 
-## Model Size Comparison
+### Model-Size Comparison
 
-```
+Original experiment outputs:
+
+```text
 results/quantization/olmo1b/Activation Bit-Width/
 ```
 
-Contains experiments comparing activation quantization across model sizes.
+Final five-seed results reported in Table 5.4:
 
-Corresponds to
+```text
+results/uncertainty/table_5_4/
+```
 
-- Table 5.4
+Contains activation-quantization experiments comparing models of different sizes.
 
 ---
 
-## Quantization Method Comparison
+### Quantization-Method Comparison
 
-```
+Original experiment outputs:
+
+```text
 results/quantization/olmo1b/Quantization Method/
 ```
 
-Comparison of
+Final five-seed results reported in Table 5.5:
 
-- Naive Quantization
-- Superweight Quantization
-- GPTQ
-- AWQ
+```text
+results/uncertainty/table_5_5/
+```
 
-Corresponds to
+The evaluated methods include
 
-- Table 5.5
+- naive round-to-nearest quantization;
+- Super Weight-Aware Quantization;
+- GPTQ;
+- and AWQ.
 
 ---
 
-## Superweight Scaling
+### Super Weight Scaling
 
-```
+```text
 results/quantization/olmo1b/Superweight Scaling/super_w8_scaling/
 ```
 
-Contains the complete scaling study.
+Contains the complete super weight scaling study reported in Table 5.6.
 
-Corresponds to
-
-- Table 5.6
+This experiment is not part of the five-seed uncertainty evaluation.
 
 ---
 
-## Protected Superweights in AWQ
+### Protected Super Weights in AWQ
 
-```
+```text
 results/quantization/olmo1b/protected_superweights_awq/
 ```
 
-Contains all SW-AWQ experiments and hyperparameter sweeps.
+Contains the SW-AWQ experiments and associated hyperparameter sweeps reported in Table 5.7.
 
-Corresponds to
-
-- Table 5.7
+This experiment is not part of the five-seed uncertainty evaluation.
 
 ---
 
-# Implemented Methods
+## Final Results and Uncertainty Evaluation
 
-## Superweight Analysis
+The final results reported for Tables 3.2, 3.8, and 5.1–5.5 are stored in
+
+```text
+results/uncertainty/
+```
+
+These results are based on five evaluation seeds:
+
+```text
+42, 43, 44, 45, 46
+```
+
+Each JSON file contains the result for one model, method, task, and evaluation seed. The thesis reports the mean and standard deviation across the corresponding runs.
+
+The evaluation seeds control the selection of evaluation examples. They do not represent different model initializations. The same pretrained or quantized model configuration is retained across evaluation seeds.
+
+The directory is organized according to the corresponding thesis tables:
+
+```text
+results/uncertainty/
+├── table_3_2/    Super weight and random weight ablation
+├── table_3_8/    Knowledge redistribution
+├── table_5_1/    Activation bit-width comparison
+├── table_5_2/    Downstream task evaluation
+├── table_5_3/    Multilingual evaluation
+├── table_5_4/    Model-size comparison
+└── table_5_5/    Quantization-method comparison
+```
+
+For XCOPA-en, all 100 available evaluation examples are used in every run. Consequently, the evaluated sample is identical across seeds, resulting in a standard deviation of zero.
+
+Tables 5.6 and 5.7 are not part of the five-seed uncertainty evaluation. Their results remain in the corresponding subdirectories of `results/quantization/`.
+
+---
+
+## Implemented Methods
+
+### Super Weight Analysis
 
 - Activation Spike Analysis
-- Superweight Identification
-- Superweight Ablation
+- Super Weight Identification
+- Super Weight Ablation
+- Random Weight Ablation
 - Task Sensitivity Analysis
 - Category-Level Analysis
-- Superweight Scaling
+- Super Weight Scaling
 
-## Knowledge Redistribution
+### Knowledge Redistribution
 
-- Superweight Dropout
+- Super Weight Dropout
 - Gradient Zeroing
 - Redistribution Training
 - Activation Concentration Analysis
+- Post-Training Super Weight Ablation
 
-## Quantization
+### Quantization
 
-- Naive RTN
-- Superweight-Aware Quantization
+- Naive Round-to-Nearest Quantization
+- Super Weight-Aware Quantization
 - Activation Quantization
 - Weight Quantization
 - GPTQ
 - AWQ
-- Superweight Scaling
+- Super Weight Scaling
 - SW-AWQ
 
 ---
 
-# Supported Models
+## Supported Models
 
 - OLMo-1B
 - OLMo-7B
@@ -323,9 +378,9 @@ Corresponds to
 
 ---
 
-# Evaluation Benchmarks
+## Evaluation Benchmarks
 
-Reasoning
+### Reasoning and Question Answering
 
 - HellaSwag
 - BoolQ
@@ -335,33 +390,48 @@ Reasoning
 - MGSM
 - SciQ
 
-Language Modeling
+### Language Modeling
 
 - WikiText-2
 - C4
 
-Translation
+### Multilingual Evaluation
 
 - FLORES
 
 ---
 
-# Acknowledgements
+## Dashboard
+
+The repository includes a Streamlit dashboard for exploring selected experimental results and visualizations.
+
+Run the dashboard from the repository root with
+
+```bash
+streamlit run dashboard/app.py
+```
+
+---
+
+## Acknowledgements
 
 This repository builds upon the following open-source projects:
 
-- LLMSuperWeight
-- AWQ
-- GPTQ
+- [LLMSuperWeight](https://github.com/mengxiayu/LLMSuperWeight)
+- [AWQ](https://github.com/mit-han-lab/llm-awq)
+- [GPTQ](https://github.com/IST-DASLab/gptq)
 
 The original implementations were adapted and extended for the experiments conducted in this thesis.
 
 ---
 
-# Citation
+## Citation
 
 If you use this repository, please cite
 
+```text
 Maximilian Knell.
-*An Empirical Study of Superweights and Their Role in Quantization of Large Language Models.*
+An Empirical Study of Super Weights and Their Role in the Quantization
+of Large Language Models.
 Master's Thesis, University of Mannheim, 2026.
+```
