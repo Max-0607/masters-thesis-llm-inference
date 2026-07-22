@@ -2,454 +2,362 @@
 
 This document describes how to reproduce the figures, tables, and evaluation results presented in the Master's thesis
 
-> **An Empirical Study of Superweights and Their Role in Quantization of Large Language Models**
+> **An Empirical Study of Super Weights and Their Role in the Quantization of Large Language Models**
 
-The documentation is organized according to the chapters of the thesis and provides the scripts, required inputs, and output locations for each experiment.
+The commands below are intended to be executed from the repository root. Visible prose consistently uses *super weight* as two words. Technical identifiers, script names, and existing directory names such as `results/superweights/` remain unchanged.
+
+## Result Types
+
+The repository contains two complementary result collections:
+
+- `results/superweights/` and `results/quantization/` contain the original single-run experiments, exploratory analyses, supplementary evaluations, and hyperparameter studies.
+- `results/uncertainty/` contains the final multi-seed results reported for Tables 3.2, 3.8, and 5.1–5.5.
+
+The final uncertainty evaluation uses five evaluation seeds:
+
+```text
+42, 43, 44, 45, 46
+```
+
+These seeds vary the evaluated sample, not the model initialization. Within a seed, compared methods use the same selected example IDs. For XCOPA-en, all 100 available examples are evaluated in every run; therefore, the selected sample and reported score are identical across seeds.
+
+## General Setup
+
+Create and activate the project environment, install the required dependencies, and run all commands from the repository root:
+
+```bash
+cd ~/masters-thesis-llm-inference
+source venv/bin/activate
+export PYTHONPATH=.
+```
+
+The experiments require access to the corresponding Hugging Face checkpoints and sufficient GPU memory. Some 7B-model evaluations were run on an H100 MIG instance with small batch sizes.
 
 ---
 
-# Chapter 3 – Superweight Analysis
+# Chapter 3 — Super Weight Analysis
 
-## Figure 3.2 – Visualization of Activation Spikes
+## Figure 3.2 — Visualization of Activation Spikes
 
-### Purpose
-
-Visualizes the maximum input and output activations of each transformer layer to identify activation spikes and potential superweights.
-
-### Script
+The following command records the maximum absolute input and output activations of the MLP down-projection in every transformer layer:
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_olmo_base_input_output.py \
-    --model-key mistral-7b \
-    --output_dir outputs/activation_analysis
+PYTHONPATH=. python \
+scripts/superweights/3_3_activation_analysis/plot_base_input_output.py \
+  --model-key mistral-7b \
+  --run-name mistral-7b \
+  --output_dir outputs/activation_analysis
 ```
 
-### Input
+Replace `mistral-7b` with another key defined in `configs/models.py` to analyze a different model. The script writes a PNG plot and a JSON file containing the layer-wise activation summaries to `outputs/activation_analysis/`.
 
-- Model checkpoint
+## Table 3.1 — Top-10 Global Super Weight Candidates
 
-### Output
-
-```
-outputs/activation_analysis/
-```
-
-Contains
-
-- Maximum input activation plots
-- Maximum output activation plots
-- Layer-wise activation statistics
-
----
-
-## Table 3.1 – Top-10 Global Superweight Candidates
-
-### Purpose
-
-Identifies the globally strongest activation spikes across the model.
-
-### Script
+The category scan aggregates activation spikes across predefined prompts and ranks candidate positions by their combined input-output activation score:
 
 ```bash
-python scripts/evaluation/run_category_scan.py \
+PYTHONPATH=. python \
+scripts/superweights/3_3_activation_analysis/run_category_scan.py \
+  --model_key olmo-1b \
+  --output_dir outputs/category_scan \
+  --top_k 10
+```
+
+The principal output is `outputs/category_scan/olmo-1b_top10_global.json`. Additional JSON files and plots contain category-specific activation summaries and candidates.
+
+## Figure 3.3 — Task-Level Sensitivity to Super Weight Ablation
+
+### Generate ablated checkpoints
+
+`run_ablation.py` creates one checkpoint for the requested value of `--top_k`. Run it once for each ablation level required by the figure:
+
+```bash
+for K in 1 2 3 4 5 10; do
+  PYTHONPATH=. python \
+  scripts/superweights/3_4_superweight_ablation/run_ablation.py \
     --model_key olmo-1b \
-    --output_dir outputs/category_scan \
-    --top_k 10
+    --candidate_json outputs/category_scan/olmo-1b_top10_global.json \
+    --top_k "$K" \
+    --output_dir outputs/ablated_models
+done
 ```
 
-### Output
+The generated checkpoints are stored under `outputs/ablated_models/`.
 
-```
-outputs/category_scan/
-```
+### Evaluate the checkpoints
 
-Contains
+The original task evaluations were performed with the task-specific evaluation pipeline and, for selected larger models, the archived LLMSuperWeight notebooks under `archive/reference/LLMSuperWeight/`. The exact numerical outputs used for the analysis are retained in `results/superweights/`. Final five-seed ablation results are retained in `results/uncertainty/table_3_2/`.
 
-- Top-10 superweight candidates
-- Layer indices
-- Row/column coordinates
-- Activation scores
-
----
-
-## Figure 3.3 – Task-Level Sensitivity to Superweight Ablation
-
-### Step 1 – Generate candidate superweights
+### Generate the heatmap
 
 ```bash
-PYTHONPATH=. python scripts/evaluation/run_ablation.py \
-    --model_key olmo-1b \
-    --candidate_json outputs/activation_analysis/olmo-1b/candidates.json \
-    --top_k 1
+PYTHONPATH=. python \
+scripts/superweights/3_4_superweight_ablation/plot_olmo_topk_heatmap.py
 ```
 
----
+The generated figure is written to `outputs/plots/`.
 
-### Step 2 – Generate Top-k ablated models
+## Figure 3.4 — Category-Level Effects of Super Weight Removal
 
-```
-scripts/evaluation/run_ablation.py
-```
-
-Creates
-
-- Top-1
-- Top-2
-- Top-3
-- Top-4
-- Top-5
-- Top-10
-
-ablated models.
-
----
-
-### Step 3 – Evaluate models
-
-For smaller models:
+This analysis compares token probabilities before and after super weight removal:
 
 ```bash
-python -m lm_eval ...
+PYTHONPATH=. python \
+scripts/superweights/3_6_category_effects/plot_category_shift.py \
+  --original results/stopword_probability/olmo_1b_original.json \
+  --no-sw results/stopword_probability/olmo_1b_no_sw.json \
+  --output-dir outputs/category_shift/olmo-1b
 ```
 
-Example
+The script generates:
+
+```text
+outputs/category_shift/olmo-1b/category_level_shift.png
+outputs/category_shift/olmo-1b/lowest_token_shifts_by_category.png
+```
+
+Detailed token-level results are stored in `results/category_analysis/`.
+
+## Figure 3.5 — Super Weight Scaling Analysis
+
+The scaling plot is generated from the existing task-evaluation JSON files in `outputs/eval/olmo_sw1_scaling/`:
 
 ```bash
-python -m lm_eval \
-  --model hf \
-  --model_args pretrained=huggyllama/llama-7b,dtype=float16 \
-  --device cuda:0 \
-  --tasks hellaswag \
-  --num_fewshot 0 \
-  --limit 300 \
-  --batch_size 1 \
-  --output_path outputs/ablation_table/llama-7b_baseline_lmeval
+PYTHONPATH=. python \
+scripts/superweights/3_7_scaling/plot_olmo_sw1_scaling_heatmap.py
 ```
 
-For LLaMA-7B and Mistral-7B the original LLMSuperWeight notebooks were used because `lm_eval` frequently crashed for these larger models.
+The resulting heatmap is written to `outputs/plots/olmo_sw1_scaling_delta_heatmap.png`.
 
----
+## Figures 3.6–3.7 — Knowledge Redistribution
 
-### Step 4 – Generate heatmap
+### Original model activations
 
 ```bash
-python scripts/figures/plot_olmo_topk_heatmap.py
+PYTHONPATH=. python \
+scripts/superweights/3_3_activation_analysis/plot_base_input_output.py \
+  --model-key olmo-1b \
+  --run-name original_olmo1b \
+  --output_dir outputs/activation_analysis/redistribution_comparison
 ```
 
-### Output
-
-```
-outputs/plots/
-```
-
----
-
-## Figure 3.4 – Category-Level Effects of Superweight Removal
-
-### Purpose
-
-Analyzes how removing superweights changes token probabilities across linguistic categories.
-
-### Script
+### Redistributed model activations
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_category_shift.py \
-    --original results/stopword_probability/olmo_1b_original.json \
-    --no-sw results/stopword_probability/olmo_1b_no_sw.json \
-    --output-dir outputs/category_shift/olmo-1b \
-    --title-prefix "OLMo-1B"
+PYTHONPATH=. python \
+scripts/superweights/3_3_activation_analysis/plot_base_input_output.py \
+  --model-key olmo-1b \
+  --model-path results/superweights/gradient_zeroing/olmo1b/models/sw_dropout_p0_25_500steps \
+  --run-name sw_dropout_olmo1b \
+  --output_dir outputs/activation_analysis/redistribution_comparison
 ```
 
-### Input
-
-```
-results/stopword_probability/
-```
-
-### Output
-
-```
-outputs/category_shift/
-```
-
----
-
-## Figure 3.5 – Superweight Scaling Analysis
-
-### Input
-
-```
-outputs/eval/olmo_sw1_scaling/
-```
-
-Example
-
-```
-baseline_hellaswag.json
-```
-
-### Plot
+### Activation-distribution comparison
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_olmo_sw1_scaling_heatmap.py
+PYTHONPATH=. python \
+scripts/superweights/3_8_redistribution/plot_activation_distribution_comparison.py \
+  --model-key olmo-1b \
+  --redistribution-model-path results/superweights/gradient_zeroing/olmo1b/models/sw_dropout_p0_25_500steps \
+  --output-dir outputs/activation_analysis/redistribution_comparison
 ```
 
-### Output
+The associated training and analysis scripts are located in `scripts/superweights/3_8_redistribution/`.
 
-```
-outputs/plots/
-```
+## Table 3.2 — Impact of Super Weight Ablation
 
-Generated figure
+The final table reports HellaSwag `acc_norm` over evaluation seeds 42–46 for the baseline, random-ablation, and super weight ablation conditions. The committed results are stored by model in `results/uncertainty/table_3_2/`. Original and supplementary single-run results remain in `results/superweights/`.
 
-```
-olmo_sw1_scaling_delta_heatmap.png
-```
+## Table 3.8 — Knowledge Redistribution
 
----
+The redistributed checkpoints are evaluated with `scripts/superweights/3_8_redistribution/eval_redistribution_task.py`.
 
-## Figures 3.6–3.7 – Redistribution Analysis
-
-### Original model
+Example for one OLMo-1B baseline seed:
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_base_input_output.py \
-    --model-key olmo-1b \
-    --run-name original_olmo1b \
-    --output_dir outputs/activation_analysis/redistribution_comparison
+PYTHONPATH=. python \
+scripts/superweights/3_8_redistribution/eval_redistribution_task.py \
+  --model-key olmo1b \
+  --task hellaswag \
+  --split validation \
+  --limit 500 \
+  --eval-seed 42 \
+  --max-length 2048 \
+  --output-json results/uncertainty/table_3_8/olmo1b/baseline_seed42.json
 ```
+
+For paired comparisons, pass the corresponding Table 3.2 baseline JSON via `--reference-json`. Add `--ablate-superweights` for the ablated condition. For redistribution, additionally pass the redistributed checkpoint via `--model-path`. Final results are stored in `results/uncertainty/table_3_8/`.
 
 ---
 
-### Redistribution model
+# Chapter 5 — Quantization
+
+Original single-run experiments and hyperparameter studies are stored in `results/quantization/`. Final five-seed results for Tables 5.1–5.5 are stored in `results/uncertainty/`.
+
+## Table 5.1 — Activation Bit-Width
+
+Activation-quantized language-model perplexity is evaluated with `scripts/quantization/eval_task/eval_activation_quant.py`.
+
+Example FP16 WikiText-2 run:
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_base_input_output.py \
-    --model-key olmo-1b \
-    --model-path results/superweights/gradient_zeroing/olmo1b/models/sw_dropout_p0_25_500steps \
-    --run-name sw_dropout_olmo1b \
-    --output_dir outputs/activation_analysis/redistribution_comparison
+PYTHONPATH=. python \
+scripts/quantization/eval_task/eval_activation_quant.py \
+  --model-key llama-7b \
+  --mode fp16 \
+  --bits 8 \
+  --dtype float16 \
+  --dataset wikitext2 \
+  --split validation \
+  --limit 128 \
+  --max-length 512 \
+  --eval-seed 42 \
+  --output-json results/uncertainty/table_5_1/wikitext2/fp16_seed42.json
 ```
 
----
+Use `--mode naive` for ordinary activation quantization and `--mode super` for super weight-aware activation quantization. Use `--bits 8` for W16A8 and `--bits 4` for W16A4. For paired comparisons, the quantized runs should reuse the FP16 sample through `--reference-json`.
 
-### Activation distribution comparison
+Final results are stored in:
+
+```text
+results/uncertainty/table_5_1/wikitext2/
+results/uncertainty/table_5_1/c4/
+```
+
+## Table 5.2 — Downstream Tasks
+
+Downstream evaluations use task-specific scripts:
+
+```text
+scripts/quantization/eval_task/eval_boolq.py
+scripts/quantization/eval_task/eval_hellaswag.py
+scripts/quantization/eval_task/eval_winogrande.py
+scripts/quantization/eval_task/eval_xcopa.py
+```
+
+Further task scripts, including PIQA, ARC, MGSM, and MMLU variants, are retained in the same directory.
+
+Example BoolQ run:
 
 ```bash
-PYTHONPATH=. python scripts/figures/plot_activation_distribution_comparison.py \
-    --model-key olmo-1b \
-    --redistribution-model-path results/superweights/gradient_zeroing/olmo1b/models/sw_dropout_p0_25_500steps \
-    --output-dir outputs/activation_analysis/redistribution_comparison
+PYTHONPATH=. python \
+scripts/quantization/eval_task/eval_boolq.py \
+  --model-key olmo-1b \
+  --mode fp16 \
+  --bits 8 \
+  --dtype float16 \
+  --split validation \
+  --limit 500 \
+  --eval-seed 42 \
+  --max-length 512 \
+  --normalize-by-length \
+  --output-json results/uncertainty/table_5_2/boolq/fp16_seed42.json
 ```
 
-### Output
+Use the same seed and evaluation settings for all methods being compared. The final results are organized by task in `results/uncertainty/table_5_2/`.
 
-```
-outputs/activation_analysis/redistribution_comparison/
-```
+## Table 5.3 — Multilingual Evaluation
 
----
+FLORES perplexity is evaluated with `scripts/quantization/eval_task/eval_flores.py`.
 
-## Table 3.2 – Impact of Superweight Ablation
-
-Evaluation performed using
+Example German-to-English FP16 run:
 
 ```bash
-python -m lm_eval ...
+PYTHONPATH=. python \
+scripts/quantization/eval_task/eval_flores.py \
+  --model-key olmo-1b \
+  --mode fp16 \
+  --bits 4 \
+  --dtype float16 \
+  --src-lang de \
+  --tgt-lang en \
+  --limit 50 \
+  --eval-seed 42 \
+  --output-json results/uncertainty/table_5_3/de_to_en/fp16_seed42.json
 ```
 
-Results are stored in
+For paired comparisons, use the FP16 result as `--reference-json` for the corresponding naive and super weight-aware runs. Final language-pair directories are:
 
-```
-results/superweights/
-```
-
----
-
-## Table 3.3 – Redistribution Performance
-
-Evaluation of redistributed models.
-
-Results are stored in
-
-```
-results/superweights/
+```text
+results/uncertainty/table_5_3/de_to_en/
+results/uncertainty/table_5_3/en_to_de/
+results/uncertainty/table_5_3/en_to_es/
+results/uncertainty/table_5_3/en_to_fr/
+results/uncertainty/table_5_3/es_to_en/
+results/uncertainty/table_5_3/fr_to_en/
 ```
 
----
+## Table 5.4 — Model-Size Comparison
 
-# Chapter 5 – Quantization
+This table combines activation-quantization results for OLMo-1B and OLMo-7B. The experiments use `eval_activation_quant.py` with the procedure described for Table 5.1.
 
-All quantization experiments are located in
+Final results are stored in:
 
-```
-results/quantization/
-```
-
----
-
-## Table 5.1 – Activation Quantization
-
-### Evaluation
-
-```bash
-python scripts/quantization/eval_task/eval_activation_quant.py
+```text
+results/uncertainty/table_5_4/olmo-1b/
+results/uncertainty/table_5_4/olmo-7b/
 ```
 
-### Output
+Each model directory contains separate `wikitext2/` and `c4/` subdirectories.
 
-```
-results/quantization/<model>/activation_bit-width/
-```
+## Table 5.5 — Quantization-Method Comparison
 
-Available for
+The table compares FP16, naive W4, Super Weight-Aware W4, GPTQ W4, and AWQ W4 on BoolQ, HellaSwag, WinoGrande, and XCOPA-en.
 
-- OLMo-1B
-- OLMo-7B
-- LLaMA-7B
-- Mistral-7B
+### FP16, naive, and Super Weight-Aware Quantization
 
----
-
-## Table 5.2 – Downstream Task Evaluation
-
-### Evaluation
-
-```bash
-python scripts/quantization/eval_task/eval_task_quant.py
-```
-
-### Output
-
-```
-results/quantization/<model>/tasks/
-```
-
-Includes
-
-- BoolQ
-- HellaSwag
-- PIQA
-- WinoGrande
-- XCOPA
-- SciQ
-
----
-
-## Table 5.3 – Multilingual Evaluation
-
-### Evaluation
-
-```bash
-python scripts/quantization/eval_task/eval_language_quant.py
-```
-
-### Output
-
-```
-results/quantization/<model>/language/flores/
-```
-
-Includes
-
-- FLORES translation
-- Multilingual perplexity
-
----
-
-## Table 5.4 – Model Size Comparison
-
-Generated by combining the activation quantization results from different model sizes.
-
-Input
-
-```
-results/quantization/olmo1b/activation_bit-width/
-results/quantization/olmo7b/activation_bit-width/
-```
-
----
-
-## Table 5.5 – Quantization Method Comparison
-
-### Naive / Superweight Quantization
-
-```bash
-python scripts/quantization/eval_task/eval_weight_quant.py
-```
+Use the task-specific scripts in `scripts/quantization/eval_task/` with `--bits 4` and the appropriate `--mode`.
 
 ### GPTQ
 
-```
-quantization/gptq/
-```
+GPTQ evaluation scripts are located in `scripts/quantization/gptq/`. They include task-specific implementations for BoolQ, HellaSwag, WinoGrande, and XCOPA-en, as well as perplexity evaluation.
 
 ### AWQ
 
-```
-quantization/awq/
-```
+AWQ evaluation scripts are located in `scripts/quantization/awq/`. They include task-specific implementations for BoolQ, HellaSwag, PIQA, SciQ, WinoGrande, and XCOPA-en, as well as perplexity evaluation.
 
-### Output
+Final five-seed results are stored by task in `results/uncertainty/table_5_5/`. GPTQ uses a fixed calibration seed while the evaluation seed varies. All methods within an evaluation seed use identical selected example IDs.
 
-```
-results/quantization/olmo1b/Quantization Method/
-```
+## Table 5.6 — Super Weight Scaling
 
----
+The complete scaling study is stored in:
 
-## Table 5.6 – Superweight Scaling
-
-### Hyperparameter Sweep
-
-```bash
-python scripts/quantization/eval_task/eval_super_w8_scaling.py
-```
-
-### Plot
-
-```bash
-python scripts/figures/plot_super_w8_scaling.py
-```
-
-### Output
-
-```
+```text
 results/quantization/olmo1b/Superweight Scaling/super_w8_scaling/
 ```
 
----
+This hyperparameter study is part of the original experiment results and is not included in the five-seed uncertainty evaluation.
 
-## Table 5.7 – Protected Superweights in AWQ (SW-AWQ)
+## Table 5.7 — Protected Super Weights in AWQ (SW-AWQ)
 
-### Hyperparameter Search
+The task-specific SW-AWQ evaluation scripts are located in `scripts/quantization/protected_superweights_awq/`.
 
-```bash
-python scripts/quantization/eval_task/eval_sw_awq.py
-```
+The result directory contains the hyperparameter search, selected values, and final benchmark evaluations:
 
-### Output
-
-```
+```text
 results/quantization/olmo1b/protected_superweights_awq/
 ```
 
-Contains
-
-- Complete hyperparameter search
-- Best α₀
-- Best λ
-- Final benchmark results
+This experiment is not included in the five-seed uncertainty evaluation.
 
 ---
 
 # Repository Output Structure
 
-The repository follows the organization of the thesis.
+| Thesis result | Primary repository location |
+|---|---|
+| Figure 3.2 and Figures 3.6–3.7 | `outputs/activation_analysis/` |
+| Table 3.1 | `outputs/category_scan/` |
+| Figures 3.3–3.5 | `outputs/plots/` |
+| Original Chapter 3 evaluations | `results/superweights/` |
+| Table 3.2 final results | `results/uncertainty/table_3_2/` |
+| Table 3.8 final results | `results/uncertainty/table_3_8/` |
+| Original Chapter 5 evaluations | `results/quantization/` |
+| Table 5.1 final results | `results/uncertainty/table_5_1/` |
+| Table 5.2 final results | `results/uncertainty/table_5_2/` |
+| Table 5.3 final results | `results/uncertainty/table_5_3/` |
+| Table 5.4 final results | `results/uncertainty/table_5_4/` |
+| Table 5.5 final results | `results/uncertainty/table_5_5/` |
+| Tables 5.6–5.7 | corresponding subdirectories of `results/quantization/` |
 
-| Thesis Chapter | Repository |
-|----------------|-----------|
-| Chapter 3 – Superweight Analysis | `outputs/activation_analysis/`, `outputs/category_scan/`, `outputs/plots/`, `results/superweights/`, `results/category_analysis/` |
-| Chapter 5 – Quantization | `results/quantization/` |
-
-The `outputs/` directory contains generated figures and intermediate files, whereas `results/` stores the numerical evaluation results used throughout the thesis.
+`outputs/` contains generated figures, checkpoints, and intermediate artifacts. `results/` contains numerical evaluation results. The committed JSON files preserve the configurations, metrics, selected example IDs, and per-seed outputs required to trace the reported tables.
