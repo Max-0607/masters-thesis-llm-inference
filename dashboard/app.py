@@ -308,41 +308,111 @@ elif page == "Chapter 3: Superweights":
         st.bar_chart(df.set_index("Col")["Score"])
 
     elif section == "Task-Level Ablation":
+        st.subheader(
+            "Incremental Performance Changes under Top-k Super Weight Ablation"
+        )
+
         st.markdown("""
-        This section shows task-level performance drops in OLMo-1B under top-k
-        superweight ablation.
+        The heatmap reports the performance decrease relative to the immediately
+        preceding ablation setting. Positive values indicate an additional
+        performance loss, whereas negative values indicate an improvement.
         """)
 
-        task_plot = ROOT / "outputs/plots/olmo_topk_task_heatmap_rownorm.png"
-
-        st.subheader("Task-level performance drop under top-k superweight ablation")
+        task_plot = (
+            ROOT
+            / "outputs"
+            / "plots"
+            / "olmo_topk_heatmap_incremental_no_title.png"
+        )
         
         if task_plot.exists():
             st.image(
                 Image.open(task_plot),
-                caption="outputs/plots/olmo_topk_task_heatmap_rownorm.png",
+                caption=(
+                    "Incremental task-level performance changes in OLMo-1B "
+                    "under top-k super weight ablation."
+                ),
                 use_container_width=True
             )
         else:
-            st.warning("Plot not found: outputs/plots/olmo_topk_task_heatmap_rownorm.png")
+            st.warning(
+                "Plot not found: "
+                "outputs/plots/olmo_topk_heatmap_incremental_no_title.png"
+            )
 
     elif section == "HellaSwag Ablation":
+        st.subheader("Impact of Super Weight Ablation on HellaSwag")
+
         st.markdown("""
-        This section compares original model performance, random ablation, and
-        targeted superweight ablation on HellaSwag.
+        This section compares the original models with random ablation and
+        targeted super weight ablation on HellaSwag. Results are reported as
+        mean ± standard deviation over five evaluation seeds.
         """)
 
-        data = {
-            "Model": ["LLaMA-7B", "Mistral-7B", "OLMo-1B", "OLMo-7B", "Phi-3-mini"],
-            "Baseline": [0.740, 0.806, 0.694, 0.788, 0.764],
-            "Random Ablation": [0.740, 0.804, 0.694, 0.788, 0.762],
-            "Superweight Ablation": [0.360, 0.268, 0.298, 0.350, 0.294],
-            "# Superweights": [1, 1, 2, 4, 6],
-        }
+        ablation_table = pd.DataFrame(
+            {
+                "Model": [
+                    "LLaMA-7B",
+                    "Mistral-7B",
+                    "OLMo-1B",
+                    "OLMo-7B",
+                    "Phi-3-mini",
+                ],
+                "Baseline": [
+                    "0.7208 ± 0.01",
+                    "0.8004 ± 0.02",
+                    "0.6584 ± 0.01",
+                    "0.7744 ± 0.01",
+                    "0.7504 ± 0.01",
+                ],
+                "Random Ablation": [
+                    "0.7208 ± 0.01",
+                    "0.8000 ± 0.01",
+                    "0.6580 ± 0.01",
+                    "0.7744 ± 0.01",
+                    "0.7504 ± 0.01",
+                ],
+                "Super Weight Ablation": [
+                    "0.3452 ± 0.02",
+                    "0.2652 ± 0.03",
+                    "0.2804 ± 0.02",
+                    "0.3288 ± 0.01",
+                    "0.2976 ± 0.02",
+                ],
+                "# Super Weights": [1, 1, 2, 4, 6],
+            }
+        )
 
-        df = show_table(data, "Impact of superweight ablation on HellaSwag")
+        st.dataframe(
+            ablation_table,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+        plot_data = pd.DataFrame(
+            {
+                "Model": [
+                    "LLaMA-7B",
+                    "Mistral-7B",
+                    "OLMo-1B",
+                    "OLMo-7B",
+                    "Phi-3-mini",
+                ],
+                "Baseline": [0.7208, 0.8004, 0.6584, 0.7744, 0.7504],
+                "Random Ablation": [0.7208, 0.8000, 0.6580, 0.7744, 0.7504],
+                "Super Weight Ablation": [
+                    0.3452,
+                    0.2652,
+                    0.2804,
+                    0.3288,
+                    0.2976,
+                ],
+            }
+        )
+
         st.bar_chart(
-            df.set_index("Model")[["Baseline", "Random Ablation", "Superweight Ablation"]]
+            plot_data.set_index("Model"),
+            use_container_width=True,
         )
 
     elif section == "Category-Level Effects":
@@ -377,24 +447,100 @@ elif page == "Chapter 3: Superweights":
             st.warning("Plot not found: outputs/plots/olmo_sw1_scaling_delta_heatmap.png")
 
     elif section == "Redistribution":
+        st.subheader("Effect of Super Weight Redistribution")
 
         st.markdown("""
-        This section summarizes the superweight redistribution experiments.
-        Superweights were repeatedly disabled during training to encourage the
-        model to distribute the associated functionality across other parameters.
+        This section evaluates whether performance lost through super weight
+        ablation can be recovered by redistributing the associated functionality
+        across other model parameters. Results are reported as mean ± standard
+        deviation over five evaluation seeds.
         """)
-    
-        data = {
-            "Model": ["OLMo-1B", "OLMo-7B", "LLaMA-7B", "Mistral-7B", "Phi-3-mini"],
-            "Original": [0.694, 0.788, 0.740, 0.806, 0.764],
-            "Ablation": [0.298, 0.350, 0.360, 0.268, 0.294],
-            "Redistribution": [0.572, 0.746, 0.708, 0.626, 0.674],
-            "Recovery (%)": [69.2, 95.7, 91.9, 67.3, 81.0],
-        }
-    
-        df = show_table(data, "Effect of superweight redistribution")
-        st.bar_chart(df.set_index("Model")[["Original", "Ablation", "Redistribution"]])
-    
+
+        redistribution_table = pd.DataFrame(
+            {
+                "Model": [
+                    "OLMo-1B",
+                    "OLMo-7B",
+                    "LLaMA-7B",
+                    "Mistral-7B",
+                    "Phi-3 Mini",
+                ],
+                "Original": [
+                    "0.6492 ± 0.01",
+                    "0.7572 ± 0.01",
+                    "0.7228 ± 0.02",
+                    "0.7928 ± 0.01",
+                    "0.7520 ± 0.02",
+                ],
+                "Ablation": [
+                    "0.2644 ± 0.02",
+                    "0.3272 ± 0.03",
+                    "0.3592 ± 0.01",
+                    "0.2504 ± 0.02",
+                    "0.3000 ± 0.03",
+                ],
+                "Redistribution": [
+                    "0.5408 ± 0.03",
+                    "0.7008 ± 0.03",
+                    "0.6916 ± 0.02",
+                    "0.5936 ± 0.03",
+                    "0.6792 ± 0.01",
+                ],
+                "Recovery (%)": [
+                    71.8,
+                    86.9,
+                    91.4,
+                    63.3,
+                    83.9,
+                ],
+            }
+        )
+
+        st.dataframe(
+            redistribution_table,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+        redistribution_plot = pd.DataFrame(
+            {
+                "Model": [
+                    "OLMo-1B",
+                    "OLMo-7B",
+                    "LLaMA-7B",
+                    "Mistral-7B",
+                    "Phi-3 Mini",
+                ],
+                "Original": [
+                    0.6492,
+                    0.7572,
+                    0.7228,
+                    0.7928,
+                    0.7520,
+                ],
+                "Ablation": [
+                    0.2644,
+                    0.3272,
+                    0.3592,
+                    0.2504,
+                    0.3000,
+                ],
+                "Redistribution": [
+                    0.5408,
+                    0.7008,
+                    0.6916,
+                    0.5936,
+                    0.6792,
+                ],
+            }
+        )
+
+        st.bar_chart(
+            redistribution_plot.set_index("Model"),
+            use_container_width=True,
+            stack=False,
+        )
+
         st.divider()
     
         st.markdown("""
@@ -477,152 +623,707 @@ elif page == "Chapter 5: Quantization":
             "Language / FLORES",
             "Model Size",
             "Quantization Methods",
-            "Superweight Scaling W8",
-            "Protected Superweights AWQ"
+            "Proposed Extensions",
         ]
     )
 
     if section == "Activation Bit-Width":
+        st.subheader(
+            "Table 5.1: LLaMA-7B Activation Quantization Perplexity"
+        )
+
         st.markdown("""
-        This section shows how activation bit-width affects perplexity.
-        Lower perplexity is better.
+        This section compares LLaMA-7B perplexity under different activation
+        bit-widths and quantization strategies. Results are reported as
+        mean ± standard deviation over five evaluation seeds; lower values
+        indicate better performance.
         """)
 
-        data = {
-            "Bit-Width": ["W16A8", "W16A8", "W16A8", "W16A4", "W16A4"],
-            "Method": ["FP16", "Naive", "Superweight", "Naive", "Superweight"],
-            "WikiText-2": [8.51, 9.04, 8.51, 142.88, 8.85],
-            "C4": [6.96, 7.12, 6.96, 89.45, 7.19],
-        }
+        activation_table = pd.DataFrame(
+            {
+                "Bit-Width": [
+                    "W16A8",
+                    "W16A8",
+                    "W16A8",
+                    "W16A4",
+                    "W16A4",
+                ],
+                "Method": [
+                    "FP16",
+                    "Naive",
+                    "Super Weight",
+                    "Naive",
+                    "Super Weight",
+                ],
+                "WikiText-2": [
+                    "8.69 ± 0.43",
+                    "9.29 ± 0.48",
+                    "8.70 ± 0.42",
+                    "145.96 ± 8.46",
+                    "9.04 ± 0.46",
+                ],
+                "C4": [
+                    "7.51 ± 0.42",
+                    "7.69 ± 0.42",
+                    "7.52 ± 0.42",
+                    "90.68 ± 7.19",
+                    "7.76 ± 0.42",
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.1: LLaMA-7B activation quantization perplexity")
-        st.bar_chart(df.set_index("Method")[["WikiText-2", "C4"]])
+        st.dataframe(
+            activation_table,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+        activation_plot = pd.DataFrame(
+            {
+                "Configuration": [
+                    "W16A8 – FP16",
+                    "W16A8 – Naive",
+                    "W16A8 – Super Weight",
+                    "W16A4 – Naive",
+                    "W16A4 – Super Weight",
+                ],
+                "WikiText-2": [
+                    8.69,
+                    9.29,
+                    8.70,
+                    145.96,
+                    9.04,
+                ],
+                "C4": [
+                    7.51,
+                    7.69,
+                    7.52,
+                    90.68,
+                    7.76,
+                ],
+            }
+        )
+
+        st.subheader("Perplexity by Quantization Configuration")
+
+        st.bar_chart(
+            activation_plot.set_index("Configuration"),
+            use_container_width=True,
+            stack=False,
+        )
 
     elif section == "Task-Level Quantization":
+        st.subheader("Table 5.2: W8A8 Quantization by Task Category")
+
         st.markdown("""
-        This section compares W8A8 quantization methods across task categories.
-        Higher is better for accuracy tasks, lower is better for perplexity tasks.
+        This section compares W8A8 quantization methods on OLMo-1B across
+        different task categories. Results are reported as mean ± standard
+        deviation over five evaluation seeds. Higher values indicate better
+        performance for accuracy-based tasks, whereas lower values indicate
+        better performance for language-modeling benchmarks.
         """)
 
-        data = {
-            "Category": [
-                "Commonsense Reasoning",
-                "Natural Language Understanding",
-                "Coreference Reasoning",
-                "Cross-lingual Reasoning",
-                "Language Modeling",
-                "Language Modeling",
-            ],
-            "Task": ["HellaSwag", "BoolQ", "WinoGrande", "XCOPA", "WikiText-2", "C4"],
-            "FP16": [0.424, 0.662, 0.592, 0.790, 14.28, 13.56],
-            "Naive": [0.418, 0.604, 0.558, 0.770, 17.22, 15.58],
-            "Super": [0.420, 0.620, 0.564, 0.770, 17.20, 15.58],
-        }
+        task_table = pd.DataFrame(
+            {
+                "Category": [
+                    "Commonsense Reasoning",
+                    "Natural Language Understanding",
+                    "Coreference Reasoning",
+                    "Cross-lingual Reasoning",
+                    "Language Modeling",
+                    "Language Modeling",
+                ],
+                "Task": [
+                    "HellaSwag",
+                    "BoolQ",
+                    "WinoGrande",
+                    "XCOPA",
+                    "WikiText-2",
+                    "C4",
+                ],
+                "FP16": [
+                    "0.6396 ± 0.01",
+                    "0.6152 ± 0.01",
+                    "0.5768 ± 0.02",
+                    "0.7900 ± 0.00",
+                    "14.60 ± 0.64",
+                    "14.03 ± 0.54",
+                ],
+                "Naive": [
+                    "0.6164 ± 0.01",
+                    "0.6288 ± 0.03",
+                    "0.5640 ± 0.03",
+                    "0.7700 ± 0.00",
+                    "15.20 ± 0.69",
+                    "14.36 ± 0.54",
+                ],
+                "Super": [
+                    "0.6188 ± 0.01",
+                    "0.6188 ± 0.02",
+                    "0.5612 ± 0.03",
+                    "0.7700 ± 0.00",
+                    "14.62 ± 0.65",
+                    "14.12 ± 0.54",
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.2: W8A8 quantization by task category")
+        st.dataframe(
+            task_table,
+            hide_index=True,
+            use_container_width=True,
+        )
 
-        acc_df = df[~df["Task"].isin(["WikiText-2", "C4"])]
-        ppl_df = df[df["Task"].isin(["WikiText-2", "C4"])]
+        accuracy_plot = pd.DataFrame(
+            {
+                "Task": [
+                    "HellaSwag",
+                    "BoolQ",
+                    "WinoGrande",
+                    "XCOPA",
+                ],
+                "FP16": [
+                    0.6396,
+                    0.6152,
+                    0.5768,
+                    0.7900,
+                ],
+                "Naive": [
+                    0.6164,
+                    0.6288,
+                    0.5640,
+                    0.7700,
+                ],
+                "Super": [
+                    0.6188,
+                    0.6188,
+                    0.5612,
+                    0.7700,
+                ],
+            }
+        )
 
-        st.subheader("Accuracy tasks")
-        st.bar_chart(acc_df.set_index("Task")[["FP16", "Naive", "Super"]])
+        perplexity_plot = pd.DataFrame(
+            {
+                "Task": [
+                    "WikiText-2",
+                    "C4",
+                ],
+                "FP16": [
+                    14.60,
+                    14.03,
+                ],
+                "Naive": [
+                    15.20,
+                    14.36,
+                ],
+                "Super": [
+                    14.62,
+                    14.12,
+                ],
+            }
+        )
 
-        st.subheader("Perplexity tasks")
-        st.bar_chart(ppl_df.set_index("Task")[["FP16", "Naive", "Super"]])
+        st.subheader("Accuracy Tasks")
+
+        st.bar_chart(
+            accuracy_plot.set_index("Task"),
+            use_container_width=True,
+            stack=False,
+        )
+
+        st.subheader("Language Modeling Tasks")
+
+        st.bar_chart(
+            perplexity_plot.set_index("Task"),
+            use_container_width=True,
+            stack=False,
+        )
 
     elif section == "Language / FLORES":
+        st.subheader("Table 5.3: FLORES Translation Perplexity")
+
         st.markdown("""
-        This section shows FLORES multilingual translation perplexity under W16A4
-        activation quantization. Lower is better.
+        This section compares multilingual translation perplexity for OLMo-1B
+        under W16A4 activation quantization. Results are reported as mean ±
+        standard deviation over five evaluation seeds. Lower values indicate
+        better performance.
         """)
 
-        data = {
-            "Language Pair": ["DE → EN", "EN → DE", "EN → ES", "EN → FR", "ES → EN", "FR → EN"],
-            "FP16": [3.08, 3.58, 4.95, 2.39, 3.90, 2.80],
-            "Naive": [5.34, 7.16, 9.03, 3.74, 6.51, 4.29],
-            "Super": [3.21, 3.82, 5.21, 2.48, 4.00, 2.92],
-        }
+        flores_table = pd.DataFrame(
+            {
+                "Language Pair": [
+                    "DE → EN",
+                    "EN → DE",
+                    "EN → ES",
+                    "EN → FR",
+                    "ES → EN",
+                    "FR → EN",
+                ],
+                "FP16": [
+                    "3.36 ± 0.14",
+                    "3.65 ± 0.14",
+                    "4.47 ± 0.10",
+                    "2.19 ± 0.11",
+                    "3.78 ± 0.26",
+                    "2.55 ± 0.14",
+                ],
+                "Naive": [
+                    "5.69 ± 0.44",
+                    "7.02 ± 0.24",
+                    "7.89 ± 0.28",
+                    "3.35 ± 0.18",
+                    "6.20 ± 0.61",
+                    "3.95 ± 0.34",
+                ],
+                "Super": [
+                    "3.49 ± 0.18",
+                    "3.93 ± 0.11",
+                    "4.65 ± 0.09",
+                    "2.27 ± 0.11",
+                    "3.87 ± 0.29",
+                    "2.65 ± 0.15",
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.3: FLORES translation perplexity")
-        st.bar_chart(df.set_index("Language Pair")[["FP16", "Naive", "Super"]])
+        st.dataframe(
+            flores_table,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+        flores_plot = pd.DataFrame(
+            {
+                "Language Pair": [
+                    "DE → EN",
+                    "EN → DE",
+                    "EN → ES",
+                    "EN → FR",
+                    "ES → EN",
+                    "FR → EN",
+                ],
+                "FP16": [
+                    3.36,
+                    3.65,
+                    4.47,
+                    2.19,
+                    3.78,
+                    2.55,
+                ],
+                "Naive": [
+                    5.69,
+                    7.02,
+                    7.89,
+                    3.35,
+                    6.20,
+                    3.95,
+                ],
+                "Super": [
+                    3.49,
+                    3.93,
+                    4.65,
+                    2.27,
+                    3.87,
+                    2.65,
+                ],
+            }
+        )
+
+        st.subheader("Perplexity by Language Pair")
+
+        st.bar_chart(
+            flores_plot.set_index("Language Pair"),
+            use_container_width=True,
+            stack=False,
+        )
 
     elif section == "Model Size":
+        st.subheader(
+            "Table 5.4: W16A8 Activation Quantization Across Model Sizes"
+        )
+
         st.markdown("""
-        This section compares activation quantization robustness across model sizes.
+        This section compares activation quantization robustness across model
+        sizes. Results are reported as mean ± standard deviation over five
+        evaluation seeds. Relative changes are calculated against FP16.
         Lower perplexity is better.
         """)
 
-        data = {
-            "Model": ["OLMo-1B", "OLMo-1B", "OLMo-7B", "OLMo-7B"],
-            "Dataset": ["WikiText-2", "C4", "WikiText-2", "C4"],
-            "FP16": [17.819, 13.485, 13.298, 10.265],
-            "Naive W16A8": [18.606, 13.807, 25.946, 14.682],
-            "Super W16A8": [17.821, 13.572, 13.589, 10.351],
-            "Naive Δ (%)": [4.42, 2.39, 95.11, 43.03],
-            "Super Δ (%)": [0.01, 0.65, 2.19, 0.84],
-        }
+        model_size_table = pd.DataFrame(
+            {
+                "Model": [
+                    "OLMo-1B",
+                    "OLMo-1B",
+                    "OLMo-7B",
+                    "OLMo-7B",
+                ],
+                "Dataset": [
+                    "WikiText-2",
+                    "C4",
+                    "WikiText-2",
+                    "C4",
+                ],
+                "FP16": [
+                    "14.60 ± 0.65",
+                    "14.03 ± 0.55",
+                    "10.87 ± 0.59",
+                    "10.82 ± 0.48",
+                ],
+                "Naive W16A8": [
+                    "15.20 ± 0.69",
+                    "14.36 ± 0.54",
+                    "20.81 ± 0.76",
+                    "15.02 ± 0.59",
+                ],
+                "Super W16A8": [
+                    "14.62 ± 0.65",
+                    "14.12 ± 0.54",
+                    "11.14 ± 0.70",
+                    "10.92 ± 0.49",
+                ],
+                "Naive Δ (%)": [
+                    4.12,
+                    2.32,
+                    91.54,
+                    38.75,
+                ],
+                "Super Δ (%)": [
+                    0.13,
+                    0.65,
+                    2.53,
+                    0.90,
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.4: W16A8 activation quantization across model sizes")
+        st.dataframe(
+            model_size_table,
+            hide_index=True,
+            use_container_width=True,
+        )
 
-        chart_df = df.copy()
-        chart_df["Model-Dataset"] = chart_df["Model"] + " / " + chart_df["Dataset"]
+        model_size_plot = pd.DataFrame(
+            {
+                "Configuration": [
+                    "OLMo-1B – WikiText-2",
+                    "OLMo-1B – C4",
+                    "OLMo-7B – WikiText-2",
+                    "OLMo-7B – C4",
+                ],
+                "FP16": [
+                    14.60,
+                    14.03,
+                    10.87,
+                    10.82,
+                ],
+                "Naive W16A8": [
+                    15.20,
+                    14.36,
+                    20.81,
+                    15.02,
+                ],
+                "Super W16A8": [
+                    14.62,
+                    14.12,
+                    11.14,
+                    10.92,
+                ],
+            }
+        )
 
-        st.bar_chart(chart_df.set_index("Model-Dataset")[["FP16", "Naive W16A8", "Super W16A8"]])
+        st.subheader("Perplexity by Model and Dataset")
+
+        st.bar_chart(
+            model_size_plot.set_index("Configuration"),
+            use_container_width=True,
+            stack=False,
+        )
 
     elif section == "Quantization Methods":
+            st.subheader("Table 5.5: Quantization Method Comparison")
+
+            st.markdown("""
+            This section compares different 4-bit weight-quantization methods on
+            OLMo-1B across selected zero-shot benchmarks. Results are reported as
+            mean ± standard deviation over five evaluation seeds. Higher values
+            indicate better performance for all benchmarks.
+            """)
+
+            method_table = pd.DataFrame(
+                {
+                    "Task": [
+                        "BoolQ",
+                        "HellaSwag",
+                        "WinoGrande",
+                        "XCOPA-en",
+                    ],
+                    "FP16": [
+                        "0.6152 ± 0.01",
+                        "0.6396 ± 0.01",
+                        "0.5768 ± 0.02",
+                        "0.7900 ± 0.00",
+                    ],
+                    "Naive W4": [
+                        "0.4072 ± 0.03",
+                        "0.2536 ± 0.01",
+                        "0.5440 ± 0.02",
+                        "0.5600 ± 0.00",
+                    ],
+                    "Super W4": [
+                        "0.5196 ± 0.03",
+                        "0.2992 ± 0.02",
+                        "0.5440 ± 0.02",
+                        "0.6600 ± 0.00",
+                    ],
+                    "GPTQ": [
+                        "0.4948 ± 0.02",
+                        "0.6336 ± 0.01",
+                        "0.5568 ± 0.02",
+                        "0.7400 ± 0.00",
+                    ],
+                    "AWQ": [
+                        "0.6084 ± 0.02",
+                        "0.6220 ± 0.01",
+                        "0.5536 ± 0.03",
+                        "0.7800 ± 0.00",
+                    ],
+                }
+            )
+
+            st.dataframe(
+                method_table,
+                hide_index=True,
+                use_container_width=True,
+            )
+
+            method_plot = pd.DataFrame(
+                {
+                    "Task": [
+                        "BoolQ",
+                        "HellaSwag",
+                        "WinoGrande",
+                        "XCOPA-en",
+                    ],
+                    "FP16": [
+                        0.6152,
+                        0.6396,
+                        0.5768,
+                        0.7900,
+                    ],
+                    "Naive W4": [
+                        0.4072,
+                        0.2536,
+                        0.5440,
+                        0.5600,
+                    ],
+                    "Super W4": [
+                        0.5196,
+                        0.2992,
+                        0.5440,
+                        0.6600,
+                    ],
+                    "GPTQ": [
+                        0.4948,
+                        0.6336,
+                        0.5568,
+                        0.7400,
+                    ],
+                    "AWQ": [
+                        0.6084,
+                        0.6220,
+                        0.5536,
+                        0.7800,
+                    ],
+                }
+            )
+
+            st.subheader("Performance by Quantization Method")
+
+            st.bar_chart(
+                method_plot.set_index("Task"),
+                use_container_width=True,
+                stack=False,
+            )
+
+
+    elif section == "Proposed Extensions":
+        st.header("Proposed Extensions to Super Weight-Aware Quantization")
+
         st.markdown("""
-        This section compares different 4-bit quantization methods on OLMo-1B.
-        Higher is better for all metrics.
+        Two extensions are evaluated to investigate whether explicitly modifying
+        or protecting super weights can further improve quantized model performance.
+        The first scales restored super weights, whereas the second integrates
+        explicit super weight protection into AWQ.
         """)
 
-        data = {
-            "Task": ["BoolQ", "HellaSwag", "WinoGrande", "XCOPA-en"],
-            "FP16": [0.6620, 0.5160, 0.5920, 0.7900],
-            "Naive W4": [0.3940, 0.2520, 0.5180, 0.5600],
-            "Super W4": [0.4960, 0.3220, 0.5180, 0.6600],
-            "GPTQ": [0.6300, 0.4200, 0.5580, 0.7800],
-            "AWQ": [0.5460, 0.4160, 0.5300, 0.7800],
-        }
+        st.subheader("Table 5.6: Super Weight Scaling")
 
-        df = show_table(data, "Table 5.5: Quantization method comparison")
-        st.bar_chart(df.set_index("Task")[["FP16", "Naive W4", "Super W4", "GPTQ", "AWQ"]])
-
-    elif section == "Superweight Scaling W8":
         st.markdown("""
-        This section shows the effect of superweight scaling under Super-W8 quantization.
-        Values are accuracy differences in percentage points relative to α = 1.0.
+        Moderate scaling can improve performance under Super-W8 quantization,
+        although the optimal factor varies across tasks. Large deviations from
+        the original scale generally reduce performance.
         """)
 
-        data = {
-            "α": [0.5, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.5, 2.0, 3.0],
-            "BoolQ": [-3.8, -1.6, -0.6, 0.0, -0.6, -1.8, -3.0, -2.2, -0.6, -3.4],
-            "PIQA": [0.2, 0.2, 0.4, 0.0, 0.8, 0.8, 0.8, 0.2, -0.2, -1.2],
-            "HellaSwag": [-0.6, 0.4, 0.0, 0.0, 0.2, 0.0, 0.2, 0.2, 0.8, -1.6],
-            "WinoGrande": [1.2, 0.6, 0.2, 0.0, 1.2, 1.4, 1.4, 1.4, -0.4, -1.2],
-            "ARC-E": [-1.0, 0.2, 0.0, 0.0, -0.4, -0.4, -0.8, -1.4, -2.0, -3.4],
-            "ARC-C": [-0.7, -0.3, 0.7, 0.0, -0.3, -0.3, -0.3, 0.0, 0.0, -0.3],
-        }
+        scaling_table = pd.DataFrame(
+            {
+                "α": [
+                    0.5,
+                    0.8,
+                    0.9,
+                    1.0,
+                    1.1,
+                    1.2,
+                    1.3,
+                    1.5,
+                    2.0,
+                    3.0,
+                ],
+                "BoolQ": [
+                    "-3.8",
+                    "-1.6",
+                    "-0.6",
+                    "0.0",
+                    "-0.6",
+                    "-1.8",
+                    "-3.0",
+                    "-2.2",
+                    "-0.6",
+                    "-3.4",
+                ],
+                "PIQA": [
+                    "+0.2",
+                    "+0.2",
+                    "+0.4",
+                    "0.0",
+                    "+0.8",
+                    "+0.8",
+                    "+0.8",
+                    "+0.2",
+                    "-0.2",
+                    "-1.2",
+                ],
+                "HellaSwag": [
+                    "-0.6",
+                    "+0.4",
+                    "0.0",
+                    "0.0",
+                    "+0.2",
+                    "0.0",
+                    "+0.2",
+                    "+0.2",
+                    "+0.8",
+                    "-1.6",
+                ],
+                "WinoGrande": [
+                    "+1.2",
+                    "+0.6",
+                    "+0.2",
+                    "0.0",
+                    "+1.2",
+                    "+1.4",
+                    "+1.4",
+                    "+1.4",
+                    "-0.4",
+                    "-1.2",
+                ],
+                "ARC-E": [
+                    "-1.0",
+                    "+0.2",
+                    "0.0",
+                    "0.0",
+                    "-0.4",
+                    "-0.4",
+                    "-0.8",
+                    "-1.4",
+                    "-2.0",
+                    "-3.4",
+                ],
+                "ARC-C": [
+                    "-0.7",
+                    "-0.3",
+                    "+0.7",
+                    "0.0",
+                    "-0.3",
+                    "-0.3",
+                    "-0.3",
+                    "0.0",
+                    "0.0",
+                    "-0.3",
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.6: Super-W8 scaling results")
-        st.line_chart(df.set_index("α"))
+        st.dataframe(
+            scaling_table,
+            hide_index=True,
+            use_container_width=True,
+        )
 
-    elif section == "Protected Superweights AWQ":
+        st.caption(
+            "Accuracy differences in percentage points relative to α = 1.0 "
+            "for Super-W8 quantization on OLMo-1B."
+        )
+
+        st.subheader("Table 5.7: Protecting Critical Weights in AWQ")
+
         st.markdown("""
-        This section summarizes the best SW-AWQ hyperparameter configurations.
-        Higher accuracy is better.
+        Explicit restoration and scaling of super weights after AWQ improves
+        performance on BoolQ, HellaSwag, and PIQA. SciQ does not benefit from
+        additional scaling in this experiment.
         """)
 
-        data = {
-            "Task": ["BoolQ", "HellaSwag", "PIQA", "SciQ"],
-            "Baseline": [0.544, 0.416, 0.744, 0.936],
-            "Best α0": [2.0, 1.5, 1.5, 1.0],
-            "Best λ": [1.0, 0.75, 0.75, 0.0],
-            "Best Acc.": [0.582, 0.422, 0.748, 0.936],
-            "Δ": [0.038, 0.006, 0.004, 0.000],
-        }
+        sw_awq_table = pd.DataFrame(
+            {
+                "Task": [
+                    "BoolQ",
+                    "HellaSwag",
+                    "PIQA",
+                    "SciQ",
+                ],
+                "Baseline": [
+                    "0.544",
+                    "0.416",
+                    "0.744",
+                    "0.936",
+                ],
+                "Best α₀": [
+                    "2.0",
+                    "1.5",
+                    "1.5",
+                    "1.0",
+                ],
+                "Best λ": [
+                    "1.0",
+                    "0.75",
+                    "0.75",
+                    "0.0",
+                ],
+                "Best Accuracy": [
+                    "0.582",
+                    "0.422",
+                    "0.748",
+                    "0.936",
+                ],
+                "Δ": [
+                    "+0.038",
+                    "+0.006",
+                    "+0.004",
+                    "+0.000",
+                ],
+            }
+        )
 
-        df = show_table(data, "Table 5.7: Best SW-AWQ configurations")
-        st.bar_chart(df.set_index("Task")[["Baseline", "Best Acc."]])
+        st.dataframe(
+            sw_awq_table,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+        st.caption(
+            "Best SW-AWQ configurations compared with the corresponding "
+            "AWQ baseline on OLMo-1B."
+        )
 
 
 elif page == "Automatic Plot Browser":

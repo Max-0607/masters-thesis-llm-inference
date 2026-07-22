@@ -1,6 +1,7 @@
 import argparse
 import json
 import math
+import random
 from pathlib import Path
 from typing import Optional
 
@@ -31,13 +32,18 @@ def make_json_safe(obj):
     if isinstance(obj, float):
         return obj if math.isfinite(obj) else None
     if isinstance(obj, dict):
-        return {k: make_json_safe(v) for k, v in obj.items()}
+        return {key: make_json_safe(value) for key, value in obj.items()}
     if isinstance(obj, list):
-        return [make_json_safe(v) for v in obj]
+        return [make_json_safe(value) for value in obj]
     return obj
 
 
-def get_superweight_restore_indices(row: int, col: int, shape, neighborhood: str = "scalar"):
+def get_superweight_restore_indices(
+    row: int,
+    col: int,
+    shape,
+    neighborhood: str = "scalar",
+):
     n_rows, n_cols = shape
     indices = set()
 
@@ -73,7 +79,11 @@ def quantize_activation(x: torch.Tensor, n_bits: int):
     scale = max_abs / qmax
     scale = torch.where(scale == 0, torch.ones_like(scale), scale)
 
-    q = torch.clamp(torch.round(x_float / scale), qmin, qmax)
+    q = torch.clamp(
+        torch.round(x_float / scale),
+        qmin,
+        qmax,
+    )
 
     return (q * scale).to(orig_dtype)
 
@@ -90,124 +100,160 @@ def add_activation_hooks(model, n_bits: int):
         if not torch.is_tensor(x):
             return inputs
 
-        return (quantize_activation(x, n_bits),) + tuple(inputs[1:])
+        return (
+            quantize_activation(x, n_bits),
+        ) + tuple(inputs[1:])
 
     for module in model.modules():
         if isinstance(module, nn.Linear):
-            handles.append(module.register_forward_pre_hook(hook))
+            handles.append(
+                module.register_forward_pre_hook(hook)
+            )
 
     return handles
 
 
 @torch.no_grad()
-def clip_weight_tensor_zscore(w: torch.Tensor, clip_z: Optional[float]):
+def clip_weight_tensor_zscore(
+    weight: torch.Tensor,
+    clip_z: Optional[float],
+):
     if clip_z is None or clip_z <= 0:
-        return w
+        return weight
 
-    orig_dtype = w.dtype
-    w_float = w.float()
+    orig_dtype = weight.dtype
+    weight_float = weight.float()
 
-    mean = w_float.mean()
-    std = w_float.std(unbiased=False)
+    mean = weight_float.mean()
+    std = weight_float.std(unbiased=False)
 
     if std.item() == 0:
-        return w
+        return weight
 
     lower = mean - clip_z * std
     upper = mean + clip_z * std
 
-    return torch.clamp(w_float, lower, upper).to(orig_dtype)
+    return torch.clamp(
+        weight_float,
+        lower,
+        upper,
+    ).to(orig_dtype)
 
 
 @torch.no_grad()
-def quantize_weight_tensor(w: torch.Tensor, n_bits: int):
+def quantize_weight_tensor(
+    weight: torch.Tensor,
+    n_bits: int,
+):
     """
-    Asymmetric min-max RTN quantization:
-    Q(W) = round((W - min(W)) / delta)
-    W_q = Q(W) * delta + min(W)
+    Asymmetric min-max round-to-nearest quantization.
     """
-
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
-    orig_dtype = w.dtype
-    w_float = w.float()
+    orig_dtype = weight.dtype
+    weight_float = weight.float()
 
     qmin = 0
     qmax = (2 ** n_bits) - 1
 
-    w_min = w_float.min()
-    w_max = w_float.max()
+    weight_min = weight_float.min()
+    weight_max = weight_float.max()
 
-    if (w_max - w_min).item() == 0:
-        return w_float.to(orig_dtype)
+    if (weight_max - weight_min).item() == 0:
+        return weight_float.to(orig_dtype)
 
-    delta = (w_max - w_min) / qmax
+    delta = (weight_max - weight_min) / qmax
 
-    q = torch.clamp(
-        torch.round((w_float - w_min) / delta),
+    quantized = torch.clamp(
+        torch.round(
+            (weight_float - weight_min) / delta
+        ),
         qmin,
         qmax,
     )
 
-    return (q * delta + w_min).to(orig_dtype)
+    return (
+        quantized * delta + weight_min
+    ).to(orig_dtype)
 
 
 @torch.no_grad()
 def quantize_weight_tensor_blockwise_2d(
-    w: torch.Tensor,
+    weight: torch.Tensor,
     n_bits: int,
     block_rows: int = 128,
     block_cols: int = 128,
 ):
     """
-    Blockwise asymmetric min-max RTN quantization.
-    Each 2D block gets its own min/max range.
+    Blockwise asymmetric min-max quantization.
     """
-
     if n_bits <= 0:
         raise ValueError("n_bits must be positive")
 
     if block_rows <= 0 or block_cols <= 0:
-        raise ValueError("block_rows and block_cols must be positive")
+        raise ValueError(
+            "block_rows and block_cols must be positive"
+        )
 
-    if w.ndim != 2:
-        return quantize_weight_tensor(w, n_bits)
+    if weight.ndim != 2:
+        return quantize_weight_tensor(
+            weight,
+            n_bits,
+        )
 
-    orig_dtype = w.dtype
-    w_float = w.float()
-    out = torch.empty_like(w_float)
+    orig_dtype = weight.dtype
+    weight_float = weight.float()
+    output = torch.empty_like(weight_float)
 
     qmin = 0
     qmax = (2 ** n_bits) - 1
 
-    n_rows, n_cols = w_float.shape
+    n_rows, n_cols = weight_float.shape
 
-    for r0 in range(0, n_rows, block_rows):
-        r1 = min(r0 + block_rows, n_rows)
+    for row_start in range(0, n_rows, block_rows):
+        row_end = min(
+            row_start + block_rows,
+            n_rows,
+        )
 
-        for c0 in range(0, n_cols, block_cols):
-            c1 = min(c0 + block_cols, n_cols)
-            block = w_float[r0:r1, c0:c1]
+        for col_start in range(0, n_cols, block_cols):
+            col_end = min(
+                col_start + block_cols,
+                n_cols,
+            )
 
-            b_min = block.min()
-            b_max = block.max()
+            block = weight_float[
+                row_start:row_end,
+                col_start:col_end,
+            ]
 
-            if (b_max - b_min).item() == 0:
-                out[r0:r1, c0:c1] = block
+            block_min = block.min()
+            block_max = block.max()
+
+            if (block_max - block_min).item() == 0:
+                output[
+                    row_start:row_end,
+                    col_start:col_end,
+                ] = block
                 continue
 
-            delta = (b_max - b_min) / qmax
+            delta = (block_max - block_min) / qmax
 
-            q = torch.clamp(
-                torch.round((block - b_min) / delta),
+            quantized = torch.clamp(
+                torch.round(
+                    (block - block_min) / delta
+                ),
                 qmin,
                 qmax,
             )
 
-            out[r0:r1, c0:c1] = q * delta + b_min
+            output[
+                row_start:row_end,
+                col_start:col_end,
+            ] = quantized * delta + block_min
 
-    return out.to(orig_dtype)
+    return output.to(orig_dtype)
 
 
 @torch.no_grad()
@@ -219,20 +265,29 @@ def quantize_parameter(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ):
-    w = clip_weight_tensor_zscore(param, clip_z)
+    weight = clip_weight_tensor_zscore(
+        param,
+        clip_z,
+    )
 
     if quant_granularity == "tensor":
-        return quantize_weight_tensor(w, n_bits)
+        return quantize_weight_tensor(
+            weight,
+            n_bits,
+        )
 
     if quant_granularity == "block2d":
         return quantize_weight_tensor_blockwise_2d(
-            w,
+            weight,
             n_bits=n_bits,
             block_rows=block_rows,
             block_cols=block_cols,
         )
 
-    raise ValueError(f"Unsupported quant_granularity: {quant_granularity}")
+    raise ValueError(
+        f"Unsupported quant_granularity: "
+        f"{quant_granularity}"
+    )
 
 
 @torch.no_grad()
@@ -244,11 +299,6 @@ def apply_weight_quantization(
     block_cols: int = 128,
     clip_z: Optional[float] = None,
 ):
-    """
-    Quantize only nn.Linear layers.
-    Skip lm_head and embeddings.
-    """
-
     quantized_modules = 0
     skipped_modules = 0
 
@@ -264,7 +314,7 @@ def apply_weight_quantization(
             skipped_modules += 1
             continue
 
-        q_weight = quantize_parameter(
+        quantized_weight = quantize_parameter(
             module.weight.data,
             n_bits=n_bits,
             quant_granularity=quant_granularity,
@@ -273,11 +323,12 @@ def apply_weight_quantization(
             clip_z=clip_z,
         )
 
-        module.weight.data.copy_(q_weight)
+        module.weight.data.copy_(quantized_weight)
         quantized_modules += 1
 
     print(
-        f"Weight quantization done: quantized Linear modules={quantized_modules}, "
+        "Weight quantization done: "
+        f"quantized Linear modules={quantized_modules}, "
         f"skipped Linear modules={skipped_modules}",
         flush=True,
     )
@@ -293,12 +344,19 @@ def collect_superweights(
     restore_neighborhood: str = "scalar",
 ):
     if model_key not in SUPERWEIGHTS:
-        raise ValueError(f"No superweights registered for model_key={model_key}")
+        raise ValueError(
+            "No superweights registered for "
+            f"model_key={model_key}"
+        )
 
-    model_cfg = MODEL_CONFIGS[model_key]
-    layers = get_nested_attr(model, model_cfg["layer_path"])
-    down_proj_path = model_cfg["down_proj_path"]
+    model_config = MODEL_CONFIGS[model_key]
 
+    layers = get_nested_attr(
+        model,
+        model_config["layer_path"],
+    )
+
+    down_proj_path = model_config["down_proj_path"]
     protected = []
 
     for entry in SUPERWEIGHTS[model_key]:
@@ -306,19 +364,36 @@ def collect_superweights(
         row = int(entry["row"])
         col = int(entry["col"])
 
-        module = get_nested_attr(layers[layer_idx], down_proj_path)
-        weight = module.weight.data
-
-        restore_indices = get_superweight_restore_indices(
-            row=row,
-            col=col,
-            shape=weight.shape,
-            neighborhood=restore_neighborhood,
+        module = get_nested_attr(
+            layers[layer_idx],
+            down_proj_path,
         )
 
-        for rr, cc in restore_indices:
-            is_center = rr == row and cc == col
-            value = weight[rr, cc].detach().clone()
+        weight = module.weight.data
+
+        restore_indices = (
+            get_superweight_restore_indices(
+                row=row,
+                col=col,
+                shape=weight.shape,
+                neighborhood=restore_neighborhood,
+            )
+        )
+
+        for restore_row, restore_col in restore_indices:
+            is_center = (
+                restore_row == row
+                and restore_col == col
+            )
+
+            value = (
+                weight[
+                    restore_row,
+                    restore_col,
+                ]
+                .detach()
+                .clone()
+            )
 
             if is_center:
                 value = value * sw_scale
@@ -328,8 +403,8 @@ def collect_superweights(
                     "layer": layer_idx,
                     "center_row": row,
                     "center_col": col,
-                    "row": int(rr),
-                    "col": int(cc),
+                    "row": int(restore_row),
+                    "col": int(restore_col),
                     "value": value,
                     "is_center": bool(is_center),
                 }
@@ -339,14 +414,30 @@ def collect_superweights(
 
 
 @torch.no_grad()
-def restore_superweights(model, model_key: str, protected):
-    model_cfg = MODEL_CONFIGS[model_key]
-    layers = get_nested_attr(model, model_cfg["layer_path"])
-    down_proj_path = model_cfg["down_proj_path"]
+def restore_superweights(
+    model,
+    model_key: str,
+    protected,
+):
+    model_config = MODEL_CONFIGS[model_key]
+
+    layers = get_nested_attr(
+        model,
+        model_config["layer_path"],
+    )
+
+    down_proj_path = model_config["down_proj_path"]
 
     for item in protected:
-        module = get_nested_attr(layers[item["layer"]], down_proj_path)
-        module.weight.data[item["row"], item["col"]] = item["value"]
+        module = get_nested_attr(
+            layers[item["layer"]],
+            down_proj_path,
+        )
+
+        module.weight.data[
+            item["row"],
+            item["col"],
+        ] = item["value"]
 
     return model
 
@@ -380,8 +471,14 @@ def prepare_model(
             clip_z=None,
         )
 
-        if activation_bits is not None and activation_bits > 0:
-            activation_handles = add_activation_hooks(model, activation_bits)
+        if (
+            activation_bits is not None
+            and activation_bits > 0
+        ):
+            activation_handles = add_activation_hooks(
+                model,
+                activation_bits,
+            )
 
         return model, protected, activation_handles
 
@@ -408,55 +505,225 @@ def prepare_model(
             protected=protected,
         )
 
-        if activation_bits is not None and activation_bits > 0:
-            activation_handles = add_activation_hooks(model, activation_bits)
+        if (
+            activation_bits is not None
+            and activation_bits > 0
+        ):
+            activation_handles = add_activation_hooks(
+                model,
+                activation_bits,
+            )
 
         return model, protected, activation_handles
 
     raise ValueError(f"Unsupported mode: {mode}")
 
 
-def load_texts(dataset: str, split: str, limit: int):
+def load_text_pool(
+    dataset: str,
+    split: str,
+    pool_size: int,
+):
+    """
+    Load a fixed pool of non-empty evaluation texts.
+    """
+    if pool_size <= 0:
+        raise ValueError(
+            "sampling_pool_size must be positive"
+        )
+
     if dataset == "wikitext2":
-        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
-        texts = [x["text"] for x in ds if x["text"].strip()]
-        return texts[:limit]
+        dataset_object = load_dataset(
+            "wikitext",
+            "wikitext-2-raw-v1",
+            split=split,
+        )
 
-    if dataset == "c4":
-        ds = load_dataset("allenai/c4", "en", split="validation", streaming=True)
+    elif dataset == "c4":
+        dataset_object = load_dataset(
+            "allenai/c4",
+            "en",
+            split=split,
+            streaming=True,
+        )
 
-        texts = []
-        for x in ds:
-            text = x.get("text", "")
-            if text.strip():
-                texts.append(text)
+    else:
+        raise ValueError(
+            f"Unsupported dataset: {dataset}"
+        )
 
-            if len(texts) >= limit:
-                break
+    pool = []
 
-        return texts
+    for original_idx, example in enumerate(dataset_object):
+        text = example.get("text", "")
 
-    raise ValueError(f"Unsupported dataset: {dataset}")
+        if not text.strip():
+            continue
+
+        pool.append(
+            {
+                "id": int(original_idx),
+                "text": text,
+            }
+        )
+
+        if len(pool) >= pool_size:
+            break
+
+    if not pool:
+        raise RuntimeError(
+            f"No non-empty texts found for {dataset}."
+        )
+
+    print(
+        f"Loaded pool with {len(pool)} non-empty texts",
+        flush=True,
+    )
+
+    return pool
+
+
+def select_texts(
+    pool,
+    limit: int,
+    eval_seed: int,
+    reference_json: Optional[str] = None,
+):
+    """
+    Select texts reproducibly or reuse the example IDs
+    stored in an FP16 reference JSON.
+    """
+    if limit <= 0:
+        raise ValueError("limit must be positive")
+
+    if limit > len(pool):
+        raise ValueError(
+            f"limit={limit} exceeds available "
+            f"pool size={len(pool)}"
+        )
+
+    pool_by_id = {
+        int(item["id"]): item["text"]
+        for item in pool
+    }
+
+    if reference_json is None:
+        rng = random.Random(eval_seed)
+
+        available_ids = [
+            int(item["id"])
+            for item in pool
+        ]
+
+        selected_ids = rng.sample(
+            available_ids,
+            limit,
+        )
+
+    else:
+        reference_path = Path(reference_json)
+
+        if not reference_path.exists():
+            raise FileNotFoundError(
+                "Reference JSON does not exist: "
+                f"{reference_path}"
+            )
+
+        with open(
+            reference_path,
+            "r",
+            encoding="utf-8",
+        ) as file:
+            reference_result = json.load(file)
+
+        selected_ids = reference_result.get(
+            "selected_example_ids"
+        )
+
+        if selected_ids is None:
+            raise ValueError(
+                "Reference JSON has no "
+                f"selected_example_ids: {reference_path}"
+            )
+
+        selected_ids = [
+            int(example_id)
+            for example_id in selected_ids
+        ]
+
+        if len(selected_ids) != limit:
+            raise ValueError(
+                "Reference JSON contains "
+                f"{len(selected_ids)} IDs, "
+                f"but limit={limit}"
+            )
+
+        reference_dataset = reference_result.get(
+            "dataset"
+        )
+
+        if reference_dataset != reference_result.get(
+            "dataset",
+            reference_dataset,
+        ):
+            raise ValueError(
+                "Reference dataset does not match."
+            )
+
+        reference_split = reference_result.get("split")
+
+        if reference_split is not None:
+            print(
+                "Using reference selection from "
+                f"dataset={reference_dataset}, "
+                f"split={reference_split}",
+                flush=True,
+            )
+
+        missing_ids = [
+            example_id
+            for example_id in selected_ids
+            if example_id not in pool_by_id
+        ]
+
+        if missing_ids:
+            raise ValueError(
+                "Reference IDs are not available in "
+                f"the loaded pool: {missing_ids[:10]}"
+            )
+
+    texts = [
+        pool_by_id[example_id]
+        for example_id in selected_ids
+    ]
+
+    return texts, selected_ids
 
 
 @torch.no_grad()
-def evaluate_ppl(model, tokenizer, texts, max_length: int):
+def evaluate_ppl(
+    model,
+    tokenizer,
+    texts,
+    max_length: int,
+):
     device = next(model.parameters()).device
 
     total_loss = 0.0
     total_tokens = 0
+    evaluated_texts = 0
 
     model.eval()
 
-    for i, text in enumerate(texts):
-        enc = tokenizer(
+    for index, text in enumerate(texts):
+        encoded = tokenizer(
             text,
             return_tensors="pt",
             truncation=True,
             max_length=max_length,
         )
 
-        input_ids = enc.input_ids.to(device)
+        input_ids = encoded.input_ids.to(device)
 
         if input_ids.shape[1] < 2:
             continue
@@ -473,52 +740,169 @@ def evaluate_ppl(model, tokenizer, texts, max_length: int):
 
         total_loss += loss * num_tokens
         total_tokens += num_tokens
+        evaluated_texts += 1
 
-        if (i + 1) % 25 == 0:
-            current_ppl = math.exp(total_loss / total_tokens)
-            print(f"{i+1}/{len(texts)} | current_ppl={current_ppl:.4f}", flush=True)
+        if (index + 1) % 25 == 0:
+            current_ppl = math.exp(
+                total_loss / total_tokens
+            )
+
+            print(
+                f"{index + 1}/{len(texts)} | "
+                f"current_ppl={current_ppl:.4f}",
+                flush=True,
+            )
 
     if total_tokens == 0:
-        raise RuntimeError("No valid tokens evaluated.")
+        raise RuntimeError(
+            "No valid tokens evaluated."
+        )
 
-    avg_loss = total_loss / total_tokens
-    ppl = math.exp(avg_loss)
+    average_loss = total_loss / total_tokens
+    perplexity = math.exp(average_loss)
 
     return {
-        "loss": avg_loss,
-        "perplexity": ppl,
+        "loss": average_loss,
+        "perplexity": perplexity,
         "num_tokens": total_tokens,
-        "num_texts": len(texts),
+        "num_texts": evaluated_texts,
     }
+
 
 def build_arg_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--model-key", required=True, choices=sorted(MODEL_CONFIGS.keys()))
-    parser.add_argument("--mode", default="fp16", choices=["fp16", "naive", "super"])
-    parser.add_argument("--bits", type=int, default=8)
-    parser.add_argument("--activation-bits", type=int, default=None)
-    parser.add_argument("--sw-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--model-key",
+        required=True,
+        choices=sorted(MODEL_CONFIGS.keys()),
+    )
+
+    parser.add_argument(
+        "--mode",
+        default="fp16",
+        choices=["fp16", "naive", "super"],
+    )
+
+    parser.add_argument(
+        "--bits",
+        type=int,
+        default=8,
+    )
+
+    parser.add_argument(
+        "--activation-bits",
+        type=int,
+        default=None,
+    )
+
+    parser.add_argument(
+        "--sw-scale",
+        type=float,
+        default=1.0,
+    )
 
     parser.add_argument(
         "--restore-neighborhood",
         type=str,
         default="scalar",
-        choices=["scalar", "row", "column", "cross"],
+        choices=[
+            "scalar",
+            "row",
+            "column",
+            "cross",
+        ],
     )
 
-    parser.add_argument("--quant-granularity", type=str, default="tensor", choices=["tensor", "block2d"])
-    parser.add_argument("--block-rows", type=int, default=128)
-    parser.add_argument("--block-cols", type=int, default=128)
-    parser.add_argument("--clip-z", type=float, default=None)
+    parser.add_argument(
+        "--quant-granularity",
+        type=str,
+        default="tensor",
+        choices=["tensor", "block2d"],
+    )
 
-    parser.add_argument("--dataset", required=True, choices=["wikitext2", "c4"])
-    parser.add_argument("--split", default="validation")
-    parser.add_argument("--limit", type=int, default=128)
-    parser.add_argument("--max-length", type=int, default=512)
+    parser.add_argument(
+        "--block-rows",
+        type=int,
+        default=128,
+    )
 
-    parser.add_argument("--dtype", default="float16", choices=["float16", "bfloat16", "float32"])
-    parser.add_argument("--output-json", required=True)
+    parser.add_argument(
+        "--block-cols",
+        type=int,
+        default=128,
+    )
+
+    parser.add_argument(
+        "--clip-z",
+        type=float,
+        default=None,
+    )
+
+    parser.add_argument(
+        "--dataset",
+        required=True,
+        choices=["wikitext2", "c4"],
+    )
+
+    parser.add_argument(
+        "--split",
+        default="validation",
+    )
+
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=128,
+    )
+
+    parser.add_argument(
+        "--max-length",
+        type=int,
+        default=512,
+    )
+
+    parser.add_argument(
+        "--eval-seed",
+        type=int,
+        default=42,
+        help="Seed used to select evaluation texts.",
+    )
+
+    parser.add_argument(
+        "--reference-json",
+        type=str,
+        default=None,
+        help=(
+            "Reuse selected_example_ids from an "
+            "FP16 reference JSON."
+        ),
+    )
+
+    parser.add_argument(
+        "--sampling-pool-size",
+        type=int,
+        default=2000,
+        help=(
+            "Number of non-empty texts from which "
+            "the evaluation sample is selected."
+        ),
+    )
+
+    parser.add_argument(
+        "--dtype",
+        default="float16",
+        choices=[
+            "float16",
+            "bfloat16",
+            "float32",
+        ],
+    )
+
+    parser.add_argument(
+        "--output-json",
+        required=True,
+    )
 
     return parser
 
@@ -526,31 +910,54 @@ def build_arg_parser():
 def main():
     args = build_arg_parser().parse_args()
 
-    model_cfg = MODEL_CONFIGS[args.model_key]
-    model_id = model_cfg["hf_name"]
-    torch_dtype = resolve_torch_dtype(args.dtype)
+    model_config = MODEL_CONFIGS[args.model_key]
+    model_id = model_config["hf_name"]
 
-    print(f"Loading tokenizer: {model_id}", flush=True)
-    tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+    torch_dtype = resolve_torch_dtype(
+        args.dtype
+    )
 
-    if tokenizer.pad_token is None and tokenizer.eos_token is not None:
+    print(
+        f"Loading tokenizer: {model_id}",
+        flush=True,
+    )
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_id,
+        trust_remote_code=True,
+    )
+
+    if (
+        tokenizer.pad_token is None
+        and tokenizer.eos_token is not None
+    ):
         tokenizer.pad_token = tokenizer.eos_token
 
-    print(f"Loading model: {model_id}", flush=True)
+    print(
+        f"Loading model: {model_id}",
+        flush=True,
+    )
+
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch_dtype,
         trust_remote_code=True,
         device_map="auto",
     )
+
     model.eval()
 
     print(
-        f"Preparing model mode={args.mode}, bits={args.bits}, "
-        f"activation_bits={args.activation_bits}, sw_scale={args.sw_scale}, "
-        f"restore_neighborhood={args.restore_neighborhood}, "
-        f"quant_granularity={args.quant_granularity}, "
-        f"block_rows={args.block_rows}, block_cols={args.block_cols}, "
+        f"Preparing model mode={args.mode}, "
+        f"bits={args.bits}, "
+        f"activation_bits={args.activation_bits}, "
+        f"sw_scale={args.sw_scale}, "
+        f"restore_neighborhood="
+        f"{args.restore_neighborhood}, "
+        f"quant_granularity="
+        f"{args.quant_granularity}, "
+        f"block_rows={args.block_rows}, "
+        f"block_cols={args.block_cols}, "
         f"clip_z={args.clip_z}",
         flush=True,
     )
@@ -569,14 +976,49 @@ def main():
         clip_z=args.clip_z,
     )
 
-    print(f"Protected values: {len(protected)}", flush=True)
-    print(f"Activation hooks: {len(activation_handles)}", flush=True)
+    print(
+        f"Protected values: {len(protected)}",
+        flush=True,
+    )
 
-    print(f"Loading dataset={args.dataset}, split={args.split}, limit={args.limit}", flush=True)
-    texts = load_texts(
+    print(
+        f"Activation hooks: "
+        f"{len(activation_handles)}",
+        flush=True,
+    )
+
+    print(
+        f"Loading dataset={args.dataset}, "
+        f"split={args.split}, "
+        f"pool_size={args.sampling_pool_size}, "
+        f"limit={args.limit}, "
+        f"eval_seed={args.eval_seed}",
+        flush=True,
+    )
+
+    pool = load_text_pool(
         dataset=args.dataset,
         split=args.split,
+        pool_size=args.sampling_pool_size,
+    )
+
+    texts, selected_example_ids = select_texts(
+        pool=pool,
         limit=args.limit,
+        eval_seed=args.eval_seed,
+        reference_json=args.reference_json,
+    )
+
+    print(
+        f"Selected {len(texts)} texts from "
+        f"a pool of {len(pool)} texts",
+        flush=True,
+    )
+
+    print(
+        "First selected example IDs: "
+        f"{selected_example_ids[:10]}",
+        flush=True,
     )
 
     metrics = evaluate_ppl(
@@ -588,14 +1030,20 @@ def main():
 
     protected_summary = [
         {
-            "layer": int(x["layer"]),
-            "center_row": int(x["center_row"]),
-            "center_col": int(x["center_col"]),
-            "row": int(x["row"]),
-            "col": int(x["col"]),
-            "is_center": bool(x["is_center"]),
+            "layer": int(item["layer"]),
+            "center_row": int(
+                item["center_row"]
+            ),
+            "center_col": int(
+                item["center_col"]
+            ),
+            "row": int(item["row"]),
+            "col": int(item["col"]),
+            "is_center": bool(
+                item["is_center"]
+            ),
         }
-        for x in protected
+        for item in protected
     ]
 
     result = {
@@ -607,31 +1055,63 @@ def main():
         "bits": args.bits,
         "activation_bits": args.activation_bits,
         "sw_scale": args.sw_scale,
-        "restore_neighborhood": args.restore_neighborhood,
-        "quant_granularity": args.quant_granularity,
+        "restore_neighborhood":
+            args.restore_neighborhood,
+        "quant_granularity":
+            args.quant_granularity,
         "block_rows": args.block_rows,
         "block_cols": args.block_cols,
         "clip_z": args.clip_z,
         "num_protected_values": len(protected),
         "protected_values": protected_summary,
-        "num_activation_hooks": len(activation_handles),
+        "num_activation_hooks":
+            len(activation_handles),
         "dtype": args.dtype,
         "split": args.split,
         "limit": args.limit,
         "max_length": args.max_length,
+        "eval_seed": args.eval_seed,
+        "reference_json": args.reference_json,
+        "sampling_pool_size":
+            args.sampling_pool_size,
+        "selected_example_ids":
+            selected_example_ids,
         **metrics,
     }
 
     result = make_json_safe(result)
 
     output_path = Path(args.output_json)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2, ensure_ascii=False)
+    with open(
+        output_path,
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            result,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
 
-    print(json.dumps(result, indent=2, ensure_ascii=False), flush=True)
-    print(f"Saved result to: {output_path}", flush=True)
+    print(
+        json.dumps(
+            result,
+            indent=2,
+            ensure_ascii=False,
+        ),
+        flush=True,
+    )
+
+    print(
+        f"Saved result to: {output_path}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

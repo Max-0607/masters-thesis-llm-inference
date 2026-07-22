@@ -63,9 +63,9 @@ def main():
 
     plt.xlabel("Layer")
     plt.ylabel("SW-Dropout − Original")
-    plt.title(
-        "Change in Maximum Activations After Superweight Dropout"
-    )
+    #plt.title(
+       # "Change in Maximum Activations After Superweight Dropout"
+    #)
 
     plt.legend()
     plt.tight_layout()
