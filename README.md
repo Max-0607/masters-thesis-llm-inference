@@ -32,13 +32,16 @@ The repository provides the code, intermediate outputs, final evaluation results
 
 ```text
 masters-thesis-llm-inference/
-├── src/                    Core implementation
-├── scripts/                Experiment and evaluation scripts
-├── outputs/                Intermediate outputs and generated plots
-├── results/                Numerical experimental results
-├── quantization/           Adapted AWQ and GPTQ implementations
-├── dashboard/              Streamlit visualization dashboard
-└── README.md
+├── configs/          Model, super weight, and task configurations
+├── src/              Core implementation
+├── scripts/          Experiment and evaluation scripts
+├── quantization/     Adapted AWQ and GPTQ implementations
+├── results/          Experimental results and uncertainty analyses
+├── outputs/          Generated models, figures, and analysis outputs
+├── dashboard/        Streamlit visualization dashboard
+├── docs/             Detailed reproduction instructions
+├── archive/          Archived scripts and reference implementations
+└── README.md         Project overview and quick-start instructions
 ```
 
 ---
